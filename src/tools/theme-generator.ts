@@ -211,9 +211,10 @@ function generateCSSVariables(tokens: DesignToken[], themeName: string = 'defaul
     for (const token of grouped['color']) {
       const hsl = hexToHSL(token.value);
       // Optics format: --op-color-primary-h (not --op-primary-h)
-      lines.push(`  --op-${token.name}-h: ${hsl.h};`);
-      lines.push(`  --op-${token.name}-s: ${hsl.s}%;`);
-      lines.push(`  --op-${token.name}-l: ${hsl.l}%;`);
+      const opticsColorName = token.name.startsWith('color-') ? token.name : `color-${token.name}`;
+      lines.push(`  --op-${opticsColorName}-h: ${hsl.h};`);
+      lines.push(`  --op-${opticsColorName}-s: ${hsl.s}%;`);
+      lines.push(`  --op-${opticsColorName}-l: ${hsl.l}%;`);
     }
     lines.push('');
   }
