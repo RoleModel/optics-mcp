@@ -165,22 +165,42 @@ The server exposes the following resources via the `optics://` URI scheme:
 
 ### Design Token Categories
 
-1. **Colors**: Brand colors, semantic colors (success, danger, warning, info), text colors
-2. **Spacing**: Base-8 spacing system (xs: 4px to 2xl: 48px)
-3. **Typography**: Font families, sizes, weights, and line heights
-4. **Borders**: Border radius tokens for consistent corner styling
-5. **Shadows**: Elevation shadows for depth and hierarchy
+1. **Colors** (25 tokens): HSL-based color system with primary, neutral, and alert colors
+2. **Spacing** (11 tokens): calc-based rem units with base-10 scale (2px to 80px)
+3. **Typography** (32 tokens): Noto Sans/Serif fonts with sizes, weights, and line heights
+4. **Borders** (10 tokens): Border radius (small to pill) and widths
+5. **Shadows** (5 tokens): Elevation system (x-small to x-large)
 
-### Components
+### Components (24 Total)
 
-The system includes the following components:
-- **Button**: Interactive buttons with consistent styling
+All components extracted from real Optics SCSS with accurate token dependencies:
+
+- **Accordion**: Collapsible content panel
+- **Alert**: Notification messages (warning, danger, info, notice)
+- **Avatar**: User profile pictures
+- **Badge**: Status indicators and labels
+- **Breadcrumbs**: Navigation hierarchy
+- **Button**: Interactive buttons with variants
+- **ButtonGroup**: Grouped button container
 - **Card**: Content containers with elevation
-- **Input**: Form input fields
-- **Alert**: Notification messages
-- **Typography**: Text hierarchy system
+- **ConfirmDialog**: Action confirmation modals
+- **Divider**: Content separators
+- **Form**: Input fields, textareas, selects
+- **Icon**: Material Symbols icons
+- **Modal**: Overlay dialogs
+- **Navbar**: Top navigation
+- **Pagination**: Page navigation
+- **SidePanel**: Sliding side panels
+- **Sidebar**: Side navigation
+- **Spinner**: Loading indicators
+- **Switch**: Toggle switches
+- **Tab**: Tabbed interfaces
+- **Table**: Data tables
+- **Tag**: Categorization labels
+- **TextPair**: Label-value pairs
+- **Tooltip**: Contextual information
 
-Each component specifies which design tokens it uses, making it easy to understand dependencies and maintain consistency.
+Each component specifies which Optics design tokens it uses, making it easy to understand dependencies and maintain consistency.
 
 ## Development
 
