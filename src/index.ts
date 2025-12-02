@@ -12,6 +12,8 @@ import {
   ListResourcesRequestSchema,
   ListToolsRequestSchema,
   ReadResourceRequestSchema,
+  ListPromptsRequestSchema,
+  GetPromptRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import {
   designTokens,
@@ -20,6 +22,13 @@ import {
   getTokenUsageStats,
   getComponentTokenDependencies,
 } from './optics-data.js';
+import { generateTheme } from './tools/theme-generator.js';
+import { validateTokenUsage, formatValidationReport } from './tools/validate.js';
+import { replaceHardCodedValues, formatReplacementSuggestions } from './tools/replace.js';
+import { checkTokenContrast, formatContrastResult } from './tools/accessibility.js';
+import { suggestTokenMigration, formatMigrationSuggestions } from './tools/migration.js';
+import { generateComponentScaffold, formatScaffoldOutput } from './tools/scaffold.js';
+import { generateStickerSheet, formatStickerSheet } from './tools/sticker-sheet.js';
 
 /**
  * Create and configure the MCP server
@@ -33,6 +42,7 @@ const server = new Server(
     capabilities: {
       resources: {},
       tools: {},
+      prompts: {},
     },
   }
 );
@@ -204,6 +214,203 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
 });
 
 /**
+ * Handler for listing available prompts
+ */
+server.setRequestHandler(ListPromptsRequestSchema, async () => {
+  return {
+    prompts: [
+      {
+        name: 'create-themed-component',
+        description: 'Generate a component styled with Optics design tokens',
+        arguments: [
+          {
+            name: 'componentType',
+            description: 'Type of component (button, card, form, alert, etc.)',
+            required: true,
+          },
+          {
+            name: 'variant',
+            description: 'Component variant (primary, secondary, danger, etc.)',
+            required: false,
+          },
+          {
+            name: 'framework',
+            description: 'Framework to use (react, vue, svelte, html)',
+            required: false,
+          },
+        ],
+      },
+      {
+        name: 'migrate-to-tokens',
+        description: 'Convert hard-coded CSS values to Optics design tokens',
+        arguments: [
+          {
+            name: 'code',
+            description: 'CSS or component code with hard-coded values',
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'accessible-color-combo',
+        description: 'Suggest accessible foreground/background color token combinations',
+        arguments: [
+          {
+            name: 'colorFamily',
+            description: 'Color family (primary, neutral, danger, warning, info, notice)',
+            required: true,
+          },
+          {
+            name: 'wcagLevel',
+            description: 'WCAG level (AA or AAA)',
+            required: false,
+          },
+        ],
+      },
+      {
+        name: 'explain-token-system',
+        description: 'Explain how a specific token category works in Optics',
+        arguments: [
+          {
+            name: 'category',
+            description: 'Token category (color, spacing, typography, border, shadow)',
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'design-review',
+        description: 'Review a design or component for Optics token usage and best practices',
+        arguments: [
+          {
+            name: 'code',
+            description: 'Component code to review',
+            required: true,
+          },
+          {
+            name: 'componentType',
+            description: 'Type of component being reviewed',
+            required: false,
+          },
+        ],
+      },
+    ],
+  };
+});
+
+/**
+ * Handler for getting prompt content
+ */
+server.setRequestHandler(GetPromptRequestSchema, async (request) => {
+  const { name, arguments: args } = request.params;
+
+  if (name === 'create-themed-component') {
+    const componentType = args?.componentType || 'button';
+    const variant = args?.variant || 'primary';
+    const framework = args?.framework || 'react';
+
+    const component = components.find(
+      (c) => c.name.toLowerCase() === componentType.toLowerCase()
+    );
+
+    if (!component) {
+      return {
+        messages: [
+          {
+            role: 'user',
+            content: {
+              type: 'text',
+              text: `Create a ${componentType} component using Optics design tokens. Available components: ${components.map((c) => c.name).join(', ')}`,
+            },
+          },
+        ],
+      };
+    }
+
+    return {
+      messages: [
+        {
+          role: 'user',
+          content: {
+            type: 'text',
+            text: `Create a ${variant} ${componentType} component in ${framework} using these Optics design tokens:\n\nRequired tokens:\n${component.tokens.join('\n')}\n\nUsage guidelines:\n${component.usage}${component.examples && component.examples.length > 0 ? '\n\nExample structure:\n' + component.examples[0] : ''}`,
+          },
+        },
+      ],
+    };
+  }
+
+  if (name === 'migrate-to-tokens') {
+    const code = args?.code || '';
+
+    return {
+      messages: [
+        {
+          role: 'user',
+          content: {
+            type: 'text',
+            text: `Convert the following code to use Optics design tokens. Replace hard-coded colors, spacing, font sizes, and other values with appropriate tokens from the Optics system:\n\n\`\`\`\n${code}\n\`\`\`\n\nAvailable token categories:\n- Color (op-color-*): HSL-based color system\n- Spacing (op-space-*): rem-based spacing scale\n- Typography (op-font-*, op-line-height-*): Font sizes, weights, line heights\n- Border (op-radius-*, op-border-width-*): Border radius and widths\n- Shadow (op-shadow-*): Elevation shadows\n\nUse the validate_token_usage and replace_hard_coded_values tools to help with the conversion.`,
+          },
+        },
+      ],
+    };
+  }
+
+  if (name === 'accessible-color-combo') {
+    const colorFamily = args?.colorFamily || 'primary';
+    const wcagLevel = args?.wcagLevel || 'AA';
+
+    return {
+      messages: [
+        {
+          role: 'user',
+          content: {
+            type: 'text',
+            text: `Suggest accessible color token combinations for the ${colorFamily} color family that meet WCAG ${wcagLevel} standards.\n\nOptics uses a scale-based color system with:\n- Base HSL tokens: --op-color-${colorFamily}-h/s/l\n- Generated scale tokens: ${colorFamily}-base, ${colorFamily}-plus-one through plus-eight, ${colorFamily}-minus-one through minus-eight\n- On-color tokens for text: ${colorFamily}-on-base, ${colorFamily}-on-plus-five, etc.\n\nUse the check_contrast tool to validate combinations. Suggest foreground/background pairs that meet the contrast requirements.`,
+          },
+        },
+      ],
+    };
+  }
+
+  if (name === 'explain-token-system') {
+    const category = args?.category || 'color';
+    const tokens = designTokens.filter((t) => t.category === category);
+
+    return {
+      messages: [
+        {
+          role: 'user',
+          content: {
+            type: 'text',
+            text: `Explain how the ${category} token system works in Optics.\n\nAvailable ${category} tokens (${tokens.length} total):\n${tokens.slice(0, 10).map((t) => `- ${t.name}: ${t.description}`).join('\n')}${tokens.length > 10 ? '\n... and ' + (tokens.length - 10) + ' more' : ''}\n\nInclude:\n1. How to use these tokens\n2. When to use each one\n3. Best practices\n4. Common patterns`,
+          },
+        },
+      ],
+    };
+  }
+
+  if (name === 'design-review') {
+    const code = args?.code || '';
+    const componentType = args?.componentType || 'unknown';
+
+    return {
+      messages: [
+        {
+          role: 'user',
+          content: {
+            type: 'text',
+            text: `Review this ${componentType} component for Optics design system compliance:\n\n\`\`\`\n${code}\n\`\`\`\n\nCheck for:\n1. Hard-coded values that should use tokens\n2. Proper token usage and naming\n3. Accessibility (color contrast, focus states)\n4. Consistency with Optics patterns\n5. Missing or incorrect tokens\n\nUse these tools to help:\n- validate_token_usage: Find hard-coded values\n- check_contrast: Verify color accessibility\n- get_component_info: See how Optics components use tokens`,
+          },
+        },
+      ],
+    };
+  }
+
+  throw new Error(`Unknown prompt: ${name}`);
+});
+
+/**
  * Handler for listing available tools
  */
 server.setRequestHandler(ListToolsRequestSchema, async () => {
@@ -301,6 +508,147 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
           },
           required: ['query'],
+        },
+      },
+      {
+        name: 'generate_theme',
+        description: 'Generate a custom theme with CSS variables and Figma Variables JSON',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            brandName: {
+              type: 'string',
+              description: 'Name of the brand/theme (e.g., "Acme Corp")',
+            },
+            primary: {
+              type: 'string',
+              description: 'Primary brand color (hex, e.g., "#0066CC")',
+            },
+            secondary: {
+              type: 'string',
+              description: 'Secondary color (hex, optional)',
+            },
+          },
+          required: ['brandName', 'primary'],
+        },
+      },
+      {
+        name: 'validate_token_usage',
+        description: 'Validate code for hard-coded values that should use design tokens',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            code: {
+              type: 'string',
+              description: 'CSS or component code to validate',
+            },
+          },
+          required: ['code'],
+        },
+      },
+      {
+        name: 'replace_hard_coded_values',
+        description: 'Replace hard-coded values with design tokens',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            code: {
+              type: 'string',
+              description: 'Code containing hard-coded values',
+            },
+            autofix: {
+              type: 'boolean',
+              description: 'Whether to automatically fix the code (default: false)',
+            },
+          },
+          required: ['code'],
+        },
+      },
+      {
+        name: 'check_contrast',
+        description: 'Check WCAG contrast ratio between two color tokens',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            foregroundToken: {
+              type: 'string',
+              description: 'Foreground color token name',
+            },
+            backgroundToken: {
+              type: 'string',
+              description: 'Background color token name',
+            },
+          },
+          required: ['foregroundToken', 'backgroundToken'],
+        },
+      },
+      {
+        name: 'suggest_token_migration',
+        description: 'Suggest design tokens for a hard-coded value',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            value: {
+              type: 'string',
+              description: 'Hard-coded value to find tokens for (e.g., "#0066CC", "16px")',
+            },
+            category: {
+              type: 'string',
+              description: 'Optional category filter (color, spacing, typography)',
+            },
+          },
+          required: ['value'],
+        },
+      },
+      {
+        name: 'generate_component_scaffold',
+        description: 'Generate a React component scaffold with proper token usage',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            componentName: {
+              type: 'string',
+              description: 'Name of the component (e.g., "Alert", "Card")',
+            },
+            description: {
+              type: 'string',
+              description: 'Brief description of the component',
+            },
+            tokens: {
+              type: 'array',
+              description: 'List of token names the component should use',
+              items: {
+                type: 'string',
+              },
+            },
+          },
+          required: ['componentName', 'description', 'tokens'],
+        },
+      },
+      {
+        name: 'generate_sticker_sheet',
+        description: 'Generate a visual style guide with color swatches and component examples',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            framework: {
+              type: 'string',
+              description: 'Target framework: react, vue, svelte, or html (default: react)',
+              enum: ['react', 'vue', 'svelte', 'html'],
+            },
+            includeColors: {
+              type: 'boolean',
+              description: 'Include color swatches (default: true)',
+            },
+            includeTypography: {
+              type: 'boolean',
+              description: 'Include typography specimens (default: true)',
+            },
+            includeComponents: {
+              type: 'boolean',
+              description: 'Include component examples (default: true)',
+            },
+          },
         },
       },
     ],
@@ -469,6 +817,131 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           {
             type: 'text',
             text: JSON.stringify(results, null, 2),
+          },
+        ],
+      };
+    }
+
+    case 'generate_theme': {
+      const brandName = args.brandName as string;
+      const brandColors = {
+        primary: args.primary as string,
+        secondary: args.secondary as string | undefined,
+      };
+
+      const theme = generateTheme(brandName, brandColors);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `# ${brandName} Theme Generated\n\n## CSS Variables\n\n\`\`\`css\n${theme.cssVariables}\n\`\`\`\n\n## Figma Variables\n\nSave this as \`figma-variables.json\`:\n\n\`\`\`json\n${theme.figmaVariables}\n\`\`\`\n\n## Summary\n\n- **Total tokens**: ${theme.tokens.length}\n- **Colors**: ${theme.tokens.filter(t => t.category === 'color').length}\n- **Typography**: ${theme.tokens.filter(t => t.category === 'typography').length}\n- **Spacing**: ${theme.tokens.filter(t => t.category === 'spacing').length}\n\n${theme.documentation}`,
+          },
+        ],
+      };
+    }
+
+    case 'validate_token_usage': {
+      const code = args.code as string;
+      const report = validateTokenUsage(code, designTokens);
+      const formatted = formatValidationReport(report);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: formatted,
+          },
+        ],
+      };
+    }
+
+    case 'replace_hard_coded_values': {
+      const code = args.code as string;
+      const autofix = (args.autofix as boolean) ?? false;
+      const result = replaceHardCodedValues(code, designTokens, autofix);
+      const formatted = formatReplacementSuggestions(result);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: formatted,
+          },
+        ],
+      };
+    }
+
+    case 'check_contrast': {
+      const foregroundToken = args.foregroundToken as string;
+      const backgroundToken = args.backgroundToken as string;
+      const result = checkTokenContrast(foregroundToken, backgroundToken, designTokens);
+      const formatted = formatContrastResult(result);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: formatted,
+          },
+        ],
+      };
+    }
+
+    case 'suggest_token_migration': {
+      const value = args.value as string;
+      const category = args.category as string | undefined;
+      const suggestion = suggestTokenMigration(value, designTokens, category);
+      const formatted = formatMigrationSuggestions(suggestion);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: formatted,
+          },
+        ],
+      };
+    }
+
+    case 'generate_component_scaffold': {
+      const componentName = args.componentName as string;
+      const description = args.description as string;
+      const tokens = args.tokens as string[];
+      const scaffold = generateComponentScaffold(
+        componentName,
+        description,
+        tokens,
+        designTokens
+      );
+      const formatted = formatScaffoldOutput(scaffold);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: formatted,
+          },
+        ],
+      };
+    }
+
+    case 'generate_sticker_sheet': {
+      const framework = (args.framework as 'react' | 'vue' | 'svelte' | 'html') ?? 'react';
+      const options = {
+        framework,
+        includeColors: (args.includeColors as boolean) ?? true,
+        includeTypography: (args.includeTypography as boolean) ?? true,
+        includeComponents: (args.includeComponents as boolean) ?? true,
+      };
+      const sheet = generateStickerSheet(designTokens, components, options);
+      const formatted = formatStickerSheet(sheet);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: formatted,
           },
         ],
       };
