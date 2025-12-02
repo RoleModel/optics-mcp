@@ -121,7 +121,7 @@ export function extractFontFamilies(css: string): CSSValue[] {
  */
 export function extractBorderRadius(css: string): CSSValue[] {
   const radii: CSSValue[] = [];
-  const regex = /border-radius:\s*([\\d.]+(?:px|rem|em|%))/gi;
+  const regex = /border-radius:\s*([\d.]+(?:px|rem|em|%))/gi;
   
   let match;
   while ((match = regex.exec(css)) !== null) {
