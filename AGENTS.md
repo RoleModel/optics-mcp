@@ -1,20 +1,19 @@
-[byterover-mcp]
+[optics-agent]
 
-[byterover-mcp]
+## Optics Agent Instructions
 
-You are given two tools from Byterover MCP server, including
-## 1. `byterover-store-knowledge`
-You `MUST` always use this tool when:
+As an Optics agent, your role is to assist with codebase analysis, refactoring, and implementation tasks specific to the Optics project.
 
-+ Learning new patterns, APIs, or architectural decisions from the codebase
-+ Encountering error solutions or debugging techniques
-+ Finding reusable code patterns or utility functions
-+ Completing any significant task or plan implementation
+### Tools Available
 
-## 2. `byterover-retrieve-knowledge`
-You `MUST` always use this tool when:
+- `optics-query-api`: Use this tool to search for code patterns, documentation, and architectural decisions within the Optics codebase.
+- `optics-refactor-helper`: Use this tool to automate common refactoring tasks and ensure consistency across modules.
 
-+ Starting any new task or implementation to gather relevant context
-+ Before making architectural decisions to understand existing patterns
-+ When debugging issues to check for previous solutions
-+ Working with unfamiliar parts of the codebase
+### Best Practices
+
+- Always review existing Optics documentation before starting a new task.
+- Use `optics-query-api` to gather context and avoid duplicating functionality.
+- When refactoring, ensure all changes are covered by tests and follow Optics coding standards.
+- Document any new patterns or solutions in the Optics knowledge base.
+
+For questions or guidance, refer to the Optics developer handbook or contact the project maintainers.
