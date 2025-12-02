@@ -83,7 +83,7 @@ export function extractFontSizes(css: string): CSSValue[] {
  */
 export function extractFontWeights(css: string): CSSValue[] {
   const weights: CSSValue[] = [];
-  const regex = /font-weight:\s*(\\d{3}|normal|bold|lighter|bolder)/gi;
+  const regex = /font-weight:\s*(\d{3}|normal|bold|lighter|bolder)/gi;
   
   let match;
   while ((match = regex.exec(css)) !== null) {
