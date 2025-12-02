@@ -12,27 +12,60 @@ This MCP server provides tools and resources for querying the Optics design syst
 
 ## Installation
 
+### Quick Start (Zero-Install) ⚡
+
+The easiest way to use Optics MCP - no installation required!
+
+#### Claude Desktop
+
+Add to your MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "optics": {
+      "command": "npx",
+      "args": ["-y", "@rolemodel/optics-mcp"]
+    }
+  }
+}
+```
+
+#### Claude Code CLI
+
+Add with a single command:
+
 ```bash
+claude mcp add @rolemodel/optics-mcp
+```
+
+**That's it!** The server runs automatically whenever your MCP client needs it.
+
+### Local Installation (For Development)
+
+If you want to modify the server or contribute:
+
+```bash
+git clone https://github.com/RoleModel/optics-mcp.git
+cd optics-mcp
 npm install
 npm run build
 ```
 
-## Usage
-
-### As an MCP Server
-
-Add this server to your MCP client configuration (e.g., Claude Desktop):
+Then configure with the local path:
 
 ```json
 {
   "mcpServers": {
     "optics": {
       "command": "node",
-      "args": ["/path/to/optics-mcp/dist/index.js"]
+      "args": ["/absolute/path/to/optics-mcp/dist/index.js"]
     }
   }
 }
 ```
+
+## Usage
 
 ### Running Directly
 
