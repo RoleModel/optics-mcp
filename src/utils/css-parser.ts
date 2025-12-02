@@ -64,7 +64,7 @@ export function extractSpacing(css: string): CSSValue[] {
  */
 export function extractFontSizes(css: string): CSSValue[] {
   const sizes: CSSValue[] = [];
-  const regex = /font-size:\s*([\\d.]+(?:px|rem|em))/gi;
+  const regex = /font-size:\s*([\d.]+(?:px|rem|em))/gi;
   
   let match;
   while ((match = regex.exec(css)) !== null) {
