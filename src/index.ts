@@ -314,7 +314,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
   if (!args) {
-    throw new Error('Missing arguments');
+    throw new Error(`Missing arguments for tool: ${name}`);
   }
 
   switch (name) {

@@ -468,7 +468,7 @@ export function getComponentTokenDependencies(componentName: string) {
   
   const tokenDetails = component.tokens.map(tokenName => 
     designTokens.find(t => t.name === tokenName)
-  ).filter(Boolean);
+  ).filter((token): token is DesignToken => token !== undefined);
   
   return {
     component: component.name,
