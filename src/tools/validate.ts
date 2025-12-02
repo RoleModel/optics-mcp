@@ -4,7 +4,7 @@
  */
 
 import { DesignToken } from '../optics-data.js';
-import { extractAllValues, findMatchingToken, groupValuesByType, CSSValue } from '../utils/css-parser.js';
+import { extractAllValues, findMatchingToken, CSSValue } from '../utils/css-parser.js';
 
 export interface ValidationIssue {
   type: 'hard-coded-value' | 'missing-token' | 'deprecated-token';
