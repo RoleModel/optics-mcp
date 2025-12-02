@@ -310,7 +310,6 @@ export function generateTheme(
   options: ThemeOptions = {}
 ): GeneratedTheme {
   const {
-    includeSemanticColors = true,
     includeTypography = true,
     includeSpacing = true,
     includeBorders = true,
