@@ -64,7 +64,7 @@ export function extractSpacing(css: string): CSSValue[] {
  */
 export function extractFontSizes(css: string): CSSValue[] {
   const sizes: CSSValue[] = [];
-  const regex = /font-size:\s*([\\d.]+(?:px|rem|em))/gi;
+  const regex = /font-size:\s*([\d.]+(?:px|rem|em))/gi;
   
   let match;
   while ((match = regex.exec(css)) !== null) {
@@ -83,7 +83,7 @@ export function extractFontSizes(css: string): CSSValue[] {
  */
 export function extractFontWeights(css: string): CSSValue[] {
   const weights: CSSValue[] = [];
-  const regex = /font-weight:\s*(\\d{3}|normal|bold|lighter|bolder)/gi;
+  const regex = /font-weight:\s*(\d{3}|normal|bold|lighter|bolder)/gi;
   
   let match;
   while ((match = regex.exec(css)) !== null) {
@@ -121,7 +121,7 @@ export function extractFontFamilies(css: string): CSSValue[] {
  */
 export function extractBorderRadius(css: string): CSSValue[] {
   const radii: CSSValue[] = [];
-  const regex = /border-radius:\s*([\\d.]+(?:px|rem|em|%))/gi;
+  const regex = /border-radius:\s*([\d.]+(?:px|rem|em|%))/gi;
   
   let match;
   while ((match = regex.exec(css)) !== null) {
