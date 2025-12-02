@@ -4,7 +4,7 @@
  */
 
 import { DesignToken } from '../optics-data.js';
-import { generateFigmaVariablesJSON, createMultiModeVariables } from '../utils/figma-tokens.js';
+import { generateFigmaVariablesJSON } from '../utils/figma-tokens.js';
 
 export interface BrandColors {
   primary: string;
