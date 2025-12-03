@@ -36,7 +36,23 @@ Add to your MCP configuration:
 Add with a single command:
 
 ```bash
-claude mcp add optics npx -y @rolemodel/optics-mcp
+claude mcp add optics -- npx -y @rolemodel/optics-mcp
+```
+
+**Other useful commands:**
+
+```bash
+# List all MCP servers
+claude mcp list
+
+# Remove the Optics server
+claude mcp remove optics
+
+# View server details
+claude mcp get optics
+
+# Test the connection
+claude mcp test optics
 ```
 
 **That's it!** The server runs automatically whenever your MCP client needs it.
