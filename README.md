@@ -28,7 +28,7 @@ Add to your MCP configuration:
   "mcpServers": {
     "optics": {
       "command": "npx",
-      "args": ["-y", "@rolemodel/optics-mcp"]
+      "args": ["-y", "optics-mcp"]
     }
   }
 }
@@ -39,7 +39,7 @@ Add to your MCP configuration:
 Add with a single command:
 
 ```bash
-claude mcp add optics -- npx -y @rolemodel/optics-mcp
+claude mcp add optics -- npx -y optics-mcp
 ```
 
 **Other useful commands:**

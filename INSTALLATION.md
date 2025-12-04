@@ -17,7 +17,7 @@ Once published to npm, use:
 ```json
 {
   "command": "npx",
-  "args": ["-y", "@rolemodel/optics-mcp"]
+  "args": ["-y", "optics-mcp"]
 }
 ```
 
@@ -33,7 +33,7 @@ Then use in config:
 ```json
 {
   "command": "npx",
-  "args": ["-y", "@rolemodel/optics-mcp"]
+  "args": ["-y", "optics-mcp"]
 }
 ```
 
@@ -42,7 +42,7 @@ Then use in config:
 ### Option 1: Install Globally
 
 ```bash
-npm install -g @rolemodel/optics-mcp
+npm install -g optics-mcp
 ```
 
 Then use `optics-mcp` as the command.
@@ -73,7 +73,7 @@ Then point to `/absolute/path/to/optics-mcp/dist/index.js`.
   "mcpServers": {
     "optics": {
       "command": "npx",
-      "args": ["-y", "@rolemodel/optics-mcp"]
+      "args": ["-y", "optics-mcp"]
     }
   }
 }
@@ -120,7 +120,7 @@ Then point to `/absolute/path/to/optics-mcp/dist/index.js`.
 
 **Recommended (zero-install with npx):**
 ```bash
-claude mcp add optics --command "npx" --args "-y" --args "@rolemodel/optics-mcp"
+claude mcp add optics --command "npx" --args "-y" --args "optics-mcp"
 ```
 
 **Alternative if installed globally:**
@@ -149,7 +149,7 @@ claude mcp remove optics
   "mcpServers": {
     "optics": {
       "command": "npx",
-      "args": ["-y", "@rolemodel/optics-mcp"],
+      "args": ["-y", "optics-mcp"],
       "env": {}
     }
   }
@@ -174,7 +174,7 @@ claude mcp remove optics
 4. Add a new server:
    - Name: `optics`
    - Command: `npx`
-   - Args: `-y @rolemodel/optics-mcp`
+   - Args: `-y optics-mcp`
 5. Save and restart
 
 ### Zed Editor
@@ -189,7 +189,7 @@ claude mcp remove optics
     "optics": {
       "command": {
         "path": "npx",
-        "args": ["-y", "@rolemodel/optics-mcp"]
+        "args": ["-y", "optics-mcp"]
       }
     }
   }
@@ -213,7 +213,7 @@ claude mcp remove optics
   "mcpServers": {
     "optics": {
       "command": "npx",
-      "args": ["-y", "@rolemodel/optics-mcp"]
+      "args": ["-y", "optics-mcp"]
     }
   }
 }
@@ -232,7 +232,7 @@ claude mcp remove optics
   "cody.experimental.mcp.servers": {
     "optics": {
       "command": "npx",
-      "args": ["-y", "@rolemodel/optics-mcp"]
+      "args": ["-y", "optics-mcp"]
     }
   }
 }
