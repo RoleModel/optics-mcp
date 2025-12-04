@@ -141,6 +141,354 @@ export const designTokens: DesignToken[] = [
     category: 'color',
     description: 'Notice alert lightness (HSL)'
   },
+  // Primary Color Scale - Main Scale
+  // Note: Same pattern applies to neutral, alerts-warning, alerts-danger, alerts-info, alerts-notice
+  {
+    name: 'op-color-primary-plus-max',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 12%))',
+    category: 'color',
+    description: 'Primary color lightest - light mode: 100%, dark mode: 12%'
+  },
+  {
+    name: 'op-color-primary-plus-eight',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 14%))',
+    category: 'color',
+    description: 'Primary color scale +8'
+  },
+  {
+    name: 'op-color-primary-plus-seven',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 96%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 16%))',
+    category: 'color',
+    description: 'Primary color scale +7'
+  },
+  {
+    name: 'op-color-primary-plus-six',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 94%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%))',
+    category: 'color',
+    description: 'Primary color scale +6'
+  },
+  {
+    name: 'op-color-primary-plus-five',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 90%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 24%))',
+    category: 'color',
+    description: 'Primary color scale +5'
+  },
+  {
+    name: 'op-color-primary-plus-four',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 84%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 26%))',
+    category: 'color',
+    description: 'Primary color scale +4'
+  },
+  {
+    name: 'op-color-primary-plus-three',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 70%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 29%))',
+    category: 'color',
+    description: 'Primary color scale +3'
+  },
+  {
+    name: 'op-color-primary-plus-two',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 64%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 32%))',
+    category: 'color',
+    description: 'Primary color scale +2'
+  },
+  {
+    name: 'op-color-primary-plus-one',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 45%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 35%))',
+    category: 'color',
+    description: 'Primary color scale +1'
+  },
+  {
+    name: 'op-color-primary-base',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 40%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 38%))',
+    category: 'color',
+    description: 'Primary color base'
+  },
+  {
+    name: 'op-color-primary-minus-one',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 36%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 40%))',
+    category: 'color',
+    description: 'Primary color scale -1'
+  },
+  {
+    name: 'op-color-primary-minus-two',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 32%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 45%))',
+    category: 'color',
+    description: 'Primary color scale -2'
+  },
+  {
+    name: 'op-color-primary-minus-three',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 28%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 48%))',
+    category: 'color',
+    description: 'Primary color scale -3'
+  },
+  {
+    name: 'op-color-primary-minus-four',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 24%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 52%))',
+    category: 'color',
+    description: 'Primary color scale -4'
+  },
+  {
+    name: 'op-color-primary-minus-five',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 64%))',
+    category: 'color',
+    description: 'Primary color scale -5'
+  },
+  {
+    name: 'op-color-primary-minus-six',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 16%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 72%))',
+    category: 'color',
+    description: 'Primary color scale -6'
+  },
+  {
+    name: 'op-color-primary-minus-seven',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 8%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
+    category: 'color',
+    description: 'Primary color scale -7'
+  },
+  {
+    name: 'op-color-primary-minus-eight',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 4%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%))',
+    category: 'color',
+    description: 'Primary color scale -8'
+  },
+  {
+    name: 'op-color-primary-minus-max',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 0%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%))',
+    category: 'color',
+    description: 'Primary color darkest - light mode: 0%, dark mode: 100%'
+  },
+
+  // Primary Color Scale - "On" Scale (for text/content colors that appear on the main scale colors)
+  // Note: Each has a base and "-alt" variant. Same pattern applies to neutral, alerts-warning, alerts-danger, alerts-info, alerts-notice
+  {
+    name: 'op-color-primary-on-plus-max',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 0%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%))',
+    category: 'color',
+    description: 'Text color for primary-plus-max backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-max-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 78%))',
+    category: 'color',
+    description: 'Alt text color for primary-plus-max backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-eight',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 4%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%))',
+    category: 'color',
+    description: 'Text color for primary-plus-eight backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-eight-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 24%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 70%))',
+    category: 'color',
+    description: 'Alt text color for primary-plus-eight backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-seven',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 8%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
+    category: 'color',
+    description: 'Text color for primary-plus-seven backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-seven-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 28%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 64%))',
+    category: 'color',
+    description: 'Alt text color for primary-plus-seven backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-six',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 16%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 72%))',
+    category: 'color',
+    description: 'Text color for primary-plus-six backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-six-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 26%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 96%))',
+    category: 'color',
+    description: 'Alt text color for primary-plus-six backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-five',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 72%))',
+    category: 'color',
+    description: 'Text color for primary-plus-five backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-five-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 40%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 86%))',
+    category: 'color',
+    description: 'Alt text color for primary-plus-five backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-four',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 24%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
+    category: 'color',
+    description: 'Text color for primary-plus-four backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-four-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 4%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 92%))',
+    category: 'color',
+    description: 'Alt text color for primary-plus-four backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-three',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 78%))',
+    category: 'color',
+    description: 'Text color for primary-plus-three backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-three-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 10%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
+    category: 'color',
+    description: 'Alt text color for primary-plus-three backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-two',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 16%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
+    category: 'color',
+    description: 'Text color for primary-plus-two backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-two-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 6%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 92%))',
+    category: 'color',
+    description: 'Alt text color for primary-plus-two backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-one',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
+    category: 'color',
+    description: 'Text color for primary-plus-one backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-plus-one-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 95%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
+    category: 'color',
+    description: 'Alt text color for primary-plus-one backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-base',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%))',
+    category: 'color',
+    description: 'Text color for primary-base backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-base-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 84%))',
+    category: 'color',
+    description: 'Alt text color for primary-base backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-one',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 94%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
+    category: 'color',
+    description: 'Text color for primary-minus-one backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-one-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 82%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 90%))',
+    category: 'color',
+    description: 'Alt text color for primary-minus-one backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-two',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 90%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
+    category: 'color',
+    description: 'Text color for primary-minus-two backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-two-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 78%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 92%))',
+    category: 'color',
+    description: 'Alt text color for primary-minus-two backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-three',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 86%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
+    category: 'color',
+    description: 'Text color for primary-minus-three backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-three-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 74%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 96%))',
+    category: 'color',
+    description: 'Alt text color for primary-minus-three backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-four',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 84%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 2%))',
+    category: 'color',
+    description: 'Text color for primary-minus-four backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-four-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 72%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 2%))',
+    category: 'color',
+    description: 'Alt text color for primary-minus-four backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-five',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 2%))',
+    category: 'color',
+    description: 'Text color for primary-minus-five backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-five-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 78%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%))',
+    category: 'color',
+    description: 'Alt text color for primary-minus-five backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-six',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 94%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 8%))',
+    category: 'color',
+    description: 'Text color for primary-minus-six backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-six-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 82%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 26%))',
+    category: 'color',
+    description: 'Alt text color for primary-minus-six backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-seven',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 96%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 8%))',
+    category: 'color',
+    description: 'Text color for primary-minus-seven backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-seven-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 84%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 34%))',
+    category: 'color',
+    description: 'Alt text color for primary-minus-seven backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-eight',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 4%))',
+    category: 'color',
+    description: 'Text color for primary-minus-eight backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-eight-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 86%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 38%))',
+    category: 'color',
+    description: 'Alt text color for primary-minus-eight backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-max',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 0%))',
+    category: 'color',
+    description: 'Text color for primary-minus-max backgrounds'
+  },
+  {
+    name: 'op-color-primary-on-minus-max-alt',
+    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 38%))',
+    category: 'color',
+    description: 'Alt text color for primary-minus-max backgrounds'
+  },
+
   // Core semantic colors (most commonly used)
   {
     name: 'op-color-white',
