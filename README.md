@@ -2,6 +2,18 @@
 
 A Model Context Protocol (MCP) server for the Optics Design System, enabling LLMs to understand and work with design tokens, components, and documentation from https://docs.optics.rolemodel.design.
 
+## ⚠️ IMPORTANT: Understanding Optics
+
+**If you're an AI agent, read [SYSTEM_OVERVIEW.md](./SYSTEM_OVERVIEW.md) FIRST!**
+
+Optics uses a sophisticated HSL-based color system that's different from typical design systems. The system overview explains:
+- Why there's no `--color-primary` token (use `--op-color-primary-base` instead)
+- The three-layer token architecture (HSL base → Scale → On tokens)
+- How to find and use the correct tokens
+- Common mistakes and how to avoid them
+
+**Key insight:** Optics has 500+ color tokens organized as a predictable scale system, not simple name-value pairs.
+
 ## Overview
 
 This MCP server provides **14 tools** and resources for working with the Optics design system:

@@ -2,6 +2,17 @@
 
 This file provides guidance to WARP (warp.dev) when working with code in this repository.
 
+## ⚠️ CRITICAL: Read This First
+
+**Before using ANY tools or making ANY changes, you MUST read [SYSTEM_OVERVIEW.md](./SYSTEM_OVERVIEW.md).**
+
+The Optics Design System uses a sophisticated HSL-based color system that is DIFFERENT from typical design systems. Common mistakes include:
+- ❌ Looking for tokens like `color-primary` or `--color-primary`
+- ❌ Expecting simple hex color values
+- ❌ Not understanding the scale system (plus-max, base, minus-max)
+
+Read SYSTEM_OVERVIEW.md to understand the actual token architecture before proceeding.
+
 ## Project Overview
 
 This is an MCP (Model Context Protocol) server for the Optics Design System. It exposes design tokens, components, and documentation through the MCP protocol, enabling LLMs to understand and work with the design system from https://docs.optics.rolemodel.design.
