@@ -26,6 +26,6 @@ jobs:
       - name: Configure npm for GitHub Packages
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" > ~/.npmrc
-          echo "@rolemodel:registry=https://npm.pkg.github.com" >> ~/.npmrc
+          echo "@dallasbpeters:registry=https://npm.pkg.github.com" >> ~/.npmrc
       
       - run: npm publish --access public

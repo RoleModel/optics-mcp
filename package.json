@@ -1,5 +1,5 @@
 {
-  "name": "@rolemodel/optics-mcp",
+  "name": "@dallasbpeters/optics-mcp",
   "version": "0.1.0",
   "description": "MCP Server for Optics Design System documentation and token usage",
   "main": "dist/index.js",
