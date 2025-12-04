@@ -4,11 +4,14 @@ A Model Context Protocol (MCP) server for the Optics Design System, enabling LLM
 
 ## Overview
 
-This MCP server provides tools and resources for querying the Optics design system, including:
-- **Design Tokens**: Colors, spacing, typography, borders, and shadows
-- **Components**: Reusable UI components with their token dependencies
+This MCP server provides **14 tools** and resources for working with the Optics design system:
+
+- **83 Design Tokens**: Real HSL-based colors, calc-based spacing, typography, borders, and shadows
+- **24 Components**: All Optics components with accurate token dependencies extracted from SCSS
+- **7 Core Tools**: Query tokens, components, and documentation
+- **7 Advanced Tools**: Theme generation, validation, accessibility checking, code scaffolding, and style guide generation
+- **5 MCP Prompts**: Pre-configured workflows for common design system tasks
 - **Documentation**: Design system guidelines and best practices
-- **Token Usage Tracking**: Statistics and analysis of token usage across components
 
 ## Installation
 
@@ -89,70 +92,79 @@ Then configure with the local path:
 npm start
 ```
 
-## Available Tools
+## Available Tools (14 Total)
 
-### `get_token`
+For detailed documentation of all tools, see [TOOLS.md](./TOOLS.md).
+
+### Core Tools
+
+#### `get_token`
 Get detailed information about a specific design token.
 
-**Parameters:**
-- `tokenName` (required): The name of the token (e.g., "color-primary", "spacing-md")
-
-**Example:**
-```json
-{
-  "tokenName": "color-primary"
-}
-```
-
-### `search_tokens`
+#### `search_tokens`
 Search for design tokens by category or name pattern.
 
-**Parameters:**
-- `category` (optional): Filter by category (color, spacing, typography, border, shadow)
-- `namePattern` (optional): Search pattern for token names (case-insensitive)
-
-**Example:**
-```json
-{
-  "category": "color",
-  "namePattern": "primary"
-}
-```
-
-### `get_token_usage_stats`
+#### `get_token_usage_stats`
 Get statistics about design token usage across the system.
 
-**Returns:** Total token count and breakdown by category.
-
-### `get_component_info`
+#### `get_component_info`
 Get detailed information about a component including its design token dependencies.
 
-**Parameters:**
-- `componentName` (required): The name of the component (e.g., "Button", "Card")
-
-**Example:**
-```json
-{
-  "componentName": "Button"
-}
-```
-
-### `list_components`
+#### `list_components`
 List all available components in the design system.
 
-**Returns:** Array of components with names, descriptions, and token counts.
-
-### `get_component_tokens`
+#### `get_component_tokens`
 Get all design tokens used by a specific component.
 
-**Parameters:**
-- `componentName` (required): The name of the component
-
-### `search_documentation`
+#### `search_documentation`
 Search through Optics documentation.
 
-**Parameters:**
-- `query` (required): Search query for documentation content
+### Advanced Tools
+
+#### `generate_theme`
+Create a custom branded theme with CSS variables and Figma Variables JSON.
+- Outputs HSL-based theme overrides
+- Generates Figma Variables format
+- Creates theme preview
+
+#### `validate_token_usage`
+Find hard-coded values in code that should use design tokens.
+- Detects colors, spacing, fonts, borders, shadows
+- Suggests token replacements
+- Validates token usage
+
+#### `replace_hard_coded_values`
+Automatically replace hard-coded values with design tokens.
+- Manual mode: suggestions only
+- Autofix mode: applies replacements
+- Preserves code structure
+
+#### `check_contrast`
+Check WCAG color contrast ratios between tokens.
+- Supports AA and AAA levels
+- Works with token names or hex colors
+- Provides accessibility recommendations
+
+#### `suggest_token_migration`
+Suggest tokens for legacy code migration.
+- Maps old values to new tokens
+- Prioritizes semantic tokens
+- Provides rationale
+
+#### `generate_component_scaffold`
+Generate component code with Optics tokens.
+- React, Vue, Svelte, HTML support
+- Pre-configured with design tokens
+- TypeScript types included
+
+#### `generate_sticker_sheet`
+**Generate a visual style guide** showing all design tokens and components.
+- Complete color palettes with swatches
+- Typography scale examples
+- Spacing visualizations
+- Component examples
+- Multi-framework support (React, Vue, Svelte, HTML)
+- Production-ready code output
 
 ## Available Resources
 
