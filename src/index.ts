@@ -289,9 +289,14 @@ border-color: var(--op-color-neutral-plus-four);    /* Light border */
 ❌ \`var(--color-primary)\`  
 ✅ \`var(--op-color-primary-base)\`
 
-### Mistake 4: Not Using "On" Tokens for Text
+### Mistake 4: Not Using \"On\" Tokens for Text
 ❌ Using arbitrary text colors on colored backgrounds  
 ✅ Using the matching \`-on-\` token: \`--op-color-primary-on-base\` on \`--op-color-primary-base\`
+
+### Mistake 5: Inventing Component Classes
+❌ Making up classes like \`.button-primary\`, \`.op-button\`, \`.card-primary\`  
+✅ Use ONLY the actual Optics component HTML/CSS from https://docs.optics.rolemodel.design  
+✅ Optics components have specific HTML structure - don't invent your own
 
 ## 🎯 Quick Reference
 
@@ -812,7 +817,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'generate_theme',
-        description: 'Generate a custom theme with CSS variables and Figma Variables JSON',
+        description: 'Generate a custom Optics theme with CSS variable overrides. Includes installation instructions for @rolemodel/optics via npm or CDN (jsDelivr/unpkg). Output includes complete setup guide with actual Optics token names.',
         inputSchema: {
           type: 'object',
           properties: {

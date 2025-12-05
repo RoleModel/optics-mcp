@@ -287,6 +287,11 @@ When you call `get_component_info` for "Button", you'll see tokens like:
 ❌ Using arbitrary text colors on colored backgrounds  
 ✅ Using the matching `-on-` token: `--op-color-primary-on-base` on `--op-color-primary-base`
 
+### Mistake 5: Inventing Component Classes
+❌ Making up classes like `.button-primary`, `.op-button`, `.card-primary`  
+✅ Use ONLY the actual Optics component HTML/CSS from https://docs.optics.rolemodel.design  
+✅ Optics components have specific HTML structure - don't invent your own
+
 ## 📚 Token Discovery Workflow
 
 **Step 1: Identify what you need**
