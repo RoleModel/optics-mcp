@@ -497,6 +497,17 @@ server.setRequestHandler(ListPromptsRequestSchema, async () => {
           },
         ],
       },
+      {
+        name: 'get-token-reference',
+        description: 'Get complete list of all available Optics design tokens - USE THIS to prevent token name hallucination',
+        arguments: [
+          {
+            name: 'category',
+            description: 'Optional: Filter by category (spacing, typography, border, shadow, or leave empty for all)',
+            required: false,
+          },
+        ],
+      },
     ],
   };
 });
@@ -604,6 +615,92 @@ server.setRequestHandler(GetPromptRequestSchema, async (request) => {
           content: {
             type: 'text',
             text: `Review this ${componentType} component for Optics design system compliance:\n\n\`\`\`\n${code}\n\`\`\`\n\nCheck for:\n1. Hard-coded values that should use tokens\n2. Proper token usage and naming\n3. Accessibility (color contrast, focus states)\n4. Consistency with Optics patterns\n5. Missing or incorrect tokens\n\nUse these tools to help:\n- validate_token_usage: Find hard-coded values\n- check_contrast: Verify color accessibility\n- get_component_info: See how Optics components use tokens`,
+          },
+        },
+      ],
+    };
+  }
+
+  if (name === 'get-token-reference') {
+    const category = args?.category as string | undefined;
+    let tokens = designTokens;
+    
+    if (category) {
+      tokens = designTokens.filter((t) => t.category === category);
+    }
+    
+    // Group non-color tokens for clarity
+    const spacing = tokens.filter(t => t.category === 'spacing');
+    const typography = tokens.filter(t => t.category === 'typography');
+    const border = tokens.filter(t => t.category === 'border');
+    const shadow = tokens.filter(t => t.category === 'shadow');
+    
+    let message = `# Complete Optics Design Token Reference\n\n**IMPORTANT: These are the ONLY valid token names. Do not invent token names like --op-space-600 or use hard-coded pixel values.**\n\n`;
+    
+    if (!category || category === 'spacing') {
+      message += `## Spacing Tokens (${spacing.length} tokens)\n\n`;
+      message += `**ONLY use these exact names:**\n\n`;
+      spacing.forEach(t => {
+        message += `- \`${t.name}\` = ${t.value}\n`;
+      });
+      message += `\n**Examples:**\n`;
+      message += `- padding: var(--op-space-medium); /* 16px */\n`;
+      message += `- margin: var(--op-space-large); /* 20px */\n`;
+      message += `- gap: var(--op-space-x-small); /* 8px */\n\n`;
+    }
+    
+    if (!category || category === 'typography') {
+      message += `## Typography Tokens (${typography.length} tokens)\n\n`;
+      const fontSizes = typography.filter(t => t.name.includes('font-') && !t.name.includes('weight') && !t.name.includes('family'));
+      const fontWeights = typography.filter(t => t.name.includes('weight'));
+      const lineHeights = typography.filter(t => t.name.includes('line-height'));
+      
+      message += `### Font Sizes (${fontSizes.length}):\n`;
+      fontSizes.forEach(t => {
+        message += `- \`${t.name}\` = ${t.value}\n`;
+      });
+      
+      message += `\n### Font Weights (${fontWeights.length}):\n`;
+      fontWeights.forEach(t => {
+        message += `- \`${t.name}\` = ${t.value}\n`;
+      });
+      
+      message += `\n### Line Heights (${lineHeights.length}):\n`;
+      lineHeights.forEach(t => {
+        message += `- \`${t.name}\` = ${t.value}\n`;
+      });
+      message += `\n`;
+    }
+    
+    if (!category || category === 'border') {
+      message += `## Border Tokens (${border.length} tokens)\n\n`;
+      border.forEach(t => {
+        message += `- \`${t.name}\` = ${t.value}\n`;
+      });
+      message += `\n`;
+    }
+    
+    if (!category || category === 'shadow') {
+      message += `## Shadow Tokens (${shadow.length} tokens)\n\n`;
+      shadow.forEach(t => {
+        message += `- \`${t.name}\`\n`;
+      });
+      message += `\n`;
+    }
+    
+    message += `\n---\n\n**CRITICAL RULES:**\n`;
+    message += `1. NEVER invent token names - only use names from this list\n`;
+    message += `2. NEVER use hard-coded px values - always use tokens\n`;
+    message += `3. For colors, use search_tokens tool to find available color tokens\n`;
+    message += `4. Token names use words like 'small', 'medium', 'large', NOT numbers like '600'\n`;
+
+    return {
+      messages: [
+        {
+          role: 'user',
+          content: {
+            type: 'text',
+            text: message,
           },
         },
       ],
