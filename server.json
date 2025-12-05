@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.RoleModel/optics-mcp",
+  "description": "MCP Server for Optics Design System documentation and token usage.",
+  "repository": {
+    "url": "https://github.com/RoleModel/optics-mcp",
+    "source": "github"
+  },
+  "version": "0.2.6",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "optics-mcp",
+      "version": "0.2.6",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
