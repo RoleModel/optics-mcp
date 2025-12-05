@@ -174,7 +174,18 @@ export function extractAllValues(css: string): CSSValue[] {
  */
 export function findMatchingToken(value: string, tokens: Array<{ name: string; value: string; category: string }>): string | null {
   // Normalize values for comparison
-  const normalizeValue = (v: string) => v.toLowerCase().replace(/\s+/g, '');
+  // Keep spaces in specific contexts like hsl() and rgba() where they're significant
+  const normalizeValue = (v: string) => {
+    return v
+      .toLowerCase()
+      .replace(/\s+/g, ' ')  // Normalize multiple spaces to single space
+      .replace(/\(\s+/g, '(')  // Remove space after opening paren
+      .replace(/\s+\)/g, ')')  // Remove space before closing paren
+      .replace(/\s*,\s*/g, ',')  // Normalize commas
+      .replace(/\s*\/\s*/g, '/')  // Normalize forward slash (for alpha)
+      .trim();
+  };
+  
   const normalizedValue = normalizeValue(value);
   
   for (const token of tokens) {

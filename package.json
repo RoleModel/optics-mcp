@@ -1,7 +1,7 @@
 {
   "name": "optics-mcp",
-  "version": "0.1.1",
-  "description": "MCP Server for Optics Design System documentation and token usage",
+  "version": "0.2.1",
+  "description": "MCP Server for Optics Design System documentation and token usage with AI-optimized comprehension guide",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
@@ -28,7 +28,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/RoleModel/optics-mcp.git"
+    "url": "git+https://github.com/RoleModel/optics-mcp.git"
   },
   "bugs": {
     "url": "https://github.com/RoleModel/optics-mcp/issues"
@@ -47,6 +47,11 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "SYSTEM_OVERVIEW.md",
+    "AI_IMPROVEMENTS.md",
+    "WARP.md",
+    "TOOLS.md",
+    "EXAMPLES.md"
   ]
 }
