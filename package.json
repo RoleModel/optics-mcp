@@ -1,6 +1,6 @@
 {
   "name": "optics-mcp",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "mcpName": "io.github.RoleModel/optics-mcp",
   "description": "MCP Server for Optics Design System documentation and token usage with AI-optimized comprehension guide",
   "main": "dist/index.js",
