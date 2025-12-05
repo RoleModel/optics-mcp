@@ -1,22 +1,23 @@
 /**
  * Theme generator tool
  * Generates complete theme with CSS variables and Figma Variables JSON
+ * Uses actual Optics tokens, only customizing HSL color base values
  */
 
-import { DesignToken } from '../optics-data.js';
+import { DesignToken, designTokens } from '../optics-data.js';
 import { generateFigmaVariablesJSON } from '../utils/figma-tokens.js';
 
+/**
+ * Optics color families that can be themed
+ * Each accepts a hex color that will be converted to HSL base values
+ */
 export interface BrandColors {
-  primary: string;
-  secondary?: string;
-  success?: string;
-  danger?: string;
-  warning?: string;
-  info?: string;
-  background?: string;
-  surface?: string;
-  textPrimary?: string;
-  textSecondary?: string;
+  primary?: string;        // Main brand color (hex) - converted to --op-color-primary-h/s/l
+  neutral?: string;        // Neutral/gray color (hex) - converted to --op-color-neutral-h/s/l  
+  'alerts-warning'?: string;  // Warning color (hex)
+  'alerts-danger'?: string;   // Error color (hex)
+  'alerts-info'?: string;     // Info color (hex)
+  'alerts-notice'?: string;   // Success color (hex)
 }
 
 export interface ThemeOptions {
@@ -120,36 +121,54 @@ function generateShadowTokens(): DesignToken[] {
 }
 
 /**
- * Generate color tokens from brand colors
+ * Generate Optics HSL color tokens from brand colors
+ * Each color family gets h/s/l base values that drive the scale system
  */
 function generateColorTokens(brandColors: BrandColors): DesignToken[] {
+  const tokens: DesignToken[] = [];
+  
+  // Default Optics colors if not provided
   const defaults: BrandColors = {
-    primary: '#0066CC',
-    secondary: '#6C757D',
-    success: '#28A745',
-    danger: '#DC3545',
-    warning: '#FFC107',
-    info: '#17A2B8',
-    background: '#FFFFFF',
-    surface: '#F8F9FA',
-    textPrimary: '#212529',
-    textSecondary: '#6C757D'
+    primary: '#2D6FDB',      // Optics default primary
+    neutral: '#757882',      // Optics default neutral
+    'alerts-warning': '#FFD93D',
+    'alerts-danger': '#FF6B94',
+    'alerts-info': '#2D6FDB',
+    'alerts-notice': '#6ACF71'
   };
   
   const colors = { ...defaults, ...brandColors };
   
-  return [
-    { name: 'color-primary', value: colors.primary, category: 'color', description: 'Primary brand color' },
-    { name: 'color-secondary', value: colors.secondary!, category: 'color', description: 'Secondary color' },
-    { name: 'color-success', value: colors.success!, category: 'color', description: 'Success state color' },
-    { name: 'color-danger', value: colors.danger!, category: 'color', description: 'Danger/error state color' },
-    { name: 'color-warning', value: colors.warning!, category: 'color', description: 'Warning state color' },
-    { name: 'color-info', value: colors.info!, category: 'color', description: 'Info state color' },
-    { name: 'color-background', value: colors.background!, category: 'color', description: 'Default background color' },
-    { name: 'color-surface', value: colors.surface!, category: 'color', description: 'Surface color for cards and panels' },
-    { name: 'color-text-primary', value: colors.textPrimary!, category: 'color', description: 'Primary text color' },
-    { name: 'color-text-secondary', value: colors.textSecondary!, category: 'color', description: 'Secondary text color' }
-  ];
+  // Generate HSL base values for each color family
+  for (const [family, hex] of Object.entries(colors)) {
+    if (!hex) continue;
+    
+    const hsl = hexToHSL(hex);
+    const familyName = family === 'primary' || family === 'neutral' ? family : family;
+    
+    tokens.push({
+      name: `op-color-${familyName}-h`,
+      value: String(hsl.h),
+      category: 'color',
+      description: `${familyName} color hue (HSL) - drives all ${familyName} scale tokens`
+    });
+    
+    tokens.push({
+      name: `op-color-${familyName}-s`,
+      value: `${hsl.s}%`,
+      category: 'color',
+      description: `${familyName} color saturation (HSL)`
+    });
+    
+    tokens.push({
+      name: `op-color-${familyName}-l`,
+      value: `${hsl.l}%`,
+      category: 'color',
+      description: `${familyName} color lightness (HSL)`
+    });
+  }
+  
+  return tokens;
 }
 
 /**
@@ -205,16 +224,12 @@ function generateCSSVariables(tokens: DesignToken[], themeName: string = 'defaul
     grouped[token.category].push(token);
   });
   
-  // Output color tokens as HSL custom properties
+  // Output color tokens - they're already in HSL format
   if (grouped['color']) {
     lines.push(`  /* Colors (HSL) */`);
     for (const token of grouped['color']) {
-      const hsl = hexToHSL(token.value);
-      // Optics format: --op-color-primary-h (not --op-primary-h)
-      const opticsColorName = token.name.startsWith('color-') ? token.name : `color-${token.name}`;
-      lines.push(`  --op-${opticsColorName}-h: ${hsl.h};`);
-      lines.push(`  --op-${opticsColorName}-s: ${hsl.s}%;`);
-      lines.push(`  --op-${opticsColorName}-l: ${hsl.l}%;`);
+      // Tokens are already properly formatted (either HSL base values or full color values)
+      lines.push(`  --${token.name}: ${token.value};`);
     }
     lines.push('');
   }
@@ -303,38 +318,25 @@ function generateDocumentation(themeName: string, tokens: DesignToken[]): string
 
 /**
  * Main theme generation function
+ * Uses all standard Optics tokens, only customizing the HSL color base values
  */
 export function generateTheme(
   brandName: string,
   brandColors: BrandColors,
   options: ThemeOptions = {}
 ): GeneratedTheme {
-  const {
-    includeTypography = true,
-    includeSpacing = true,
-    includeBorders = true,
-    includeShadows = true
-  } = options;
+  // Start with all standard Optics tokens
+  let tokens: DesignToken[] = [...designTokens];
   
-  let tokens: DesignToken[] = [];
-  
-  // Always include brand colors
-  tokens = tokens.concat(generateColorTokens(brandColors));
-  
-  if (includeSpacing) {
-    tokens = tokens.concat(generateSpacingTokens());
-  }
-  
-  if (includeTypography) {
-    tokens = tokens.concat(generateTypographyTokens());
-  }
-  
-  if (includeBorders) {
-    tokens = tokens.concat(generateBorderTokens());
-  }
-  
-  if (includeShadows) {
-    tokens = tokens.concat(generateShadowTokens());
+  // Override HSL color base values if custom colors provided
+  if (Object.keys(brandColors).length > 0) {
+    const customColorTokens = generateColorTokens(brandColors);
+    
+    // Replace the HSL base tokens with custom ones
+    tokens = tokens.map(token => {
+      const customToken = customColorTokens.find(ct => ct.name === token.name);
+      return customToken || token;
+    });
   }
   
   const cssVariables = generateCSSVariables(tokens, brandName);

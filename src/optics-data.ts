@@ -1157,7 +1157,7 @@ export const components: Component[] = [
     examples: []
   },
   {
-    name: 'Divider',
+    name: 'Border',
     description: 'Visual separator between content sections',
     tokens: [
       '--op-border-width',
@@ -1580,11 +1580,11 @@ export const documentation: Documentation[] = [
  */
 export function getTokenUsageStats() {
   const categoryCount: Record<string, number> = {};
-  
+
   designTokens.forEach(token => {
     categoryCount[token.category] = (categoryCount[token.category] || 0) + 1;
   });
-  
+
   return {
     totalTokens: designTokens.length,
     categories: categoryCount,
@@ -1596,18 +1596,18 @@ export function getTokenUsageStats() {
  * Get component token dependencies
  */
 export function getComponentTokenDependencies(componentName: string) {
-  const component = components.find(c => 
+  const component = components.find(c =>
     c.name.toLowerCase() === componentName.toLowerCase()
   );
-  
+
   if (!component) {
     return null;
   }
-  
-  const tokenDetails = component.tokens.map(tokenName => 
+
+  const tokenDetails = component.tokens.map(tokenName =>
     designTokens.find(t => t.name === tokenName)
   ).filter((token): token is DesignToken => token !== undefined);
-  
+
   return {
     component: component.name,
     description: component.description,
