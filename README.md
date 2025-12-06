@@ -146,16 +146,27 @@ graph TB
 
 ## Installation
 
-### VS Code (Recommended) 🎨
+### VS Code 🎨
 
-Install directly from the [MCP Registry](https://registry.modelcontextprotocol.io/):
+**Manual Setup** (GitHub MCP Registry self-submission opens soon):
 
-1. Open VS Code
-2. Open the **MCP Servers** panel (Extensions icon in sidebar)
-3. Search for **"optics"** or **"io.github.RoleModel/optics-mcp"**
-4. Click **Install**
+1. Create `.vscode/mcp.json` in your project or workspace:
+```json
+{
+  "servers": {
+    "optics": {
+      "command": "npx",
+      "args": ["-y", "optics-mcp"]
+    }
+  }
+}
+```
+2. Open GitHub Copilot in **Agent Mode**
+3. Click the tools icon to see Optics tools available
 
-The server will be automatically configured and ready to use with AI assistants in VS Code.
+For user-level configuration, use Command Palette → **MCP: Open User Configuration**.
+
+**Official MCP Registry**: Listed at [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io/servers?search=optics) ✅
 
 ### Quick Start (Zero-Install) ⚡
 
