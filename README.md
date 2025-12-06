@@ -148,25 +148,58 @@ graph TB
 
 ### VS Code 🎨
 
-**Manual Setup** (GitHub MCP Registry self-submission opens soon):
+[![Add to VS Code](https://img.shields.io/badge/Add_to-VS_Code-007ACC?style=for-the-badge&logo=visualstudiocode)](vscode://file%2F.vscode/mcp.json?content=%7B%22servers%22%3A%7B%22optics%22%3A%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22optics-mcp%22%5D%7D%7D%7D)
+
+**Quick Setup**:
 
 1. Create `.vscode/mcp.json` in your project or workspace:
-```json
-{
-  "servers": {
-    "optics": {
-      "command": "npx",
-      "args": ["-y", "optics-mcp"]
-    }
-  }
-}
-```
-2. Open GitHub Copilot in **Agent Mode**
-3. Click the tools icon to see Optics tools available
+   ```json
+   {
+     "servers": {
+       "optics": {
+         "command": "npx",
+         "args": ["-y", "optics-mcp"]
+       }
+     }
+   }
+   ```
 
-For user-level configuration, use Command Palette → **MCP: Open User Configuration**.
+2. Or use Command Palette → **MCP: Open User Configuration** and add:
+   ```json
+   {
+     "servers": {
+       "optics": {
+         "command": "npx",
+         "args": ["-y", "optics-mcp"]
+       }
+     }
+   }
+   ```
+
+3. Open GitHub Copilot in **Agent Mode**
+4. Click the tools icon to see Optics tools available
 
 **Official MCP Registry**: Listed at [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io/servers?search=optics) ✅
+
+### Cursor 🎯
+
+[![Add to Cursor](https://img.shields.io/badge/Add_to-Cursor-000000?style=for-the-badge&logo=cursor)](cursor://settings/mcp?add=%7B%22servers%22%3A%7B%22optics%22%3A%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22optics-mcp%22%5D%7D%7D%7D)
+
+**Quick Setup**:
+
+1. Open Cursor Settings → **MCP**
+2. Add the following configuration:
+   ```json
+   {
+     "servers": {
+       "optics": {
+         "command": "npx",
+         "args": ["-y", "optics-mcp"]
+       }
+     }
+   }
+   ```
+3. Chat with Cursor AI to access Optics tools
 
 ### Quick Start (Zero-Install) ⚡
 
