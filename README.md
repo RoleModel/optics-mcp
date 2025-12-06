@@ -25,7 +25,137 @@ This MCP server provides **14 tools** and resources for working with the Optics 
 - **5 MCP Prompts**: Pre-configured workflows for common design system tasks
 - **Documentation**: Design system guidelines and best practices
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph "MCP Client (AI/LLM)"
+        CLIENT[AI Agent/LLM]
+    end
+
+    subgraph "Optics MCP Server"
+        SERVER[MCP Server<br/>stdio transport]
+        
+        subgraph "Resources (13)"
+            SYSTEM[optics://system-overview]
+            DOC_INTRO[optics://documentation/introduction]
+            DOC_START[optics://documentation/getting-started]
+            DOC_TOKENS[optics://documentation/design-tokens]
+            DOC_COLOR[optics://documentation/color-system]
+            DOC_SPACING[optics://documentation/spacing]
+            DOC_TYPO[optics://documentation/typography]
+            DOC_COMP[optics://documentation/components]
+            DOC_A11Y[optics://documentation/accessibility]
+            TOK_ALL[optics://tokens/all]
+            TOK_COLOR[optics://tokens/color]
+            TOK_SPACING[optics://tokens/spacing]
+            TOK_TYPO[optics://tokens/typography]
+            COMP_ALL[optics://components/all]
+        end
+        
+        subgraph "Core Tools (7)"
+            T1[get_token]
+            T2[search_tokens]
+            T3[get_token_usage_stats]
+            T4[get_component_info]
+            T5[list_components]
+            T6[get_component_tokens]
+            T7[search_documentation]
+        end
+        
+        subgraph "Advanced Tools (7)"
+            T8[generate_theme]
+            T9[validate_token_usage]
+            T10[replace_hard_coded_values]
+            T11[check_contrast]
+            T12[suggest_token_migration]
+            T13[generate_component_scaffold]
+            T14[generate_sticker_sheet]
+        end
+        
+        subgraph "Prompts (5)"
+            P1[start-here]
+            P2[get-token-reference]
+            P3[component-guide]
+            P4[theme-customization]
+            P5[migration-guide]
+        end
+        
+        subgraph "Data Layer"
+            TOKENS[83 Design Tokens<br/>HSL colors, spacing,<br/>typography, borders, shadows]
+            COMPONENTS[24 Components<br/>with token dependencies]
+            DOCS[Documentation<br/>Guidelines & best practices]
+        end
+    end
+    
+    CLIENT -->|JSON-RPC| SERVER
+    SERVER --> SYSTEM
+    SERVER --> DOC_INTRO
+    SERVER --> DOC_START
+    SERVER --> DOC_TOKENS
+    SERVER --> DOC_COLOR
+    SERVER --> DOC_SPACING
+    SERVER --> DOC_TYPO
+    SERVER --> DOC_COMP
+    SERVER --> DOC_A11Y
+    SERVER --> TOK_ALL
+    SERVER --> TOK_COLOR
+    SERVER --> TOK_SPACING
+    SERVER --> TOK_TYPO
+    SERVER --> COMP_ALL
+    SERVER --> T1
+    SERVER --> T2
+    SERVER --> T3
+    SERVER --> T4
+    SERVER --> T5
+    SERVER --> T6
+    SERVER --> T7
+    SERVER --> T8
+    SERVER --> T9
+    SERVER --> T10
+    SERVER --> T11
+    SERVER --> T12
+    SERVER --> T13
+    SERVER --> T14
+    SERVER --> P1
+    SERVER --> P2
+    SERVER --> P3
+    SERVER --> P4
+    SERVER --> P5
+    T1 --> TOKENS
+    T2 --> TOKENS
+    T3 --> TOKENS
+    T4 --> COMPONENTS
+    T5 --> COMPONENTS
+    T6 --> COMPONENTS
+    T7 --> DOCS
+    T8 --> TOKENS
+    T9 --> TOKENS
+    T10 --> TOKENS
+    T11 --> TOKENS
+    T12 --> TOKENS
+    T13 --> COMPONENTS
+    T14 --> TOKENS
+    T14 --> COMPONENTS
+    P1 --> SYSTEM
+    P2 --> TOKENS
+    P3 --> COMPONENTS
+    P4 --> T8
+    P5 --> T12
+```
+
 ## Installation
+
+### VS Code (Recommended) 🎨
+
+Install directly from the [MCP Registry](https://registry.modelcontextprotocol.io/):
+
+1. Open VS Code
+2. Open the **MCP Servers** panel (Extensions icon in sidebar)
+3. Search for **"optics"** or **"io.github.RoleModel/optics-mcp"**
+4. Click **Install**
+
+The server will be automatically configured and ready to use with AI assistants in VS Code.
 
 ### Quick Start (Zero-Install) ⚡
 
