@@ -148,7 +148,9 @@ graph TB
 
 ### VS Code 🎨
 
-[![Add to VS Code](https://img.shields.io/badge/Add_to-VS_Code-007ACC?style=for-the-badge&logo=visualstudiocode)](vscode://file%2F.vscode/mcp.json?content=%7B%22servers%22%3A%7B%22optics%22%3A%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22optics-mcp%22%5D%7D%7D%7D)
+<a href="https://insiders.vscode.dev/setup?mcp=%7B%22mcpServers%22%3A%7B%22optics%22%3A%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22optics-mcp%22%5D%7D%7D%7D">
+  <img src="https://img.shields.io/badge/Add_to-VS_Code-007ACC?style=for-the-badge&logo=visualstudiocode" alt="Add to VS Code">
+</a>
 
 **Quick Setup**:
 
@@ -183,7 +185,9 @@ graph TB
 
 ### Cursor 🎯
 
-[![Add to Cursor](https://img.shields.io/badge/Add_to-Cursor-000000?style=for-the-badge&logo=cursor)](cursor://settings/mcp?add=%7B%22servers%22%3A%7B%22optics%22%3A%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22optics-mcp%22%5D%7D%7D%7D)
+<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=optics&config=eyJvcHRpY3MiOnsiY29tbWFuZCI6Im5weCIsImFyZ3MiOlsiLXkiLCJvcHRpY3MtbWNwIl19fQ==">
+  <img src="https://img.shields.io/badge/Add_to-Cursor-000000?style=for-the-badge&logo=cursor" alt="Add to Cursor">
+</a>
 
 **Quick Setup**:
 
