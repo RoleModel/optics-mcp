@@ -148,13 +148,10 @@ graph TB
 
 ### VS Code 🎨
 
-<a href="https://insiders.vscode.dev/setup?mcp=%7B%22mcpServers%22%3A%7B%22optics%22%3A%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22optics-mcp%22%5D%7D%7D%7D">
-  <img src="https://img.shields.io/badge/Add_to-VS_Code-007ACC?style=for-the-badge&logo=visualstudiocode" alt="Add to VS Code">
-</a>
-
 **Quick Setup**:
 
-1. Create `.vscode/mcp.json` in your project or workspace:
+1. Command Palette → **MCP: Open User Configuration**
+2. Add this configuration:
    ```json
    {
      "servers": {
@@ -165,34 +162,24 @@ graph TB
      }
    }
    ```
-
-2. Or use Command Palette → **MCP: Open User Configuration** and add:
-   ```json
-   {
-     "servers": {
-       "optics": {
-         "command": "npx",
-         "args": ["-y", "optics-mcp"]
-       }
-     }
-   }
-   ```
-
 3. Open GitHub Copilot in **Agent Mode**
 4. Click the tools icon to see Optics tools available
+
+**Or** create `.vscode/mcp.json` in your workspace with the same config.
 
 **Official MCP Registry**: Listed at [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io/servers?search=optics) ✅
 
 ### Cursor 🎯
 
-<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=optics&config=eyJvcHRpY3MiOnsiY29tbWFuZCI6Im5weCIsImFyZ3MiOlsiLXkiLCJvcHRpY3MtbWNwIl19fQ==">
-  <img src="https://img.shields.io/badge/Add_to-Cursor-000000?style=for-the-badge&logo=cursor" alt="Add to Cursor">
-</a>
+**One-Click Install** (click to open Cursor):
+```
+cursor://anysphere.cursor-deeplink/mcp/install?name=optics&config=eyJvcHRpY3MiOnsiY29tbWFuZCI6Im5weCIsImFyZ3MiOlsiLXkiLCJvcHRpY3MtbWNwIl19fQ==
+```
 
-**Quick Setup**:
+**Or Manual Setup**:
 
 1. Open Cursor Settings → **MCP**
-2. Add the following configuration:
+2. Add this configuration:
    ```json
    {
      "servers": {
