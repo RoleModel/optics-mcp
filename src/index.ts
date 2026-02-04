@@ -25,6 +25,13 @@ import { suggestTokenMigration, formatMigrationSuggestions } from './tools/migra
 import { generateComponentScaffold, formatScaffoldOutput } from './tools/scaffold.js';
 import { generateStickerSheet, formatStickerSheet } from './tools/sticker-sheet.js';
 
+// Resources
+import * as systemOverview from './resources/system-overview'
+import * as documentationSection from './resources/documentation/section'
+import * as allTokens from './resources/tokens/all'
+import * as categoryTokens from './resources/tokens/category'
+import * as allComponents from './resources/components/all'
+
 /**
  * Create and configure the MCP server
  */
@@ -36,334 +43,31 @@ const server = new McpServer({
 /**
  * Resource: System Overview
  */
-server.registerResource(
-  'system-overview',
-  'optics://system-overview',
-  {
-    title: 'System Overview - READ THIS FIRST',
-    description: 'CRITICAL: Comprehensive guide to understanding the Optics token architecture.',
-    mimeType: 'text/plain',
-  },
-  async () => ({
-    contents: [
-      {
-        uri: 'optics://system-overview',
-        mimeType: 'text/plain',
-        text: `# Optics Design System - AI Comprehension Guide
 
-**CRITICAL: Read this FIRST before using any Optics tools or data.**
+const resources = [systemOverview, documentationSection, allTokens, categoryTokens, allComponents]
 
-This document explains the Optics Design System architecture in a way that AI agents can understand and use correctly.
-
-## 🎯 The Core Problem
-
-Most design systems use simple tokens like \`--color-primary: #0066CC\`. **Optics does NOT work this way.**
-
-Optics uses a sophisticated HSL-based color system that generates colors dynamically from base values. This means:
-
-❌ **WRONG**: Looking for \`--color-primary\` or \`--op-color-primary\`
-✅ **CORRECT**: Using \`--op-color-primary-base\` or the HSL components \`--op-color-primary-h/s/l\`
-
-## 🏗️ Token Architecture
-
-### Layer 1: HSL Base Values (Foundation)
-
-These are the foundational tokens that define color hue, saturation, and lightness:
-
-\`\`\`css
-/* Primary color base HSL values */
---op-color-primary-h: 216;      /* Hue */
---op-color-primary-s: 58%;      /* Saturation */
---op-color-primary-l: 48%;      /* Lightness */
-\`\`\`
-
-**Color families available:**
-- \`primary\` - Main brand color
-- \`neutral\` - Grays and neutrals
-- \`alerts-warning\` - Yellow/orange warnings
-- \`alerts-danger\` - Red errors
-- \`alerts-info\` - Blue information
-- \`alerts-notice\` - Green success
-
-### Layer 2: Scale Tokens (Light/Dark Adaptive)
-
-From the base HSL values, Optics generates a scale of colors using the \`light-dark()\` CSS function:
-
-**The Scale:**
-\`\`\`
-plus-max    (lightest - light mode: 100%, dark mode: 12%)
-plus-eight
-plus-seven
-plus-six
-plus-five
-plus-four
-plus-three
-plus-two
-plus-one
-base        (middle - the main color)
-minus-one
-minus-two
-minus-three
-minus-four
-minus-five
-minus-six
-minus-seven
-minus-eight
-minus-max   (darkest - light mode: 0%, dark mode: 100%)
-\`\`\`
-
-**Example tokens:**
-\`\`\`css
---op-color-primary-base
---op-color-primary-plus-five
---op-color-primary-minus-three
---op-color-neutral-plus-eight
---op-color-alerts-danger-base
-\`\`\`
-
-### Layer 3: "On" Tokens (Text Colors)
-
-For each scale token, there's a corresponding "on" token for text that appears ON that background:
-
-\`\`\`css
-/* For backgrounds */
---op-color-primary-base
---op-color-primary-plus-five
-
-/* For text ON those backgrounds */
---op-color-primary-on-base
---op-color-primary-on-plus-five
-\`\`\`
-
-Each "on" token also has an \`-alt\` variant for secondary text:
-\`\`\`css
---op-color-primary-on-base
---op-color-primary-on-base-alt
-\`\`\`
-
-## 🎨 How to Use Color Tokens
-
-### ❌ WRONG - Don't Look For These:
-\`\`\`css
---color-primary
---op-color-primary
---color-text-primary
-\`\`\`
-
-### ✅ CORRECT - Use These Instead:
-
-**For backgrounds:**
-\`\`\`css
-background: var(--op-color-primary-base);           /* Main primary color */
-background: var(--op-color-primary-plus-five);      /* Lighter primary */
-background: var(--op-color-neutral-plus-eight);     /* Light gray background */
-\`\`\`
-
-**For text:**
-\`\`\`css
-color: var(--op-color-primary-on-base);             /* Text on primary-base */
-color: var(--op-color-neutral-on-plus-eight);       /* Text on light gray */
-\`\`\`
-
-**For borders:**
-\`\`\`css
-border-color: var(--op-color-neutral-plus-four);    /* Light border */
-\`\`\`
-
-## 🚨 Common Mistakes
-
-### Mistake 1: Looking for Simple Color Names
-❌ Searching for "color-primary"
-✅ Search for "primary-base" or "primary" and filter results
-
-### Mistake 2: Ignoring the HSL System
-❌ Treating colors as hex values
-✅ Understanding that colors are built from HSL components
-
-### Mistake 3: Using Wrong Token Names
-❌ \`var(--color-primary)\`
-✅ \`var(--op-color-primary-base)\`
-
-### Mistake 4: Not Using \"On\" Tokens for Text
-❌ Using arbitrary text colors on colored backgrounds
-✅ Using the matching \`-on-\` token: \`--op-color-primary-on-base\` on \`--op-color-primary-base\`
-
-### Mistake 5: Inventing Component Classes
-❌ Making up classes like \`.button-primary\`, \`.op-button\`, \`.card-primary\`
-✅ Use ONLY the actual Optics component HTML/CSS from https://docs.optics.rolemodel.design
-✅ Optics components have specific HTML structure - don't invent your own
-
-## 🎯 Quick Reference
-
-### Most Common Tokens
-
-**Backgrounds:**
-- \`--op-color-neutral-plus-eight\` - Light background
-- \`--op-color-primary-base\` - Primary button background
-- \`--op-color-alerts-danger-base\` - Error state background
-
-**Text:**
-- \`--op-color-neutral-on-plus-eight\` - Text on light backgrounds
-- \`--op-color-primary-on-base\` - Text on primary backgrounds
-
-**Spacing:**
-- \`--op-space-x-small\` (8px) - Tight spacing
-- \`--op-space-medium\` (16px) - Standard spacing
-- \`--op-space-large\` (20px) - Loose spacing
-
-**Typography:**
-- \`--op-font-medium\` (16px) - Body text
-- \`--op-font-weight-normal\` (400) - Regular weight
-- \`--op-line-height-base\` (1.5) - Body line height
-
-**Borders:**
-- \`--op-radius-medium\` (4px) - Standard border radius
-- \`--op-border-width\` (1px) - Standard border
-
-## 🎓 Mental Model Summary
-
-Think of Optics tokens like this:
-
-\`\`\`
-HSL Base Values (h/s/l)
-    ↓
-Scale Tokens (plus-max to minus-max)
-    ↓
-On Tokens (text colors for those scales)
-\`\`\`
-
-The system is:
-- **Predictable**: Every color family follows the same pattern
-- **Adaptive**: Light/dark modes handled automatically
-- **Accessible**: On tokens ensure proper contrast
-- **Themeable**: Change base HSL values to create themes
-
-**Always use the full token names with \`--op-\` prefix and the correct scale suffix.**`,
-      },
-    ],
-  })
-);
-
-/**
- * Resource: Documentation (template-based for all sections)
- */
-server.registerResource(
-  'documentation',
-  'optics://documentation/{section}',
-  {
-    title: 'Optics Documentation',
-    description: 'Documentation sections for the Optics design system',
-    mimeType: 'text/plain',
-  },
-  async (uri) => {
-    const section = uri.pathname.replace('/documentation/', '').replace('/', '');
-    const doc = documentation.find((d) => d.section === section);
-
-    if (!doc) {
-      throw new Error(`Documentation section not found: ${section}`);
-    }
-
-    return {
-      contents: [
-        {
-          uri: uri.href,
-          mimeType: 'text/plain',
-          text: `# ${doc.title}\n\n${doc.content}${doc.tokens && doc.tokens.length > 0
-            ? `\n\nRelated tokens: ${doc.tokens.join(', ')}`
-            : ''
-            }`,
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Resource: All Design Tokens
- */
-server.registerResource(
-  'tokens-all',
-  'optics://tokens/all',
-  {
-    title: 'All Design Tokens',
-    description: 'Complete list of all Optics design tokens',
-    mimeType: 'application/json',
-  },
-  async () => ({
-    contents: [
-      {
-        uri: 'optics://tokens/all',
-        mimeType: 'application/json',
-        text: JSON.stringify(designTokens, null, 2),
-      },
-    ],
-  })
-);
-
-/**
- * Resource: Tokens by category (template-based)
- */
-server.registerResource(
-  'tokens-category',
-  'optics://tokens/{category}',
-  {
-    title: 'Tokens by Category',
-    description: 'Design tokens filtered by category (color, spacing, typography, border, shadow)',
-    mimeType: 'application/json',
-  },
-  async (uri) => {
-    const category = uri.pathname.replace('/tokens/', '').replace('/', '');
-
-    if (category === 'all') {
+resources.forEach((resource) => {
+  server.registerResource(
+    resource.metadata.name,
+    resource.metadata.uri,
+    {
+      title: resource.metadata.title,
+      description: resource.metadata.description,
+      mimeType: resource.metadata.mimeType,
+    },
+    async (uri) => {
       return {
         contents: [
           {
-            uri: uri.href,
-            mimeType: 'application/json',
-            text: JSON.stringify(designTokens, null, 2),
-          },
-        ],
-      };
+            uri: resource.metadata.uri,
+            mimeType: resource.metadata.mimeType,
+            text: await resource.handler(uri),
+          }
+        ]
+      }
     }
-
-    const filteredTokens = designTokens.filter((t) => t.category === category);
-    if (filteredTokens.length === 0) {
-      throw new Error(`No tokens found for category: ${category}`);
-    }
-
-    return {
-      contents: [
-        {
-          uri: uri.href,
-          mimeType: 'application/json',
-          text: JSON.stringify(filteredTokens, null, 2),
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Resource: All Components
- */
-server.registerResource(
-  'components-all',
-  'optics://components/all',
-  {
-    title: 'All Components',
-    description: 'Complete Optics component library',
-    mimeType: 'application/json',
-  },
-  async () => ({
-    contents: [
-      {
-        uri: 'optics://components/all',
-        mimeType: 'application/json',
-        text: JSON.stringify(components, null, 2),
-      },
-    ],
-  })
-);
+  );
+});
 
 /**
  * Prompt: Create Themed Component
