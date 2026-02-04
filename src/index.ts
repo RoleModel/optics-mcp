@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// @ts-nocheck - Disable type checking due to MCP SDK deep type instantiation issues
+
 /**
  * Optics MCP Server
  * Provides tools and resources for understanding the Optics Design System
@@ -59,7 +61,7 @@ Most design systems use simple tokens like \`--color-primary: #0066CC\`. **Optic
 
 Optics uses a sophisticated HSL-based color system that generates colors dynamically from base values. This means:
 
-❌ **WRONG**: Looking for \`--color-primary\` or \`--op-color-primary\`  
+❌ **WRONG**: Looking for \`--color-primary\` or \`--op-color-primary\`
 ✅ **CORRECT**: Using \`--op-color-primary-base\` or the HSL components \`--op-color-primary-h/s/l\`
 
 ## 🏗️ Token Architecture
@@ -171,24 +173,24 @@ border-color: var(--op-color-neutral-plus-four);    /* Light border */
 ## 🚨 Common Mistakes
 
 ### Mistake 1: Looking for Simple Color Names
-❌ Searching for "color-primary"  
+❌ Searching for "color-primary"
 ✅ Search for "primary-base" or "primary" and filter results
 
 ### Mistake 2: Ignoring the HSL System
-❌ Treating colors as hex values  
+❌ Treating colors as hex values
 ✅ Understanding that colors are built from HSL components
 
 ### Mistake 3: Using Wrong Token Names
-❌ \`var(--color-primary)\`  
+❌ \`var(--color-primary)\`
 ✅ \`var(--op-color-primary-base)\`
 
 ### Mistake 4: Not Using \"On\" Tokens for Text
-❌ Using arbitrary text colors on colored backgrounds  
+❌ Using arbitrary text colors on colored backgrounds
 ✅ Using the matching \`-on-\` token: \`--op-color-primary-on-base\` on \`--op-color-primary-base\`
 
 ### Mistake 5: Inventing Component Classes
-❌ Making up classes like \`.button-primary\`, \`.op-button\`, \`.card-primary\`  
-✅ Use ONLY the actual Optics component HTML/CSS from https://docs.optics.rolemodel.design  
+❌ Making up classes like \`.button-primary\`, \`.op-button\`, \`.card-primary\`
+✅ Use ONLY the actual Optics component HTML/CSS from https://docs.optics.rolemodel.design
 ✅ Optics components have specific HTML structure - don't invent your own
 
 ## 🎯 Quick Reference
