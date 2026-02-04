@@ -47,18 +47,17 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-const prompts = [
-  createThemedComponentPrompt,
-  migrateToTokensPrompt,
-  accessibleColorComboPrompt,
-  designReviewPrompt
-]
-
 /**
- * Resource: System Overview
+ * Resources
  */
 
-const resources = [systemOverview, documentationSection, allTokens, categoryTokens, allComponents]
+const resources = [
+  systemOverview,
+  documentationSection,
+  allTokens,
+  categoryTokens,
+  allComponents
+]
 
 resources.forEach((resource) => {
   server.registerResource(
@@ -83,44 +82,48 @@ resources.forEach((resource) => {
   );
 });
 
-// Register prompt handlers
-server.setRequestHandler(ListPromptsRequestSchema, async () => {
-  return {
-    prompts: prompts.map((prompt) => ({
-      name: prompt.metadata.name,
+/**
+ * Prompts
+ */
+
+const prompts = [
+  createThemedComponentPrompt,
+  migrateToTokensPrompt,
+  accessibleColorComboPrompt,
+  designReviewPrompt
+]
+
+prompts.forEach((prompt) => {
+  server.registerPrompt(
+    prompt.metadata.name,
+    {
+      title: prompt.metadata.title,
       description: prompt.metadata.description,
-    })),
-  }
-})
+      argsSchema: prompt.inputSchema,
+    },
+    async ({ name, arguments: args }) => {
+      // Validate arguments if schema exists
+      let parsedArgs: Record<string, unknown> = args || {}
+      if (prompt.inputSchema) {
+        parsedArgs = parseToolArgs(prompt.inputSchema, args || {})
+      }
 
-server.setRequestHandler(GetPromptRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params
+      // Get the prompt content
+      const content = await prompt.handler(parsedArgs)
 
-  const prompt = prompts.find((p) => p.metadata.name === name)
-  if (!prompt) {
-    throw new Error(`Prompt not found: ${name}`)
-  }
-
-  // Validate arguments if schema exists
-  let parsedArgs: Record<string, unknown> = args || {}
-  if (prompt.inputSchema) {
-    parsedArgs = parseToolArgs(prompt.inputSchema, args || {})
-  }
-
-  // Get the prompt content
-  const content = await prompt.handler(parsedArgs as never)
-
-  return {
-    messages: [
-      {
-        role: prompt.metadata.role || "user",
-        content: {
-          type: "text",
-          text: content,
-        },
-      },
-    ],
-  }
+      return {
+        messages: [
+          {
+            role: prompt.metadata.role || 'user',
+            content: {
+              type: 'text',
+              text: content,
+            },
+          },
+        ],
+      }
+    },
+  )
 })
 
 /**

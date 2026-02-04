@@ -2,19 +2,16 @@ import { z } from 'zod'
 import { components } from '../optics-data.js'
 import { readResourceFile } from "../_internal/resource-path.js"
 
-/**
- * Prompt: Create Themed Component
- */
-export const inputSchema = {
-  componentType: z.string().describe('Type of component (button, card, form, alert, etc.)'),
-  variant: z.string().optional().describe('Component variant (primary, secondary, danger, etc.)'),
-  framework: z.string().optional().describe('Framework to use (react, vue, svelte, html)')
-}
-
 type CreateThemedComponentPromptArgs = {
   componentType: string
   variant?: string
   framework?: string
+}
+
+export const inputSchema = {
+  componentType: z.string().describe('Type of component (button, card, form, alert, etc.)'),
+  variant: z.string().optional().describe('Component variant (primary, secondary, danger, etc.)'),
+  framework: z.string().optional().describe('Framework to use (react, vue, svelte, html)')
 }
 
 export const metadata = {
