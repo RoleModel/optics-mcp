@@ -9,6 +9,7 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types.js"
 import { z } from 'zod';
 import {
   designTokens,
@@ -32,6 +33,10 @@ import * as allTokens from './resources/tokens/all'
 import * as categoryTokens from './resources/tokens/category'
 import * as allComponents from './resources/components/all'
 
+// Prompts
+import * as createThemedComponentPrompt from './prompts/create-themed-component'
+import * as migrateToTokensPrompt from './prompts/migrate-to-tokens'
+
 /**
  * Create and configure the MCP server
  */
@@ -39,6 +44,8 @@ const server = new McpServer({
   name: 'optics-mcp',
   version: '0.1.0',
 });
+
+const prompts = [createThemedComponentPrompt, migrateToTokensPrompt]
 
 /**
  * Resource: System Overview
@@ -69,81 +76,45 @@ resources.forEach((resource) => {
   );
 });
 
-/**
- * Prompt: Create Themed Component
- */
-server.registerPrompt(
-  'create-themed-component',
-  {
-    title: 'Create Themed Component',
-    description: 'Generate a component styled with Optics design tokens',
-    argsSchema: {
-      componentType: z.string().describe('Type of component (button, card, form, alert, etc.)'),
-      variant: z.string().optional().describe('Component variant (primary, secondary, danger, etc.)'),
-      framework: z.string().optional().describe('Framework to use (react, vue, svelte, html)'),
-    },
-  },
-  async ({ componentType, variant, framework }) => {
-    const compType = componentType || 'button';
-    const compVariant = variant || 'primary';
-    const compFramework = framework || 'react';
-
-    const component = components.find(
-      (c) => c.name.toLowerCase() === compType.toLowerCase()
-    );
-
-    if (!component) {
-      return {
-        messages: [
-          {
-            role: 'user',
-            content: {
-              type: 'text',
-              text: `Create a ${compType} component using Optics design tokens. Available components: ${components.map((c) => c.name).join(', ')}`,
-            },
-          },
-        ],
-      };
-    }
-
-    return {
-      messages: [
-        {
-          role: 'user',
-          content: {
-            type: 'text',
-            text: `Create a ${compVariant} ${compType} component in ${compFramework} using these Optics design tokens:\n\nRequired tokens:\n${component.tokens.join('\n')}\n\nUsage guidelines:\n${component.usage}${component.examples && component.examples.length > 0 ? '\n\nExample structure:\n' + component.examples[0] : ''}`,
-          },
-        },
-      ],
-    };
+// Register prompt handlers
+server.setRequestHandler(ListPromptsRequestSchema, async () => {
+  return {
+    prompts: prompts.map((prompt) => ({
+      name: prompt.metadata.name,
+      description: prompt.metadata.description,
+    })),
   }
-);
+})
 
-/**
- * Prompt: Migrate to Tokens
- */
-server.registerPrompt(
-  'migrate-to-tokens',
-  {
-    title: 'Migrate to Tokens',
-    description: 'Convert hard-coded CSS values to Optics design tokens',
-    argsSchema: {
-      code: z.string().describe('CSS or component code with hard-coded values'),
-    },
-  },
-  async ({ code }) => ({
+server.setRequestHandler(GetPromptRequestSchema, async (request) => {
+  const { name, arguments: args } = request.params
+
+  const prompt = prompts.find((p) => p.metadata.name === name)
+  if (!prompt) {
+    throw new Error(`Prompt not found: ${name}`)
+  }
+
+  // Validate arguments if schema exists
+  let parsedArgs: Record<string, unknown> = args || {}
+  if (prompt.inputSchema) {
+    parsedArgs = parseToolArgs(prompt.inputSchema, args || {})
+  }
+
+  // Get the prompt content
+  const content = await prompt.handler(parsedArgs as never)
+
+  return {
     messages: [
       {
-        role: 'user',
+        role: prompt.metadata.role || "user",
         content: {
-          type: 'text',
-          text: `Convert the following code to use Optics design tokens. Replace hard-coded colors, spacing, font sizes, and other values with appropriate tokens from the Optics system:\n\n\`\`\`\n${code || ''}\n\`\`\`\n\nAvailable token categories:\n- Color (op-color-*): HSL-based color system\n- Spacing (op-space-*): rem-based spacing scale\n- Typography (op-font-*, op-line-height-*): Font sizes, weights, line heights\n- Border (op-radius-*, op-border-width-*): Border radius and widths\n- Shadow (op-shadow-*): Elevation shadows\n\nUse the validate_token_usage and replace_hard_coded_values tools to help with the conversion.`,
+          type: "text",
+          text: content,
         },
       },
     ],
-  })
-);
+  }
+})
 
 /**
  * Prompt: Accessible Color Combo
