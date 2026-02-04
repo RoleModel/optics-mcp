@@ -9,11 +9,13 @@
     "optics-mcp": "dist/index.js"
   },
   "scripts": {
-    "build": "npx tsc",
+    "build": "npx tsc && npm run copy:md",
+    "copy:md": "find src -name '*.md' | while read file; do mkdir -p \"dist/$(dirname \"${file#src/}\")\" && cp \"$file\" \"dist/${file#src/}\"; done",
     "prepare": "npm run build",
     "watch": "npx tsc --watch",
     "start": "node dist/index.js",
-    "test": "node dist/test.js"
+    "test": "node dist/test.js",
+    "test:interactive": "npm run build && node dist/interactive-client.js"
   },
   "keywords": [
     "mcp",

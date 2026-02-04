@@ -1,4 +1,4 @@
-import { components } from '../../optics-data'
+import { components } from '../../optics-data.js'
 
 export const metadata = {
   name: 'components-all',

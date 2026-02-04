@@ -1,4 +1,4 @@
-import { designTokens } from '../../optics-data'
+import { designTokens } from '../../optics-data.js'
 
 export const metadata = {
   name: 'tokens-all',

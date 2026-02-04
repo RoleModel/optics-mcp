@@ -1,5 +1,4 @@
-import { ReadResourceCallback } from '@modelcontextprotocol/sdk/server/mcp'
-import { readResourceFile } from '../_internal/resource-path'
+import { readResourceFile } from '../_internal/resource-path.js'
 
 export const metadata = {
   name: 'system-overview',
