@@ -37,6 +37,7 @@ import * as allComponents from './resources/components/all'
 import * as createThemedComponentPrompt from './prompts/create-themed-component'
 import * as migrateToTokensPrompt from './prompts/migrate-to-tokens'
 import * as accessibleColorComboPrompt from './prompts/accessible-color-combo'
+import * as designReviewPrompt from './prompts/design-review'
 
 /**
  * Create and configure the MCP server
@@ -46,7 +47,12 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-const prompts = [createThemedComponentPrompt, migrateToTokensPrompt, accessibleColorComboPrompt]
+const prompts = [
+  createThemedComponentPrompt,
+  migrateToTokensPrompt,
+  accessibleColorComboPrompt,
+  designReviewPrompt
+]
 
 /**
  * Resource: System Overview
@@ -145,32 +151,6 @@ server.registerPrompt(
       ],
     };
   }
-);
-
-/**
- * Prompt: Design Review
- */
-server.registerPrompt(
-  'design-review',
-  {
-    title: 'Design Review',
-    description: 'Review a design or component for Optics token usage and best practices',
-    argsSchema: {
-      code: z.string().describe('Component code to review'),
-      componentType: z.string().optional().describe('Type of component being reviewed'),
-    },
-  },
-  async ({ code, componentType }) => ({
-    messages: [
-      {
-        role: 'user',
-        content: {
-          type: 'text',
-          text: `Review this ${componentType || 'unknown'} component for Optics design system compliance:\n\n\`\`\`\n${code || ''}\n\`\`\`\n\nCheck for:\n1. Hard-coded values that should use tokens\n2. Proper token usage and naming\n3. Accessibility (color contrast, focus states)\n4. Consistency with Optics patterns\n5. Missing or incorrect tokens\n\nUse these tools to help:\n- validate_token_usage: Find hard-coded values\n- check_contrast: Verify color accessibility\n- get_component_info: See how Optics components use tokens`,
-        },
-      },
-    ],
-  })
 );
 
 /**
