@@ -49,10 +49,10 @@
     "dist",
     "README.md",
     "LICENSE",
-    "SYSTEM_OVERVIEW.md",
-    "AI_IMPROVEMENTS.md",
-    "WARP.md",
-    "TOOLS.md",
-    "EXAMPLES.md"
+    "docs/SYSTEM_OVERVIEW.md",
+    "docs/AI_IMPROVEMENTS.md",
+    "docs/WARP.md",
+    "docs/TOOLS.md",
+    "docs/EXAMPLES.md"
   ]
 }
