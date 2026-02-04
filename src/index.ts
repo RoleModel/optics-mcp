@@ -38,6 +38,7 @@ import * as createThemedComponentPrompt from './prompts/create-themed-component'
 import * as migrateToTokensPrompt from './prompts/migrate-to-tokens'
 import * as accessibleColorComboPrompt from './prompts/accessible-color-combo'
 import * as designReviewPrompt from './prompts/design-review'
+import * as explainTokenSystemPrompt from './prompts/explain-token-system'
 
 /**
  * Create and configure the MCP server
@@ -90,7 +91,8 @@ const prompts = [
   createThemedComponentPrompt,
   migrateToTokensPrompt,
   accessibleColorComboPrompt,
-  designReviewPrompt
+  designReviewPrompt,
+  explainTokenSystemPrompt
 ]
 
 prompts.forEach((prompt) => {
@@ -125,36 +127,6 @@ prompts.forEach((prompt) => {
     },
   )
 })
-
-/**
- * Prompt: Explain Token System
- */
-server.registerPrompt(
-  'explain-token-system',
-  {
-    title: 'Explain Token System',
-    description: 'Explain how a specific token category works in Optics',
-    argsSchema: {
-      category: z.string().describe('Token category (color, spacing, typography, border, shadow)'),
-    },
-  },
-  async ({ category }) => {
-    const cat = category || 'color';
-    const tokens = designTokens.filter((t) => t.category === cat);
-
-    return {
-      messages: [
-        {
-          role: 'user',
-          content: {
-            type: 'text',
-            text: `Explain how the ${cat} token system works in Optics.\n\nAvailable ${cat} tokens (${tokens.length} total):\n${tokens.slice(0, 10).map((t) => `- ${t.name}: ${t.description}`).join('\n')}${tokens.length > 10 ? '\n... and ' + (tokens.length - 10) + ' more' : ''}\n\nInclude:\n1. How to use these tokens\n2. When to use each one\n3. Best practices\n4. Common patterns`,
-          },
-        },
-      ],
-    };
-  }
-);
 
 /**
  * Prompt: Get Token Reference
