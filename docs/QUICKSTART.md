@@ -4,7 +4,7 @@ Get started with the Optics MCP Server in 5 minutes!
 
 ## Prerequisites
 
-- Node.js 18 or higher
+- Node.js 24 or higher
 - npm (comes with Node.js)
 
 ## Installation
@@ -191,8 +191,9 @@ npm run watch
 
 ### Server Not Responding
 
-**Solution**: 
-1. Check Node.js version: `node --version` (should be 18+)
+**Solution**:
+
+1. Check Node.js version: `node --version` (should be 24+)
 2. Rebuild: `npm run build`
 3. Check logs in your MCP client
 
