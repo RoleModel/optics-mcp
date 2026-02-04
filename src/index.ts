@@ -9,6 +9,7 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types.js"
 import { z } from 'zod';
 import {
   designTokens,
@@ -32,6 +33,14 @@ import * as allTokens from './resources/tokens/all'
 import * as categoryTokens from './resources/tokens/category'
 import * as allComponents from './resources/components/all'
 
+// Prompts
+import * as createThemedComponentPrompt from './prompts/create-themed-component'
+import * as migrateToTokensPrompt from './prompts/migrate-to-tokens'
+import * as accessibleColorComboPrompt from './prompts/accessible-color-combo'
+import * as designReviewPrompt from './prompts/design-review'
+import * as explainTokenSystemPrompt from './prompts/explain-token-system'
+import * as getTokenReferencePrompt from './prompts/get-token-reference'
+
 /**
  * Create and configure the MCP server
  */
@@ -41,10 +50,16 @@ const server = new McpServer({
 });
 
 /**
- * Resource: System Overview
+ * Resources
  */
 
-const resources = [systemOverview, documentationSection, allTokens, categoryTokens, allComponents]
+const resources = [
+  systemOverview,
+  documentationSection,
+  allTokens,
+  categoryTokens,
+  allComponents
+]
 
 resources.forEach((resource) => {
   server.registerResource(
@@ -70,265 +85,50 @@ resources.forEach((resource) => {
 });
 
 /**
- * Prompt: Create Themed Component
+ * Prompts
  */
-server.registerPrompt(
-  'create-themed-component',
-  {
-    title: 'Create Themed Component',
-    description: 'Generate a component styled with Optics design tokens',
-    argsSchema: {
-      componentType: z.string().describe('Type of component (button, card, form, alert, etc.)'),
-      variant: z.string().optional().describe('Component variant (primary, secondary, danger, etc.)'),
-      framework: z.string().optional().describe('Framework to use (react, vue, svelte, html)'),
+
+const prompts = [
+  createThemedComponentPrompt,
+  migrateToTokensPrompt,
+  accessibleColorComboPrompt,
+  designReviewPrompt,
+  explainTokenSystemPrompt,
+  getTokenReferencePrompt
+]
+
+prompts.forEach((prompt) => {
+  server.registerPrompt(
+    prompt.metadata.name,
+    {
+      title: prompt.metadata.title,
+      description: prompt.metadata.description,
+      argsSchema: prompt.inputSchema,
     },
-  },
-  async ({ componentType, variant, framework }) => {
-    const compType = componentType || 'button';
-    const compVariant = variant || 'primary';
-    const compFramework = framework || 'react';
+    async ({ name, arguments: args }) => {
+      // Validate arguments if schema exists
+      let parsedArgs: Record<string, unknown> = args || {}
+      if (prompt.inputSchema) {
+        parsedArgs = parseToolArgs(prompt.inputSchema, args || {})
+      }
 
-    const component = components.find(
-      (c) => c.name.toLowerCase() === compType.toLowerCase()
-    );
+      // Get the prompt content
+      const content = await prompt.handler(parsedArgs)
 
-    if (!component) {
       return {
         messages: [
           {
-            role: 'user',
+            role: prompt.metadata.role || 'user',
             content: {
               type: 'text',
-              text: `Create a ${compType} component using Optics design tokens. Available components: ${components.map((c) => c.name).join(', ')}`,
+              text: content,
             },
           },
         ],
-      };
-    }
-
-    return {
-      messages: [
-        {
-          role: 'user',
-          content: {
-            type: 'text',
-            text: `Create a ${compVariant} ${compType} component in ${compFramework} using these Optics design tokens:\n\nRequired tokens:\n${component.tokens.join('\n')}\n\nUsage guidelines:\n${component.usage}${component.examples && component.examples.length > 0 ? '\n\nExample structure:\n' + component.examples[0] : ''}`,
-          },
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Prompt: Migrate to Tokens
- */
-server.registerPrompt(
-  'migrate-to-tokens',
-  {
-    title: 'Migrate to Tokens',
-    description: 'Convert hard-coded CSS values to Optics design tokens',
-    argsSchema: {
-      code: z.string().describe('CSS or component code with hard-coded values'),
+      }
     },
-  },
-  async ({ code }) => ({
-    messages: [
-      {
-        role: 'user',
-        content: {
-          type: 'text',
-          text: `Convert the following code to use Optics design tokens. Replace hard-coded colors, spacing, font sizes, and other values with appropriate tokens from the Optics system:\n\n\`\`\`\n${code || ''}\n\`\`\`\n\nAvailable token categories:\n- Color (op-color-*): HSL-based color system\n- Spacing (op-space-*): rem-based spacing scale\n- Typography (op-font-*, op-line-height-*): Font sizes, weights, line heights\n- Border (op-radius-*, op-border-width-*): Border radius and widths\n- Shadow (op-shadow-*): Elevation shadows\n\nUse the validate_token_usage and replace_hard_coded_values tools to help with the conversion.`,
-        },
-      },
-    ],
-  })
-);
-
-/**
- * Prompt: Accessible Color Combo
- */
-server.registerPrompt(
-  'accessible-color-combo',
-  {
-    title: 'Accessible Color Combo',
-    description: 'Suggest accessible foreground/background color token combinations',
-    argsSchema: {
-      colorFamily: z.string().describe('Color family (primary, neutral, danger, warning, info, notice)'),
-      wcagLevel: z.string().optional().describe('WCAG level (AA or AAA)'),
-    },
-  },
-  async ({ colorFamily, wcagLevel }) => {
-    const family = colorFamily || 'primary';
-    const level = wcagLevel || 'AA';
-
-    return {
-      messages: [
-        {
-          role: 'user',
-          content: {
-            type: 'text',
-            text: `Suggest accessible color token combinations for the ${family} color family that meet WCAG ${level} standards.\n\nOptics uses a scale-based color system with:\n- Base HSL tokens: --op-color-${family}-h/s/l\n- Generated scale tokens: ${family}-base, ${family}-plus-one through plus-eight, ${family}-minus-one through minus-eight\n- On-color tokens for text: ${family}-on-base, ${family}-on-plus-five, etc.\n\nUse the check_contrast tool to validate combinations. Suggest foreground/background pairs that meet the contrast requirements.`,
-          },
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Prompt: Explain Token System
- */
-server.registerPrompt(
-  'explain-token-system',
-  {
-    title: 'Explain Token System',
-    description: 'Explain how a specific token category works in Optics',
-    argsSchema: {
-      category: z.string().describe('Token category (color, spacing, typography, border, shadow)'),
-    },
-  },
-  async ({ category }) => {
-    const cat = category || 'color';
-    const tokens = designTokens.filter((t) => t.category === cat);
-
-    return {
-      messages: [
-        {
-          role: 'user',
-          content: {
-            type: 'text',
-            text: `Explain how the ${cat} token system works in Optics.\n\nAvailable ${cat} tokens (${tokens.length} total):\n${tokens.slice(0, 10).map((t) => `- ${t.name}: ${t.description}`).join('\n')}${tokens.length > 10 ? '\n... and ' + (tokens.length - 10) + ' more' : ''}\n\nInclude:\n1. How to use these tokens\n2. When to use each one\n3. Best practices\n4. Common patterns`,
-          },
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Prompt: Design Review
- */
-server.registerPrompt(
-  'design-review',
-  {
-    title: 'Design Review',
-    description: 'Review a design or component for Optics token usage and best practices',
-    argsSchema: {
-      code: z.string().describe('Component code to review'),
-      componentType: z.string().optional().describe('Type of component being reviewed'),
-    },
-  },
-  async ({ code, componentType }) => ({
-    messages: [
-      {
-        role: 'user',
-        content: {
-          type: 'text',
-          text: `Review this ${componentType || 'unknown'} component for Optics design system compliance:\n\n\`\`\`\n${code || ''}\n\`\`\`\n\nCheck for:\n1. Hard-coded values that should use tokens\n2. Proper token usage and naming\n3. Accessibility (color contrast, focus states)\n4. Consistency with Optics patterns\n5. Missing or incorrect tokens\n\nUse these tools to help:\n- validate_token_usage: Find hard-coded values\n- check_contrast: Verify color accessibility\n- get_component_info: See how Optics components use tokens`,
-        },
-      },
-    ],
-  })
-);
-
-/**
- * Prompt: Get Token Reference
- */
-server.registerPrompt(
-  'get-token-reference',
-  {
-    title: 'Get Token Reference',
-    description: 'Get complete list of all available Optics design tokens - USE THIS to prevent token name hallucination',
-    argsSchema: {
-      category: z.string().optional().describe('Optional: Filter by category (spacing, typography, border, shadow, or leave empty for all)'),
-    },
-  },
-  async ({ category }) => {
-    let tokens = designTokens;
-
-    if (category) {
-      tokens = designTokens.filter((t) => t.category === category);
-    }
-
-    // Group non-color tokens for clarity
-    const spacing = tokens.filter(t => t.category === 'spacing');
-    const typography = tokens.filter(t => t.category === 'typography');
-    const border = tokens.filter(t => t.category === 'border');
-    const shadow = tokens.filter(t => t.category === 'shadow');
-
-    let message = `# Complete Optics Design Token Reference\n\n**IMPORTANT: These are the ONLY valid token names. Do not invent token names like --op-space-600 or use hard-coded pixel values.**\n\n`;
-
-    if (!category || category === 'spacing') {
-      message += `## Spacing Tokens (${spacing.length} tokens)\n\n`;
-      message += `**ONLY use these exact names:**\n\n`;
-      spacing.forEach(t => {
-        message += `- \`${t.name}\` = ${t.value}\n`;
-      });
-      message += `\n**Examples:**\n`;
-      message += `- padding: var(--op-space-medium); /* 16px */\n`;
-      message += `- margin: var(--op-space-large); /* 20px */\n`;
-      message += `- gap: var(--op-space-x-small); /* 8px */\n\n`;
-    }
-
-    if (!category || category === 'typography') {
-      message += `## Typography Tokens (${typography.length} tokens)\n\n`;
-      const fontSizes = typography.filter(t => t.name.includes('font-') && !t.name.includes('weight') && !t.name.includes('family'));
-      const fontWeights = typography.filter(t => t.name.includes('weight'));
-      const lineHeights = typography.filter(t => t.name.includes('line-height'));
-
-      message += `### Font Sizes (${fontSizes.length}):\n`;
-      fontSizes.forEach(t => {
-        message += `- \`${t.name}\` = ${t.value}\n`;
-      });
-
-      message += `\n### Font Weights (${fontWeights.length}):\n`;
-      fontWeights.forEach(t => {
-        message += `- \`${t.name}\` = ${t.value}\n`;
-      });
-
-      message += `\n### Line Heights (${lineHeights.length}):\n`;
-      lineHeights.forEach(t => {
-        message += `- \`${t.name}\` = ${t.value}\n`;
-      });
-      message += `\n`;
-    }
-
-    if (!category || category === 'border') {
-      message += `## Border Tokens (${border.length} tokens)\n\n`;
-      border.forEach(t => {
-        message += `- \`${t.name}\` = ${t.value}\n`;
-      });
-      message += `\n`;
-    }
-
-    if (!category || category === 'shadow') {
-      message += `## Shadow Tokens (${shadow.length} tokens)\n\n`;
-      shadow.forEach(t => {
-        message += `- \`${t.name}\`\n`;
-      });
-      message += `\n`;
-    }
-
-    message += `\n---\n\n**CRITICAL RULES:**\n`;
-    message += `1. NEVER invent token names - only use names from this list\n`;
-    message += `2. NEVER use hard-coded px values - always use tokens\n`;
-    message += `3. For colors, use search_tokens tool to find available color tokens\n`;
-    message += `4. Token names use words like 'small', 'medium', 'large', NOT numbers like '600'\n`;
-
-    return {
-      messages: [
-        {
-          role: 'user',
-          content: {
-            type: 'text',
-            text: message,
-          },
-        },
-      ],
-    };
-  }
-);
+  )
+})
 
 
 /**
