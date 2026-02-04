@@ -4,7 +4,7 @@ This guide explains how to configure the Optics MCP server with various MCP clie
 
 ## Prerequisites
 
-- Node.js 18 or later (for `npx`)
+- Node.js 24 or later (for `npx`)
 - An MCP-compatible client (see below for supported clients)
 
 ## Zero-Install Setup (Recommended)
@@ -269,11 +269,13 @@ Try: "Get the details for the color-primary token"
 ### Server Not Starting
 
 **Check Node.js version:**
+
 ```bash
-node --version  # Should be 18+
+node --version  # Should be 24+
 ```
 
 **Test the server manually:**
+
 ```bash
 node /path/to/optics-mcp/dist/index.js
 # Should output: "Optics MCP Server running on stdio"

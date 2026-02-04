@@ -13,19 +13,19 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
-      
+
       - run: npm ci
-      
+
       - run: npm test
-      
+
       - name: Configure npm for GitHub Packages
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" > ~/.npmrc
           echo "@dallasbpeters:registry=https://npm.pkg.github.com" >> ~/.npmrc
-      
+
       - run: npm publish --access public

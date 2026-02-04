@@ -20,7 +20,7 @@ This is an MCP (Model Context Protocol) server for the Optics Design System. It 
 **Technology Stack:**
 - TypeScript with ES2022 modules
 - MCP SDK (`@modelcontextprotocol/sdk`) for protocol implementation
-- Node.js 18+ runtime
+- Node.js 24+ runtime
 - stdio transport for client communication
 
 ## Development Commands
