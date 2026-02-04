@@ -36,6 +36,7 @@ import * as allComponents from './resources/components/all'
 // Prompts
 import * as createThemedComponentPrompt from './prompts/create-themed-component'
 import * as migrateToTokensPrompt from './prompts/migrate-to-tokens'
+import * as accessibleColorComboPrompt from './prompts/accessible-color-combo'
 
 /**
  * Create and configure the MCP server
@@ -45,7 +46,7 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-const prompts = [createThemedComponentPrompt, migrateToTokensPrompt]
+const prompts = [createThemedComponentPrompt, migrateToTokensPrompt, accessibleColorComboPrompt]
 
 /**
  * Resource: System Overview
@@ -115,37 +116,6 @@ server.setRequestHandler(GetPromptRequestSchema, async (request) => {
     ],
   }
 })
-
-/**
- * Prompt: Accessible Color Combo
- */
-server.registerPrompt(
-  'accessible-color-combo',
-  {
-    title: 'Accessible Color Combo',
-    description: 'Suggest accessible foreground/background color token combinations',
-    argsSchema: {
-      colorFamily: z.string().describe('Color family (primary, neutral, danger, warning, info, notice)'),
-      wcagLevel: z.string().optional().describe('WCAG level (AA or AAA)'),
-    },
-  },
-  async ({ colorFamily, wcagLevel }) => {
-    const family = colorFamily || 'primary';
-    const level = wcagLevel || 'AA';
-
-    return {
-      messages: [
-        {
-          role: 'user',
-          content: {
-            type: 'text',
-            text: `Suggest accessible color token combinations for the ${family} color family that meet WCAG ${level} standards.\n\nOptics uses a scale-based color system with:\n- Base HSL tokens: --op-color-${family}-h/s/l\n- Generated scale tokens: ${family}-base, ${family}-plus-one through plus-eight, ${family}-minus-one through minus-eight\n- On-color tokens for text: ${family}-on-base, ${family}-on-plus-five, etc.\n\nUse the check_contrast tool to validate combinations. Suggest foreground/background pairs that meet the contrast requirements.`,
-          },
-        },
-      ],
-    };
-  }
-);
 
 /**
  * Prompt: Explain Token System
