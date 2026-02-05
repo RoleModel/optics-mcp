@@ -15,7 +15,8 @@
     "watch": "npx tsc --watch",
     "start": "node dist/index.js",
     "test": "node dist/test.js",
-    "test:interactive": "npm run build && node dist/interactive-client.js"
+    "test:interactive": "npm run build && node dist/interactive-client.js",
+    "sync-data": "npx ts-node scripts/sync-optics-data.ts"
   },
   "keywords": [
     "mcp",
@@ -42,8 +43,10 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@rolemodel/optics": "^2.3.0",
     "@types/node": "^20.10.0",
     "esbuild": "^0.27.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
   "engines": {
