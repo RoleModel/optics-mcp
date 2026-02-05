@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import Tool, { type ToolInputSchema } from './tool.js'
-import { components, designTokens, DesignToken } from '../optics-data.js'
+import { components, designTokens, type DesignToken } from '../optics-data.js'
 
 class GetComponentTokensTool extends Tool {
   name = 'get_component_tokens'
