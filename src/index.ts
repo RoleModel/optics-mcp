@@ -15,7 +15,6 @@ import {
   designTokens,
   components,
   documentation,
-  getTokenUsageStats,
   getComponentTokenDependencies,
 } from './optics-data.js';
 import { generateTheme } from './tools/theme-generator.js';
@@ -46,6 +45,7 @@ import * as useRecipePrompt from './prompts/use-recipe.js';
 
 // Tools
 import GetTokenTool from './tools/get-token-tool.js';
+import GetTokenUsageStatsTool from './tools/get-token-usage-stats-tool.js';
 
 /**
  * Create and configure the MCP server
@@ -191,8 +191,17 @@ prompts.forEach((prompt) => {
  * Tools
  */
 
+// get_token ✅
+// get_token_usage_stats ✅
+// search_tokens
+// list_components
+// get_component_info
+// get_component_tokens
+// search_documentation
+
 const tools = [
   new GetTokenTool(),
+  new GetTokenUsageStatsTool(),
 ]
 
 tools.forEach((tool) => {
@@ -250,29 +259,6 @@ server.registerTool(
         {
           type: 'text',
           text: JSON.stringify(filtered, null, 2),
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Tool: Get Token Usage Stats
- */
-server.registerTool(
-  'get_token_usage_stats',
-  {
-    title: 'Get Token Usage Stats',
-    description: 'Get statistics about design token usage across the system',
-    inputSchema: {},
-  },
-  async () => {
-    const stats = getTokenUsageStats();
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(stats, null, 2),
         },
       ],
     };

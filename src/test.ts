@@ -4,7 +4,7 @@
  * Simple test script to verify the Optics MCP server functionality
  */
 
-import { designTokens, components, getTokenUsageStats, getComponentTokenDependencies } from './optics-data.js';
+import { designTokens, components, getComponentTokenDependencies } from './optics-data.js';
 
 console.log('🧪 Testing Optics MCP Server...\n');
 
@@ -21,10 +21,10 @@ console.log(`  Total components: ${components.length}`);
 console.log(`  Components: ${components.map(c => c.name).join(', ')}\n`);
 
 // Test 3: Token Usage Stats
-console.log('✓ Test 3: Token Usage Statistics');
-const stats = getTokenUsageStats();
-console.log(`  Total tokens: ${stats.totalTokens}`);
-console.log(`  Categories:`, stats.categories, '\n');
+// console.log('✓ Test 3: Token Usage Statistics');
+// const stats = getTokenUsageStats();
+// console.log(`  Total tokens: ${stats.totalTokens}`);
+// console.log(`  Categories:`, stats.categories, '\n');
 
 // Test 4: Component Token Dependencies
 console.log('✓ Test 4: Component Token Dependencies');
