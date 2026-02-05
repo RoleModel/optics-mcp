@@ -12,14 +12,6 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types"
 import { z } from 'zod';
 import { designTokens } from './optics-data.js';
-import { generateTheme } from './tools/theme-generator.js';
-import { validateTokenUsage, formatValidationReport } from './tools/validate.js';
-
-import { checkTokenContrast, formatContrastResult } from './tools/accessibility.js';
-import { suggestTokenMigration, formatMigrationSuggestions } from './tools/migration.js';
-import { generateComponentScaffold, formatScaffoldOutput } from './tools/scaffold.js';
-import { generateStickerSheet, formatStickerSheet } from './tools/sticker-sheet.js';
-import { getRecipe, searchRecipes, formatRecipe, formatRecipeList } from './tools/recipes.js';
 
 // Resources
 import * as systemOverview from './resources/system-overview.js';
@@ -35,8 +27,6 @@ import * as accessibleColorComboPrompt from './prompts/accessible-color-combo.js
 import * as designReviewPrompt from './prompts/design-review.js';
 import * as explainTokenSystemPrompt from './prompts/explain-token-system.js';
 import * as getTokenReferencePrompt from './prompts/get-token-reference.js';
-import * as configureIconsPrompt from './prompts/configure-icons.js';
-import * as useRecipePrompt from './prompts/use-recipe.js';
 
 // Tools
 import GetTokenTool from './tools/get-token-tool.js';
@@ -46,7 +36,13 @@ import ListComponentsTool from './tools/list-components-tool.js'
 import GetComponentInfoTool from './tools/get-component-info-tool.js';
 import GetComponentTokensTool from './tools/get-component-tokens-tool.js';
 import SearchDocumentationTool from './tools/search-documentation-tool.js';
+import GenerateThemeTool from './tools/generate-theme-tool.js';
+import ValidateTokenUsageTool from './tools/validate-token-usage-tool.js';
 import ReplaceHardCodedValuesTool from './tools/replace-hard-coded-values-tool.js';
+import CheckContrastTool from './tools/check-contrast-tool.js';
+import SuggestTokenMigrationTool from './tools/suggest-token-migration-tool.js';
+import GenerateComponentScaffoldTool from './tools/generate-component-scaffold-tool.js';
+import GenerateStickerSheetTool from './tools/generate-sticker-sheet-tool.js';
 
 /**
  * Create and configure the MCP server
@@ -54,12 +50,6 @@ import ReplaceHardCodedValuesTool from './tools/replace-hard-coded-values-tool.j
 const server = new McpServer({
   name: 'optics-mcp',
   version: '0.1.0',
-}, {
-  capabilities: {
-    tools: {},
-    prompts: {},
-    resources: {},
-  }
 });
 
 /**
@@ -156,9 +146,7 @@ const prompts = [
   accessibleColorComboPrompt,
   designReviewPrompt,
   explainTokenSystemPrompt,
-  getTokenReferencePrompt,
-  configureIconsPrompt,
-  useRecipePrompt
+  getTokenReferencePrompt
 ]
 
 prompts.forEach((prompt) => {
@@ -200,7 +188,13 @@ const tools = [
   new GetComponentInfoTool(),
   new GetComponentTokensTool(),
   new SearchDocumentationTool(),
-  new ReplaceHardCodedValuesTool()
+  new GenerateThemeTool(),
+  new ValidateTokenUsageTool(),
+  new ReplaceHardCodedValuesTool(),
+  new CheckContrastTool(),
+  new SuggestTokenMigrationTool(),
+  new GenerateComponentScaffoldTool(),
+  new GenerateStickerSheetTool()
 ]
 
 tools.forEach((tool) => {
@@ -225,194 +219,6 @@ tools.forEach((tool) => {
     },
   )
 })
-
-/**
- * Tool: Generate Theme
- */
-server.registerTool(
-  'generate_theme',
-  {
-    title: 'Generate Theme',
-    description: 'Generate a custom Optics theme with CSS variable overrides',
-    inputSchema: {
-      brandName: z.string().describe('Name of the brand/theme (e.g., "Acme Corp")'),
-      primary: z.string().describe('Primary brand color (hex, e.g., "#0066CC")'),
-      secondary: z.string().optional().describe('Secondary color (hex, optional)'),
-    },
-  },
-  async ({ brandName, primary, secondary }) => {
-    const brandColors = {
-      primary,
-      secondary,
-    };
-
-    const theme = generateTheme(brandName, brandColors);
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: `# ${brandName} Theme Generated\n\n## CSS Variables\n\n\`\`\`css\n${theme.cssVariables}\n\`\`\`\n\n## Figma Variables\n\nSave this as \`figma-variables.json\`:\n\n\`\`\`json\n${theme.figmaVariables}\n\`\`\`\n\n## Summary\n\n- **Total tokens**: ${theme.tokens.length}\n- **Colors**: ${theme.tokens.filter(t => t.category === 'color').length}\n- **Typography**: ${theme.tokens.filter(t => t.category === 'typography').length}\n- **Spacing**: ${theme.tokens.filter(t => t.category === 'spacing').length}\n\n${theme.documentation}`,
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Tool: Validate Token Usage
- */
-server.registerTool(
-  'validate_token_usage',
-  {
-    title: 'Validate Token Usage',
-    description: 'Validate code for hard-coded values that should use design tokens',
-    inputSchema: {
-      code: z.string().describe('CSS or component code to validate'),
-    },
-  },
-  async ({ code }) => {
-    const report = validateTokenUsage(code, designTokens);
-    const formatted = formatValidationReport(report);
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: formatted,
-        },
-      ],
-    };
-  }
-);
-
-
-
-/**
- * Tool: Check Contrast
- */
-server.registerTool(
-  'check_contrast',
-  {
-    title: 'Check Contrast',
-    description: 'Check WCAG contrast ratio between two color tokens',
-    inputSchema: {
-      foregroundToken: z.string().describe('Foreground color token name'),
-      backgroundToken: z.string().describe('Background color token name'),
-    },
-  },
-  async ({ foregroundToken, backgroundToken }) => {
-    const result = checkTokenContrast(foregroundToken, backgroundToken, designTokens);
-    const formatted = formatContrastResult(result);
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: formatted,
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Tool: Suggest Token Migration
- */
-server.registerTool(
-  'suggest_token_migration',
-  {
-    title: 'Suggest Token Migration',
-    description: 'Suggest design tokens for a hard-coded value',
-    inputSchema: {
-      value: z.string().describe('Hard-coded value to find tokens for (e.g., "#0066CC", "16px")'),
-      category: z.string().optional().describe('Optional category filter (color, spacing, typography)'),
-    },
-  },
-  async ({ value, category }) => {
-    const suggestion = suggestTokenMigration(value, designTokens, category);
-    const formatted = formatMigrationSuggestions(suggestion);
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: formatted,
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Tool: Generate Component Scaffold
- */
-server.registerTool(
-  'generate_component_scaffold',
-  {
-    title: 'Generate Component Scaffold',
-    description: 'Generate a React component scaffold with proper token usage',
-    inputSchema: {
-      componentName: z.string().describe('Name of the component (e.g., "Alert", "Card")'),
-      description: z.string().describe('Brief description of the component'),
-      tokens: z.array(z.string()).describe('List of token names the component should use'),
-    },
-  },
-  async ({ componentName, description, tokens }) => {
-    const scaffold = generateComponentScaffold(
-      componentName,
-      description,
-      tokens,
-      designTokens
-    );
-    const formatted = formatScaffoldOutput(scaffold);
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: formatted,
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Tool: Generate Sticker Sheet
- */
-server.registerTool(
-  'generate_sticker_sheet',
-  {
-    title: 'Generate Sticker Sheet',
-    description: 'Generate a visual style guide with color swatches and component examples',
-    inputSchema: {
-      framework: z.enum(['react', 'vue', 'svelte', 'html']).optional().describe('Target framework (default: react)'),
-      includeColors: z.boolean().optional().describe('Include color swatches (default: true)'),
-      includeTypography: z.boolean().optional().describe('Include typography specimens (default: true)'),
-      includeComponents: z.boolean().optional().describe('Include component examples (default: true)'),
-    },
-  },
-  async ({ framework, includeColors, includeTypography, includeComponents }) => {
-    const options = {
-      framework: framework ?? 'react',
-      includeColors: includeColors ?? true,
-      includeTypography: includeTypography ?? true,
-      includeComponents: includeComponents ?? true,
-    };
-    const sheet = generateStickerSheet(designTokens, components, options);
-    const formatted = formatStickerSheet(sheet);
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: formatted,
-        },
-      ],
-    };
-  }
-);
 
 /**
  * Start the server
