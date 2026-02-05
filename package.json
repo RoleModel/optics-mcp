@@ -14,8 +14,7 @@
     "prepare": "npm run build",
     "watch": "npx tsc --watch",
     "start": "node dist/index.js",
-    "test": "node dist/test.js",
-    "test:interactive": "npm run build && node dist/interactive-client.js"
+    "test": "node dist/test.js"
   },
   "keywords": [
     "mcp",
@@ -53,10 +52,8 @@
     "dist",
     "README.md",
     "LICENSE",
-    "docs/SYSTEM_OVERVIEW.md",
-    "docs/AI_IMPROVEMENTS.md",
-    "docs/WARP.md",
-    "docs/TOOLS.md",
-    "docs/EXAMPLES.md"
+    "docs",
+    "editor-configs",
+    ".claude/commands"
   ]
 }

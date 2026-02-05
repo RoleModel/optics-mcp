@@ -25,6 +25,7 @@ import { checkTokenContrast, formatContrastResult } from './tools/accessibility.
 import { suggestTokenMigration, formatMigrationSuggestions } from './tools/migration.js';
 import { generateComponentScaffold, formatScaffoldOutput } from './tools/scaffold.js';
 import { generateStickerSheet, formatStickerSheet } from './tools/sticker-sheet.js';
+import { getRecipe, searchRecipes, formatRecipe, formatRecipeList } from './tools/recipes.js';
 
 // Resources
 import * as systemOverview from './resources/system-overview.js';
@@ -143,7 +144,9 @@ const prompts = [
   accessibleColorComboPrompt,
   designReviewPrompt,
   explainTokenSystemPrompt,
-  getTokenReferencePrompt
+  getTokenReferencePrompt,
+  configureIconsPrompt,
+  useRecipePrompt
 ]
 
 prompts.forEach((prompt) => {
