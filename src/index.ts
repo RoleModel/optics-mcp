@@ -14,7 +14,7 @@ import { z } from 'zod';
 import { designTokens } from './optics-data.js';
 import { generateTheme } from './tools/theme-generator.js';
 import { validateTokenUsage, formatValidationReport } from './tools/validate.js';
-import { replaceHardCodedValues, formatReplacementSuggestions } from './tools/replace.js';
+
 import { checkTokenContrast, formatContrastResult } from './tools/accessibility.js';
 import { suggestTokenMigration, formatMigrationSuggestions } from './tools/migration.js';
 import { generateComponentScaffold, formatScaffoldOutput } from './tools/scaffold.js';
@@ -46,6 +46,7 @@ import ListComponentsTool from './tools/list-components-tool.js'
 import GetComponentInfoTool from './tools/get-component-info-tool.js';
 import GetComponentTokensTool from './tools/get-component-tokens-tool.js';
 import SearchDocumentationTool from './tools/search-documentation-tool.js';
+import ReplaceHardCodedValuesTool from './tools/replace-hard-coded-values-tool.js';
 
 /**
  * Create and configure the MCP server
@@ -198,7 +199,8 @@ const tools = [
   new ListComponentsTool(),
   new GetComponentInfoTool(),
   new GetComponentTokensTool(),
-  new SearchDocumentationTool()
+  new SearchDocumentationTool(),
+  new ReplaceHardCodedValuesTool()
 ]
 
 tools.forEach((tool) => {
@@ -284,33 +286,7 @@ server.registerTool(
   }
 );
 
-/**
- * Tool: Replace Hard-Coded Values
- */
-server.registerTool(
-  'replace_hard_coded_values',
-  {
-    title: 'Replace Hard-Coded Values',
-    description: 'Replace hard-coded values with design tokens',
-    inputSchema: {
-      code: z.string().describe('Code containing hard-coded values'),
-      autofix: z.boolean().optional().describe('Whether to automatically fix the code (default: false)'),
-    },
-  },
-  async ({ code, autofix }) => {
-    const result = replaceHardCodedValues(code, designTokens, autofix ?? false);
-    const formatted = formatReplacementSuggestions(result);
 
-    return {
-      content: [
-        {
-          type: 'text',
-          text: formatted,
-        },
-      ],
-    };
-  }
-);
 
 /**
  * Tool: Check Contrast
