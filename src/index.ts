@@ -44,6 +44,9 @@ import * as getTokenReferencePrompt from './prompts/get-token-reference.js';
 import * as configureIconsPrompt from './prompts/configure-icons.js';
 import * as useRecipePrompt from './prompts/use-recipe.js';
 
+// Tools
+import GetTokenTool from './tools/get-token-tool.js';
+
 /**
  * Create and configure the MCP server
  */
@@ -184,45 +187,36 @@ prompts.forEach((prompt) => {
   )
 })
 
-
 /**
- * Tool: Get Token
+ * Tools
  */
-server.registerTool(
-  'get_token',
-  {
-    title: 'Get Token',
-    description: 'Get detailed information about a specific design token by name',
-    inputSchema: {
-      tokenName: z.string().describe('The name of the design token (e.g., "color-primary", "spacing-md")'),
-    },
-  },
-  async ({ tokenName }) => {
-    const token = designTokens.find((t) => t.name === tokenName);
 
-    if (!token) {
+const tools = [
+  new GetTokenTool(),
+]
+
+tools.forEach((tool) => {
+  server.registerTool(
+    tool.metadata.name,
+    {
+      title: tool.metadata.title,
+      description: tool.metadata.description,
+      inputSchema: tool.inputSchema,
+    },
+    async (args: any) => {
+      const content = await tool.handler(args)
+
       return {
         content: [
           {
             type: 'text',
-            text: `Token not found: ${tokenName}\n\nAvailable tokens: ${designTokens
-              .map((t) => t.name)
-              .join(', ')}`,
+            text: content,
           },
         ],
-      };
-    }
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(token, null, 2),
-        },
-      ],
-    };
-  }
-);
+      }
+    },
+  )
+})
 
 /**
  * Tool: Search Tokens
