@@ -155,14 +155,8 @@ prompts.forEach((prompt) => {
       argsSchema: prompt.inputSchema,
     },
     async ({ name, arguments: args }) => {
-      // Validate arguments if schema exists
-      let parsedArgs: Record<string, unknown> = args || {}
-      if (prompt.inputSchema) {
-        parsedArgs = parseToolArgs(prompt.inputSchema, args || {})
-      }
-
-      // Get the prompt content
-      const content = await prompt.handler(parsedArgs)
+      // Get the prompt content - MCP SDK handles argument validation
+      const content = await prompt.handler(args || {} as never)
 
       return {
         messages: [
@@ -630,7 +624,6 @@ prompts.forEach((prompt) => {
 //     };
 //   }
 // );
-
 
 /**
  * Start the server

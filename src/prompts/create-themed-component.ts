@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { components } from '../optics-data.js'
-import { readResourceFile } from "../_internal/resource-path.js"
+import { readPromptFile } from "../_internal/resource-path.js"
 
 type CreateThemedComponentPromptArgs = {
   componentType: string
@@ -41,7 +41,7 @@ export async function handler(args: CreateThemedComponentPromptArgs) {
     return `Create a ${compType} component using Optics design tokens. Available components: ${availableComponents}.`
   }
 
-  let promptTemplate = await readResourceFile("prompts/create-themed-components-prompt.md")
+  let promptTemplate = await readPromptFile("create-themed-component-prompt.md")
   promptTemplate = promptTemplate.replace(/{{VARIANT}}/g, compVariant)
   promptTemplate = promptTemplate.replace(/{{TYPE}}/g, compType)
   promptTemplate = promptTemplate.replace(/{{FRAMEWORK}}/g, compFramework)

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { readResourceFile } from "../_internal/resource-path.js"
+import { readPromptFile } from "../_internal/resource-path.js"
 
 /**
  * Prompt: Accessible Color Combo
@@ -25,7 +25,7 @@ export async function handler(args: AccessibleColorComboPromptArgs) {
   const family = args.colorFamily || 'primary'
   const level = args.wcagLevel || 'AA'
 
-  let promptTemplate = await readResourceFile("prompts/accessible-color-combo-prompt.md")
+  let promptTemplate = await readPromptFile("accessible-color-combo-prompt.md")
   promptTemplate = promptTemplate.replace(/{{FAMILY}}/g, family)
   promptTemplate = promptTemplate.replace(/{{LEVEL}}/g, level)
   return promptTemplate

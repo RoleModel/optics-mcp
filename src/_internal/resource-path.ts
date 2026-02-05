@@ -9,4 +9,11 @@ const readResourceFile = async (filename: string): Promise<string> => {
   return readFileSync(filePath, 'utf-8')
 }
 
-export { readResourceFile }
+const readPromptFile = async (filename: string): Promise<string> => {
+  const currentDir = dirname(fileURLToPath(import.meta.url))
+  const filePath = join(currentDir, '..', 'prompts', filename)
+
+  return readFileSync(filePath, 'utf-8')
+}
+
+export { readResourceFile, readPromptFile }
