@@ -46,6 +46,7 @@ import * as useRecipePrompt from './prompts/use-recipe.js';
 // Tools
 import GetTokenTool from './tools/get-token-tool.js';
 import GetTokenUsageStatsTool from './tools/get-token-usage-stats-tool.js';
+import SearchTokensTool from './tools/search-tokens-tool.js';
 
 /**
  * Create and configure the MCP server
@@ -193,7 +194,7 @@ prompts.forEach((prompt) => {
 
 // get_token ✅
 // get_token_usage_stats ✅
-// search_tokens
+// search_tokens ✅
 // list_components
 // get_component_info
 // get_component_tokens
@@ -202,6 +203,7 @@ prompts.forEach((prompt) => {
 const tools = [
   new GetTokenTool(),
   new GetTokenUsageStatsTool(),
+  new SearchTokensTool(),
 ]
 
 tools.forEach((tool) => {
@@ -226,44 +228,6 @@ tools.forEach((tool) => {
     },
   )
 })
-
-/**
- * Tool: Search Tokens
- */
-server.registerTool(
-  'search_tokens',
-  {
-    title: 'Search Tokens',
-    description: 'Search for design tokens by category or name pattern',
-    inputSchema: {
-      category: z.string().optional().describe('Filter by category (color, spacing, typography, border, shadow)'),
-      namePattern: z.string().optional().describe('Search pattern for token names (case-insensitive)'),
-    },
-  },
-  async ({ category, namePattern }) => {
-    let filtered = designTokens;
-
-    if (category) {
-      filtered = filtered.filter((t) => t.category === category);
-    }
-
-    if (namePattern) {
-      const pattern = namePattern.toLowerCase();
-      filtered = filtered.filter((t) =>
-        t.name.toLowerCase().includes(pattern)
-      );
-    }
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(filtered, null, 2),
-        },
-      ],
-    };
-  }
-);
 
 /**
  * Tool: Get Component Info
