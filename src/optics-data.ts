@@ -1576,23 +1576,6 @@ export const documentation: Documentation[] = [
 ];
 
 /**
- * Get token usage statistics
- */
-export function getTokenUsageStats() {
-  const categoryCount: Record<string, number> = {};
-
-  designTokens.forEach(token => {
-    categoryCount[token.category] = (categoryCount[token.category] || 0) + 1;
-  });
-
-  return {
-    totalTokens: designTokens.length,
-    categories: categoryCount,
-    tokens: designTokens
-  };
-}
-
-/**
  * Get component token dependencies
  */
 export function getComponentTokenDependencies(componentName: string) {
