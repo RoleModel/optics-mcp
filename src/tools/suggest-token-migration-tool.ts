@@ -6,6 +6,7 @@
 import { z } from 'zod';
 import Tool from './tool.js';
 import { DesignToken, designTokens } from '../optics-data.js';
+import { readToolFile } from '../_internal/resource-path.js';
 
 export interface MigrationSuggestion {
   inputValue: string;
@@ -31,7 +32,7 @@ class SuggestTokenMigrationTool extends Tool {
   async handler(args: any): Promise<string> {
     const { value, category } = args;
     const suggestion = this.suggestTokenMigration(value, designTokens, category);
-    const formatted = this.formatMigrationSuggestions(suggestion);
+    const formatted = await this.formatMigrationSuggestions(suggestion);
 
     return formatted;
   }
@@ -140,29 +141,25 @@ class SuggestTokenMigrationTool extends Tool {
   /**
    * Format migration suggestions
    */
-  private formatMigrationSuggestions(suggestion: MigrationSuggestion): string {
+  private async formatMigrationSuggestions(suggestion: MigrationSuggestion): Promise<string> {
+    if (suggestion.suggestedTokens.length === 0) {
+      const template = await readToolFile('suggest-token-migration-none.md');
+      return template.replace('{{inputValue}}', suggestion.inputValue);
+    }
+
+    const template = await readToolFile('suggest-token-migration-header.md');
     const lines: string[] = [
-      '# Token Migration Suggestions',
-      '',
-      `**Input Value**: \`${suggestion.inputValue}\``,
+      template.replace('{{inputValue}}', suggestion.inputValue),
       ''
     ];
 
-    if (suggestion.suggestedTokens.length > 0) {
-      lines.push('## Suggested Tokens');
+    for (const token of suggestion.suggestedTokens) {
+      lines.push(`### ${token.tokenName}`);
+      lines.push(`- **Value**: \`${token.tokenValue}\``);
+      lines.push(`- **Category**: ${token.category}`);
+      lines.push(`- **Similarity**: ${Math.round(token.similarity * 100)}%`);
+      lines.push(`- **Reason**: ${token.reason}`);
       lines.push('');
-
-      for (const token of suggestion.suggestedTokens) {
-        lines.push(`### ${token.tokenName}`);
-        lines.push(`- **Value**: \`${token.tokenValue}\``);
-        lines.push(`- **Category**: ${token.category}`);
-        lines.push(`- **Similarity**: ${Math.round(token.similarity * 100)}%`);
-        lines.push(`- **Reason**: ${token.reason}`);
-        lines.push('');
-      }
-    } else {
-      lines.push('No suitable tokens found for this value.');
-      lines.push('Consider adding a new token to your design system.');
     }
 
     return lines.join('\n');

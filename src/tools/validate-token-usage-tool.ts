@@ -7,6 +7,7 @@ import { z } from 'zod';
 import Tool from './tool.js';
 import { DesignToken, designTokens } from '../optics-data.js';
 import { extractAllValues, findMatchingToken, CSSValue } from '../utils/css-parser.js';
+import { readToolFile } from '../_internal/resource-path.js';
 
 export interface ValidationIssue {
   type: 'hard-coded-value' | 'missing-token' | 'deprecated-token';
@@ -39,7 +40,7 @@ class ValidateTokenUsageTool extends Tool {
 
   async handler(args: any): Promise<string> {
     const report = this.validateTokenUsage(args.code, designTokens);
-    const formatted = this.formatValidationReport(report);
+    const formatted = await this.formatValidationReport(report);
 
     return formatted;
   }
@@ -110,29 +111,28 @@ class ValidateTokenUsageTool extends Tool {
   /**
    * Generate validation report as formatted text
    */
-  private formatValidationReport(report: ValidationReport): string {
+  private async formatValidationReport(report: ValidationReport): Promise<string> {
+    if (report.issues.length === 0) {
+      const template = await readToolFile('validate-token-usage-valid.md');
+      return template.replace('{{totalChecked}}', report.summary.totalChecked.toString());
+    }
+
+    const template = await readToolFile('validate-token-usage-header.md');
+    const status = report.valid ? '✓ Valid' : '✗ Issues Found';
     const lines: string[] = [
-      '# Token Validation Report',
-      '',
-      `**Status**: ${report.valid ? '✓ Valid' : '✗ Issues Found'}`,
-      `**Issues**: ${report.issueCount}`,
-      `**Values Checked**: ${report.summary.totalChecked}`,
+      template
+        .replace('{{status}}', status)
+        .replace('{{issueCount}}', report.issueCount.toString())
+        .replace('{{totalChecked}}', report.summary.totalChecked.toString()),
       ''
     ];
 
-    if (report.issues.length > 0) {
-      lines.push('## Issues');
+    for (const issue of report.issues) {
+      lines.push(`### ${issue.type}`);
+      lines.push(`- **Value**: \`${issue.value}\``);
+      if (issue.property) lines.push(`- **Property**: \`${issue.property}\``);
+      if (issue.suggestion) lines.push(`- **Suggestion**: ${issue.suggestion}`);
       lines.push('');
-
-      for (const issue of report.issues) {
-        lines.push(`### ${issue.type}`);
-        lines.push(`- **Value**: \`${issue.value}\``);
-        if (issue.property) lines.push(`- **Property**: \`${issue.property}\``);
-        if (issue.suggestion) lines.push(`- **Suggestion**: ${issue.suggestion}`);
-        lines.push('');
-      }
-    } else {
-      lines.push('✓ No issues found! All values use design tokens.');
     }
 
     return lines.join('\n');

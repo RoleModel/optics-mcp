@@ -6,6 +6,7 @@
 import { z } from 'zod';
 import Tool from './tool.js';
 import { DesignToken, Component, designTokens, components } from '../optics-data.js';
+import { readToolFile } from '../_internal/resource-path.js';
 
 export type FrameworkType = 'react' | 'vue' | 'svelte' | 'html';
 
@@ -43,7 +44,7 @@ class GenerateStickerSheetTool extends Tool {
       includeTypography: includeTypography ?? true,
       includeComponents: includeComponents ?? true,
     };
-    const sheet = this.generateStickerSheet(designTokens, components, options);
+    const sheet = await this.generateStickerSheet(designTokens, components, options);
     const formatted = this.formatStickerSheet(sheet);
 
     return formatted;
@@ -423,11 +424,11 @@ h2 {
   /**
    * Generate complete sticker sheet
    */
-  private generateStickerSheet(
+  private async generateStickerSheet(
     tokens: DesignToken[],
     components: Component[],
     options: StickerSheetOptions = {}
-  ): StickerSheet {
+  ): Promise<StickerSheet> {
     const {
       framework = 'react',
       includeColors = true,
@@ -452,30 +453,10 @@ h2 {
     const code = sections.join('\n\n');
     const styles = this.generateStyles();
 
-    const instructions = `
-# Optics Sticker Sheet - ${framework.toUpperCase()}
-
-This sticker sheet provides a visual reference for all Optics design tokens and components.
-
-## Usage
-
-1. Copy the component code below into your ${framework} project
-2. Copy the CSS styles into your stylesheet
-3. Import and use the components in your app
-4. Replace placeholders with actual component implementations
-
-## Files Generated
-
-- **Component Code**: Ready-to-use ${framework} components
-- **Styles**: CSS using Optics design tokens
-- **Examples**: Visual specimens of colors, typography, and components
-
-## Next Steps
-
-- Customize the examples to match your specific components
-- Add interactive states (hover, focus, disabled)
-- Include additional token categories as needed
-`;
+    const template = await readToolFile('generate-sticker-sheet-instructions.md');
+    const instructions = template
+      .replace('{{framework}}', framework.toUpperCase())
+      .replace(/{{framework}}/g, framework);
 
     return {
       framework,

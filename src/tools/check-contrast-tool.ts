@@ -7,6 +7,7 @@ import { z } from 'zod';
 import Tool from './tool.js';
 import { DesignToken, designTokens } from '../optics-data.js';
 import { checkContrast, ContrastResult } from '../utils/color.js';
+import { readToolFile } from '../_internal/resource-path.js';
 
 export interface ContrastCheckResult {
   foregroundToken: string;
@@ -31,7 +32,7 @@ class CheckContrastTool extends Tool {
   async handler(args: any): Promise<string> {
     const { foregroundToken, backgroundToken } = args;
     const result = this.checkTokenContrast(foregroundToken, backgroundToken, designTokens);
-    const formatted = this.formatContrastResult(result);
+    const formatted = await this.formatContrastResult(result);
 
     return formatted;
   }
@@ -114,34 +115,33 @@ class CheckContrastTool extends Tool {
   /**
    * Format contrast check result
    */
-  private formatContrastResult(result: ContrastCheckResult): string {
-    const lines: string[] = [
-      '# Contrast Check Result',
-      '',
-      `**Foreground**: ${result.foregroundToken} (\`${result.foregroundValue}\`)`,
-      `**Background**: ${result.backgroundToken} (\`${result.backgroundValue}\`)`,
-      ''
-    ];
-
+  private async formatContrastResult(result: ContrastCheckResult): Promise<string> {
     if (result.contrast) {
-      lines.push(`**Contrast Ratio**: ${result.contrast.ratio}:1`);
-      lines.push(`**WCAG AA**: ${result.contrast.wcagAA ? '✓ Pass' : '✗ Fail'}`);
-      lines.push(`**WCAG AAA**: ${result.contrast.wcagAAA ? '✓ Pass' : '✗ Fail'}`);
-      lines.push(`**Score**: ${result.contrast.score}`);
-      lines.push('');
+      const template = await readToolFile('check-contrast-result.md');
+      let output = template
+        .replace('{{foregroundToken}}', result.foregroundToken)
+        .replace('{{foregroundValue}}', result.foregroundValue)
+        .replace('{{backgroundToken}}', result.backgroundToken)
+        .replace('{{backgroundValue}}', result.backgroundValue)
+        .replace('{{contrastRatio}}', result.contrast.ratio.toString())
+        .replace('{{wcagAA}}', result.contrast.wcagAA ? '✓ Pass' : '✗ Fail')
+        .replace('{{wcagAAA}}', result.contrast.wcagAAA ? '✓ Pass' : '✗ Fail')
+        .replace('{{score}}', result.contrast.score);
 
       if (!result.passes && result.recommendation) {
-        lines.push('## Recommendation');
-        lines.push(result.recommendation);
+        output += '\n\n## Recommendation\n' + result.recommendation;
       }
-    } else {
-      lines.push('✗ Unable to calculate contrast');
-      if (result.recommendation) {
-        lines.push(`**Reason**: ${result.recommendation}`);
-      }
-    }
 
-    return lines.join('\n');
+      return output;
+    } else {
+      const template = await readToolFile('check-contrast-error.md');
+      return template
+        .replace('{{foregroundToken}}', result.foregroundToken)
+        .replace('{{foregroundValue}}', result.foregroundValue)
+        .replace('{{backgroundToken}}', result.backgroundToken)
+        .replace('{{backgroundValue}}', result.backgroundValue)
+        .replace('{{reason}}', result.recommendation || 'Unknown error');
+    }
   }
 }
 

@@ -6,6 +6,7 @@
 import { z } from 'zod';
 import Tool from './tool.js';
 import { DesignToken, designTokens } from '../optics-data.js';
+import { readToolFile } from '../_internal/resource-path.js';
 
 export interface ComponentScaffold {
   name: string;
@@ -27,7 +28,7 @@ class GenerateComponentScaffoldTool extends Tool {
 
   async handler(args: any): Promise<string> {
     const { componentName, description, tokens } = args;
-    const scaffold = this.generateComponentScaffold(
+    const scaffold = await this.generateComponentScaffold(
       componentName,
       description,
       tokens,
@@ -41,19 +42,19 @@ class GenerateComponentScaffoldTool extends Tool {
   /**
    * Generate component scaffold
    */
-  private generateComponentScaffold(
+  private async generateComponentScaffold(
     componentName: string,
     description: string,
     requiredTokens: string[],
     allTokens: DesignToken[]
-  ): ComponentScaffold {
+  ): Promise<ComponentScaffold> {
     const validTokens = requiredTokens.filter(tokenName =>
       allTokens.some(t => t.name === tokenName)
     );
 
     const typescript = this.generateTypeScriptComponent(componentName, description, validTokens);
     const css = this.generateCSSModule(componentName, validTokens, allTokens);
-    const usage = this.generateUsageExample(componentName);
+    const usage = await this.generateUsageExample(componentName);
 
     return {
       name: componentName,
@@ -181,32 +182,10 @@ class GenerateComponentScaffoldTool extends Tool {
   /**
    * Generate usage example
    */
-  private generateUsageExample(name: string): string {
-    const lines: string[] = [
-      `# ${name} Usage`,
-      ``,
-      `## Import`,
-      `\`\`\`typescript`,
-      `import { ${name} } from './components/${name}';`,
-      `\`\`\``,
-      ``,
-      `## Basic Usage`,
-      `\`\`\`tsx`,
-      `<${name}>`,
-      `  Your content here`,
-      `</${name}>`,
-      `\`\`\``,
-      ``,
-      `## With Custom ClassName`,
-      `\`\`\`tsx`,
-      `<${name} className="custom-class">`,
-      `  Your content here`,
-      `</${name}>`,
-      `\`\`\``,
-      ``
-    ];
+  private async generateUsageExample(name: string): Promise<string> {
+    const template = await readToolFile('generate-component-scaffold-usage.md');
 
-    return lines.join('\n');
+    return template.replace(/{{componentName}}/g, name);
   }
 
   /**
