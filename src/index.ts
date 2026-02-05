@@ -41,6 +41,8 @@ import * as accessibleColorComboPrompt from './prompts/accessible-color-combo.js
 import * as designReviewPrompt from './prompts/design-review.js';
 import * as explainTokenSystemPrompt from './prompts/explain-token-system.js';
 import * as getTokenReferencePrompt from './prompts/get-token-reference.js';
+import * as configureIconsPrompt from './prompts/configure-icons.js';
+import * as useRecipePrompt from './prompts/use-recipe.js';
 
 /**
  * Create and configure the MCP server
@@ -48,6 +50,12 @@ import * as getTokenReferencePrompt from './prompts/get-token-reference.js';
 const server = new McpServer({
   name: 'optics-mcp',
   version: '0.1.0',
+}, {
+  capabilities: {
+    tools: {},
+    prompts: {},
+    resources: {},
+  }
 });
 
 /**
