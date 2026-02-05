@@ -5,7 +5,7 @@
 
 import { z } from 'zod';
 import Tool from './tool.js';
-import { DesignToken, designTokens } from '../optics-data.js';
+import { designTokens, type DesignToken } from '../optics-data.js';
 import { checkContrast, ContrastResult } from '../utils/color.js';
 import { readToolFile } from '../_internal/resource-path.js';
 
