@@ -16,4 +16,11 @@ const readPromptFile = async (filename: string): Promise<string> => {
   return readFileSync(filePath, 'utf-8')
 }
 
-export { readResourceFile, readPromptFile }
+const readToolFile = async (filename: string): Promise<string> => {
+  const currentDir = dirname(fileURLToPath(import.meta.url))
+  const filePath = join(currentDir, '..', 'tools', filename)
+
+  return readFileSync(filePath, 'utf-8')
+}
+
+export { readResourceFile, readPromptFile, readToolFile }
