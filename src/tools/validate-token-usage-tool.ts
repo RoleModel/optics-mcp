@@ -4,9 +4,9 @@
  */
 
 import { z } from 'zod';
-import Tool from './tool.js';
+import Tool, { type ToolInputSchema } from './tool.js';
 import { designTokens, type DesignToken } from '../optics-data.js';
-import { extractAllValues, findMatchingToken, CSSValue } from '../utils/css-parser.js';
+import { extractAllValues, findMatchingToken, type CSSValue } from '../utils/css-parser.js';
 import { readToolFile } from '../_internal/resource-path.js';
 
 export interface ValidationIssue {
@@ -38,7 +38,7 @@ class ValidateTokenUsageTool extends Tool {
     code: z.string().describe('CSS or component code to validate'),
   };
 
-  async handler(args: any): Promise<string> {
+  async handler(args: ToolInputSchema): Promise<string> {
     const report = this.validateTokenUsage(args.code, designTokens);
     const formatted = await this.formatValidationReport(report);
 

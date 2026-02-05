@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import Tool from './tool.js'
+import Tool, { type ToolInputSchema } from './tool.js'
 import { designTokens, type DesignToken } from '../optics-data.js'
 import { extractAllValues, findMatchingToken } from '../utils/css-parser.js'
 
@@ -27,7 +27,7 @@ class ReplaceHardCodedValuesTool extends Tool {
     autofix: z.boolean().optional().describe('Whether to automatically fix the code (default: false)'),
   }
 
-  async handler(args: any): Promise<string> {
+  async handler(args: ToolInputSchema): Promise<string> {
     const { code, autofix } = args
     const result = this.replaceHardCodedValues(code, designTokens, autofix ?? false)
     return this.formatReplacementSuggestions(result)

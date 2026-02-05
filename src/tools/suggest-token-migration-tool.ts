@@ -4,7 +4,7 @@
  */
 
 import { z } from 'zod';
-import Tool from './tool.js';
+import Tool, { type ToolInputSchema } from './tool.js';
 import { designTokens, type DesignToken } from '../optics-data.js';
 import { readToolFile } from '../_internal/resource-path.js';
 
@@ -29,7 +29,7 @@ class SuggestTokenMigrationTool extends Tool {
     category: z.string().optional().describe('Optional category filter (color, spacing, typography)'),
   };
 
-  async handler(args: any): Promise<string> {
+  async handler(args: ToolInputSchema): Promise<string> {
     const { value, category } = args;
     const suggestion = this.suggestTokenMigration(value, designTokens, category);
     const formatted = await this.formatMigrationSuggestions(suggestion);

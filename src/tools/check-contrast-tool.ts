@@ -4,9 +4,9 @@
  */
 
 import { z } from 'zod';
-import Tool from './tool.js';
+import Tool, { type ToolInputSchema } from './tool.js';
 import { designTokens, type DesignToken } from '../optics-data.js';
-import { checkContrast, ContrastResult } from '../utils/color.js';
+import { checkContrast, type ContrastResult } from '../utils/color.js';
 import { readToolFile } from '../_internal/resource-path.js';
 
 export interface ContrastCheckResult {
@@ -29,7 +29,7 @@ class CheckContrastTool extends Tool {
     backgroundToken: z.string().describe('Background color token name'),
   };
 
-  async handler(args: any): Promise<string> {
+  async handler(args: ToolInputSchema): Promise<string> {
     const { foregroundToken, backgroundToken } = args;
     const result = this.checkTokenContrast(foregroundToken, backgroundToken, designTokens);
     const formatted = await this.formatContrastResult(result);

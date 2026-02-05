@@ -4,8 +4,8 @@
  */
 
 import { z } from 'zod';
-import Tool from './tool.js';
-import { DesignToken, Component, designTokens, components } from '../optics-data.js';
+import Tool, { type ToolInputSchema } from './tool.js';
+import { designTokens, components, type DesignToken, type Component } from '../optics-data.js';
 import { readToolFile } from '../_internal/resource-path.js';
 
 export type FrameworkType = 'react' | 'vue' | 'svelte' | 'html';
@@ -36,7 +36,7 @@ class GenerateStickerSheetTool extends Tool {
     includeComponents: z.boolean().optional().describe('Include component examples (default: true)'),
   };
 
-  async handler(args: any): Promise<string> {
+  async handler(args: ToolInputSchema): Promise<string> {
     const { framework, includeColors, includeTypography, includeComponents } = args;
     const options = {
       framework: framework ?? 'react',
