@@ -13,7 +13,6 @@ import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcon
 import { z } from 'zod';
 import {
   designTokens,
-  components,
   documentation,
   getComponentTokenDependencies,
 } from './optics-data.js';
@@ -45,6 +44,7 @@ import GetTokenTool from './tools/get-token-tool.js';
 import GetTokenUsageStatsTool from './tools/get-token-usage-stats-tool.js';
 import SearchTokensTool from './tools/search-tokens-tool.js';
 import ListComponentsTool from './tools/list-components-tool.js'
+import GetComponentInfoTool from './tools/get-component-info-tool.js';
 
 /**
  * Create and configure the MCP server
@@ -186,7 +186,7 @@ prompts.forEach((prompt) => {
 // get_token_usage_stats ✅
 // search_tokens ✅
 // list_components ✅
-// get_component_info
+// get_component_info ✅
 // get_component_tokens
 // search_documentation
 
@@ -195,6 +195,7 @@ const tools = [
   new GetTokenUsageStatsTool(),
   new SearchTokensTool(),
   new ListComponentsTool(),
+  new GetComponentInfoTool(),
 ]
 
 tools.forEach((tool) => {
@@ -219,47 +220,6 @@ tools.forEach((tool) => {
     },
   )
 })
-
-/**
- * Tool: Get Component Info
- */
-server.registerTool(
-  'get_component_info',
-  {
-    title: 'Get Component Info',
-    description: 'Get detailed information about a component including its design token dependencies',
-    inputSchema: {
-      componentName: z.string().describe('The name of the component (e.g., "Button", "Card", "Input")'),
-    },
-  },
-  async ({ componentName }) => {
-    const component = components.find(
-      (c) => c.name.toLowerCase() === componentName.toLowerCase()
-    );
-
-    if (!component) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: `Component not found: ${componentName}\n\nAvailable components: ${components
-              .map((c) => c.name)
-              .join(', ')}`,
-          },
-        ],
-      };
-    }
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(component, null, 2),
-        },
-      ],
-    };
-  }
-);
 
 /**
  * Tool: Get Component Tokens
