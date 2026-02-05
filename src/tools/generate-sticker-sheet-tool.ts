@@ -1,9 +1,11 @@
 /**
- * Sticker sheet generator
+ * Generate Sticker Sheet Tool
  * Generates visual style guide with color swatches and component examples
  */
 
-import { DesignToken, Component } from '../optics-data.js';
+import { z } from 'zod';
+import Tool from './tool.js';
+import { DesignToken, Component, designTokens, components } from '../optics-data.js';
 
 export type FrameworkType = 'react' | 'vue' | 'svelte' | 'html';
 
@@ -11,7 +13,6 @@ export interface StickerSheetOptions {
   framework?: FrameworkType;
   includeColors?: boolean;
   includeTypography?: boolean;
-  includeSpacing?: boolean;
   includeComponents?: boolean;
 }
 
@@ -22,32 +23,58 @@ export interface StickerSheet {
   instructions: string;
 }
 
-/**
- * Generate color swatch component
- */
-function generateColorSwatches(tokens: DesignToken[], framework: FrameworkType): string {
-  const colors = tokens.filter(t => t.category === 'color');
-  
-  const swatchesData = colors.map(token => ({
-    name: token.name,
-    value: token.value,
-    hsl: token.name.startsWith('color-') ? `var(--op-${token.name.replace('color-', '')}-h) var(--op-${token.name.replace('color-', '')}-s) var(--op-${token.name.replace('color-', '')}-l)` : token.value
-  }));
-  
-  switch (framework) {
-    case 'react':
-      return `
+class GenerateStickerSheetTool extends Tool {
+  name = 'generate_sticker_sheet';
+  title = 'Generate Sticker Sheet';
+  description = 'Generate a visual style guide with color swatches and component examples';
+
+  inputSchema = {
+    framework: z.enum(['react', 'vue', 'svelte', 'html']).optional().describe('Target framework (default: react)'),
+    includeColors: z.boolean().optional().describe('Include color swatches (default: true)'),
+    includeTypography: z.boolean().optional().describe('Include typography specimens (default: true)'),
+    includeComponents: z.boolean().optional().describe('Include component examples (default: true)'),
+  };
+
+  async handler(args: any): Promise<string> {
+    const { framework, includeColors, includeTypography, includeComponents } = args;
+    const options = {
+      framework: framework ?? 'react',
+      includeColors: includeColors ?? true,
+      includeTypography: includeTypography ?? true,
+      includeComponents: includeComponents ?? true,
+    };
+    const sheet = this.generateStickerSheet(designTokens, components, options);
+    const formatted = this.formatStickerSheet(sheet);
+
+    return formatted;
+  }
+
+  /**
+   * Generate color swatch component
+   */
+  private generateColorSwatches(tokens: DesignToken[], framework: FrameworkType): string {
+    const colors = tokens.filter(t => t.category === 'color');
+
+    const swatchesData = colors.map(token => ({
+      name: token.name,
+      value: token.value,
+      hsl: token.name.startsWith('color-') ? `var(--op-${token.name.replace('color-', '')}-h) var(--op-${token.name.replace('color-', '')}-s) var(--op-${token.name.replace('color-', '')}-l)` : token.value
+    }));
+
+    switch (framework) {
+      case 'react':
+        return `
 export function ColorSwatches() {
   const colors = ${JSON.stringify(swatchesData, null, 2)};
-  
+
   return (
     <div className="color-swatches">
       <h2>Color Palette</h2>
       <div className="swatch-grid">
         {colors.map(color => (
           <div key={color.name} className="swatch-card">
-            <div 
-              className="swatch-preview" 
+            <div
+              className="swatch-preview"
               style={{ backgroundColor: color.value }}
             />
             <div className="swatch-info">
@@ -61,15 +88,15 @@ export function ColorSwatches() {
   );
 }`;
 
-    case 'vue':
-      return `
+      case 'vue':
+        return `
 <template>
   <div class="color-swatches">
     <h2>Color Palette</h2>
     <div class="swatch-grid">
       <div v-for="color in colors" :key="color.name" class="swatch-card">
-        <div 
-          class="swatch-preview" 
+        <div
+          class="swatch-preview"
           :style="{ backgroundColor: color.value }"
         />
         <div class="swatch-info">
@@ -85,8 +112,8 @@ export function ColorSwatches() {
 const colors = ${JSON.stringify(swatchesData, null, 2)};
 </script>`;
 
-    case 'svelte':
-      return `
+      case 'svelte':
+        return `
 <script>
   const colors = ${JSON.stringify(swatchesData, null, 2)};
 </script>
@@ -96,8 +123,8 @@ const colors = ${JSON.stringify(swatchesData, null, 2)};
   <div class="swatch-grid">
     {#each colors as color}
       <div class="swatch-card">
-        <div 
-          class="swatch-preview" 
+        <div
+          class="swatch-preview"
           style="background-color: {color.value}"
         />
         <div class="swatch-info">
@@ -109,8 +136,8 @@ const colors = ${JSON.stringify(swatchesData, null, 2)};
   </div>
 </div>`;
 
-    case 'html':
-      return `
+      case 'html':
+        return `
 <div class="color-swatches">
   <h2>Color Palette</h2>
   <div class="swatch-grid">
@@ -124,19 +151,19 @@ const colors = ${JSON.stringify(swatchesData, null, 2)};
     </div>`).join('\n    ')}
   </div>
 </div>`;
+    }
   }
-}
 
-/**
- * Generate typography specimens
- */
-function generateTypographySpecimens(tokens: DesignToken[], framework: FrameworkType): string {
-  const fontSizes = tokens.filter(t => t.name.includes('font-size'));
-  const fontWeights = tokens.filter(t => t.name.includes('font-weight'));
-  
-  switch (framework) {
-    case 'react':
-      return `
+  /**
+   * Generate typography specimens
+   */
+  private generateTypographySpecimens(tokens: DesignToken[], framework: FrameworkType): string {
+    const fontSizes = tokens.filter(t => t.name.includes('font-size'));
+    const fontWeights = tokens.filter(t => t.name.includes('font-weight'));
+
+    switch (framework) {
+      case 'react':
+        return `
 export function TypographySpecimens() {
   return (
     <div className="typography-specimens">
@@ -146,7 +173,7 @@ export function TypographySpecimens() {
         <span className="type-label">${token.name}</span>
         <span className="type-sample">The quick brown fox jumps over the lazy dog</span>
       </div>`).join('\n      ')}
-      
+
       <h2>Font Weights</h2>
       ${fontWeights.slice(0, 4).map(token => `
       <p style={{ fontWeight: 'var(--${token.name})' }}>
@@ -156,8 +183,8 @@ export function TypographySpecimens() {
   );
 }`;
 
-    case 'vue':
-      return `
+      case 'vue':
+        return `
 <template>
   <div class="typography-specimens">
     <h2>Typography Scale</h2>
@@ -166,7 +193,7 @@ export function TypographySpecimens() {
       <span class="type-label">${token.name}</span>
       <span class="type-sample">The quick brown fox jumps over the lazy dog</span>
     </div>`).join('\n    ')}
-    
+
     <h2>Font Weights</h2>
     ${fontWeights.slice(0, 4).map(token => `
     <p :style="{ fontWeight: 'var(--${token.name})' }">
@@ -175,8 +202,8 @@ export function TypographySpecimens() {
   </div>
 </template>`;
 
-    case 'svelte':
-      return `
+      case 'svelte':
+        return `
 <div class="typography-specimens">
   <h2>Typography Scale</h2>
   ${fontSizes.map(token => `
@@ -184,7 +211,7 @@ export function TypographySpecimens() {
     <span class="type-label">${token.name}</span>
     <span class="type-sample">The quick brown fox jumps over the lazy dog</span>
   </div>`).join('\n  ')}
-  
+
   <h2>Font Weights</h2>
   ${fontWeights.slice(0, 4).map(token => `
   <p style="font-weight: var(--${token.name})">
@@ -192,8 +219,8 @@ export function TypographySpecimens() {
   </p>`).join('\n  ')}
 </div>`;
 
-    case 'html':
-      return `
+      case 'html':
+        return `
 <div class="typography-specimens">
   <h2>Typography Scale</h2>
   ${fontSizes.map(token => `
@@ -201,23 +228,23 @@ export function TypographySpecimens() {
     <span class="type-label">${token.name}</span>
     <span class="type-sample">The quick brown fox jumps over the lazy dog</span>
   </div>`).join('\n  ')}
-  
+
   <h2>Font Weights</h2>
   ${fontWeights.slice(0, 4).map(token => `
   <p style="font-weight: var(--${token.name})">
     ${token.name}: The quick brown fox jumps over the lazy dog
   </p>`).join('\n  ')}
 </div>`;
+    }
   }
-}
 
-/**
- * Generate component examples
- */
-function generateComponentExamples(components: Component[], framework: FrameworkType): string {
-  switch (framework) {
-    case 'react':
-      return `
+  /**
+   * Generate component examples
+   */
+  private generateComponentExamples(components: Component[], framework: FrameworkType): string {
+    switch (framework) {
+      case 'react':
+        return `
 export function ComponentExamples() {
   return (
     <div className="component-examples">
@@ -241,31 +268,8 @@ export function ComponentExamples() {
   );
 }`;
 
-    case 'vue':
-      return `
-<template>
-  <div class="component-examples">
-    <h2>Components</h2>
-    ${components.map(comp => `
-    <div class="component-example">
-      <h3>${comp.name}</h3>
-      <p class="component-description">${comp.description}</p>
-      <div class="component-demo">
-        <!-- Add your ${comp.name} component here -->
-        <div class="placeholder">${comp.name} Demo</div>
-      </div>
-      <div class="component-tokens">
-        <strong>Uses tokens:</strong>
-        <ul>
-          ${comp.tokens.slice(0, 5).map(t => `<li><code>${t}</code></li>`).join('\n          ')}
-        </ul>
-      </div>
-    </div>`).join('\n    ')}
-  </div>
-</template>`;
-
-    default:
-      return `
+      default:
+        return `
 <div class="component-examples">
   <h2>Components</h2>
   ${components.map(comp => `
@@ -284,14 +288,14 @@ export function ComponentExamples() {
     </div>
   </div>`).join('\n  ')}
 </div>`;
+    }
   }
-}
 
-/**
- * Generate CSS styles for sticker sheet
- */
-function generateStyles(): string {
-  return `
+  /**
+   * Generate CSS styles for sticker sheet
+   */
+  private generateStyles(): string {
+    return `
 /* Sticker Sheet Styles */
 .color-swatches,
 .typography-specimens,
@@ -414,41 +418,41 @@ h2 {
   border-radius: var(--op-radius-small, 2px);
 }
 `;
-}
+  }
 
-/**
- * Generate complete sticker sheet
- */
-export function generateStickerSheet(
-  tokens: DesignToken[],
-  components: Component[],
-  options: StickerSheetOptions = {}
-): StickerSheet {
-  const {
-    framework = 'react',
-    includeColors = true,
-    includeTypography = true,
-    includeComponents = true
-  } = options;
-  
-  const sections: string[] = [];
-  
-  if (includeColors) {
-    sections.push(generateColorSwatches(tokens, framework));
-  }
-  
-  if (includeTypography) {
-    sections.push(generateTypographySpecimens(tokens, framework));
-  }
-  
-  if (includeComponents) {
-    sections.push(generateComponentExamples(components, framework));
-  }
-  
-  const code = sections.join('\n\n');
-  const styles = generateStyles();
-  
-  const instructions = `
+  /**
+   * Generate complete sticker sheet
+   */
+  private generateStickerSheet(
+    tokens: DesignToken[],
+    components: Component[],
+    options: StickerSheetOptions = {}
+  ): StickerSheet {
+    const {
+      framework = 'react',
+      includeColors = true,
+      includeTypography = true,
+      includeComponents = true
+    } = options;
+
+    const sections: string[] = [];
+
+    if (includeColors) {
+      sections.push(this.generateColorSwatches(tokens, framework));
+    }
+
+    if (includeTypography) {
+      sections.push(this.generateTypographySpecimens(tokens, framework));
+    }
+
+    if (includeComponents) {
+      sections.push(this.generateComponentExamples(components, framework));
+    }
+
+    const code = sections.join('\n\n');
+    const styles = this.generateStyles();
+
+    const instructions = `
 # Optics Sticker Sheet - ${framework.toUpperCase()}
 
 This sticker sheet provides a visual reference for all Optics design tokens and components.
@@ -472,20 +476,20 @@ This sticker sheet provides a visual reference for all Optics design tokens and 
 - Add interactive states (hover, focus, disabled)
 - Include additional token categories as needed
 `;
-  
-  return {
-    framework,
-    code,
-    styles,
-    instructions
-  };
-}
 
-/**
- * Format sticker sheet output for display
- */
-export function formatStickerSheet(sheet: StickerSheet): string {
-  return `${sheet.instructions}
+    return {
+      framework,
+      code,
+      styles,
+      instructions
+    };
+  }
+
+  /**
+   * Format sticker sheet output for display
+   */
+  private formatStickerSheet(sheet: StickerSheet): string {
+    return `${sheet.instructions}
 
 ## Component Code (${sheet.framework})
 
@@ -499,4 +503,8 @@ ${sheet.code}
 ${sheet.styles}
 \`\`\`
 `;
+  }
+
 }
+
+export default GenerateStickerSheetTool;
