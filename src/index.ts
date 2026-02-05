@@ -11,7 +11,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types"
 import { z } from 'zod';
-import { designTokens, documentation } from './optics-data.js';
+import { designTokens } from './optics-data.js';
 import { generateTheme } from './tools/theme-generator.js';
 import { validateTokenUsage, formatValidationReport } from './tools/validate.js';
 import { replaceHardCodedValues, formatReplacementSuggestions } from './tools/replace.js';
@@ -42,6 +42,7 @@ import SearchTokensTool from './tools/search-tokens-tool.js';
 import ListComponentsTool from './tools/list-components-tool.js'
 import GetComponentInfoTool from './tools/get-component-info-tool.js';
 import GetComponentTokensTool from './tools/get-component-tokens-tool.js';
+import SearchDocumentationTool from './tools/search-documentation-tool.js';
 
 /**
  * Create and configure the MCP server
@@ -185,7 +186,7 @@ prompts.forEach((prompt) => {
 // list_components ✅
 // get_component_info ✅
 // get_component_tokens ✅
-// search_documentation
+// search_documentation ✅
 
 const tools = [
   new GetTokenTool(),
@@ -194,6 +195,7 @@ const tools = [
   new ListComponentsTool(),
   new GetComponentInfoTool(),
   new GetComponentTokensTool(),
+  new SearchDocumentationTool()
 ]
 
 tools.forEach((tool) => {
@@ -218,37 +220,6 @@ tools.forEach((tool) => {
     },
   )
 })
-
-/**
- * Tool: Search Documentation
- */
-server.registerTool(
-  'search_documentation',
-  {
-    title: 'Search Documentation',
-    description: 'Search through Optics documentation',
-    inputSchema: {
-      query: z.string().describe('Search query for documentation content'),
-    },
-  },
-  async ({ query }) => {
-    const results = documentation.filter(
-      (doc) =>
-        doc.title.toLowerCase().includes(query.toLowerCase()) ||
-        doc.content.toLowerCase().includes(query.toLowerCase()) ||
-        doc.section.toLowerCase().includes(query.toLowerCase())
-    );
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(results, null, 2),
-        },
-      ],
-    };
-  }
-);
 
 /**
  * Tool: Generate Theme
