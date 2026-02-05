@@ -96,27 +96,26 @@ class GenerateThemeTool extends Tool {
       if (!hex) continue;
 
       const hsl = this.hexToHSL(hex);
-      const familyName = family === 'primary' || family === 'neutral' ? family : family;
 
       tokens.push({
-        name: `op-color-${familyName}-h`,
+        name: `op-color-${family}-h`,
         value: String(hsl.h),
         category: 'color',
-        description: `${familyName} color hue (HSL) - drives all ${familyName} scale tokens`
+        description: `${family} color hue (HSL) - drives all ${family} scale tokens`
       });
 
       tokens.push({
-        name: `op-color-${familyName}-s`,
+        name: `op-color-${family}-s`,
         value: `${hsl.s}%`,
         category: 'color',
-        description: `${familyName} color saturation (HSL)`
+        description: `${family} color saturation (HSL)`
       });
 
       tokens.push({
-        name: `op-color-${familyName}-l`,
+        name: `op-color-${family}-l`,
         value: `${hsl.l}%`,
         category: 'color',
-        description: `${familyName} color lightness (HSL)`
+        description: `${family} color lightness (HSL)`
       });
     }
 
