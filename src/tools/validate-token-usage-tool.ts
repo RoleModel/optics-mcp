@@ -48,11 +48,7 @@ class ValidateTokenUsageTool extends Tool {
   /**
    * Validate token usage in code
    */
-  private validateTokenUsage(
-    code: string,
-    tokens: DesignToken[],
-    context?: string
-  ): ValidationReport {
+  private validateTokenUsage(code: string, tokens: DesignToken[]): ValidationReport {
     const issues: ValidationIssue[] = [];
     const extractedValues = extractAllValues(code);
 
