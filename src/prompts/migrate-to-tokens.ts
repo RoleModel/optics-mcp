@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { readResourceFile } from "../_internal/resource-path.js"
+import { readPromptFile } from "../_internal/resource-path.js"
 
 /**
  * Prompt: Migrate to Tokens
@@ -22,8 +22,7 @@ export const metadata = {
 export async function handler(args: MigrateToTokensPromptArgs) {
   const { code } = args
 
-  let promptTemplate = await readResourceFile("prompts/migrate-to-tokens.md")
+  let promptTemplate = await readPromptFile("migrate-to-tokens.md")
   promptTemplate = promptTemplate.replace(/{{CODE}}/g, code || '')
   return promptTemplate
 }
-

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { designTokens } from '../optics-data.js'
-import { readResourceFile } from "../_internal/resource-path.js"
+import { readPromptFile } from "../_internal/resource-path.js"
 
 type ExplainTokenSystemPromptArgs = {
   category: string
@@ -25,7 +25,7 @@ export async function handler(args: ExplainTokenSystemPromptArgs) {
   const remainingTokenCount = (tokens.length > 10 ? '\n... and ' + (tokens.length - 10) + ' more' : '')
 
 
-  let promptTemplate = await readResourceFile("prompts/explain-token-system-prompt.md")
+  let promptTemplate = await readPromptFile("explain-token-system-prompt.md")
   promptTemplate = promptTemplate.replace(/{{CATEGORY}}/g, cat)
   promptTemplate = promptTemplate.replace(/{{TOKEN_COUNT}}/g, tokens.length.toString())
   promptTemplate = promptTemplate.replace(/{{TOKENS}}/g, firstTenTokensListed + remainingTokenCount)

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { designTokens } from '../optics-data.js'
-import { readResourceFile } from "../_internal/resource-path.js"
+import { readPromptFile } from "../_internal/resource-path.js"
 
 type GetTokenReferencePromptArgs = {
   category?: string
@@ -39,7 +39,7 @@ export async function handler(args: GetTokenReferencePromptArgs) {
   // Build sections based on the category specified or all categories if none are specified
   if (!category || category === 'spacing') {
     const spacingTokens = spacing.map(t => `- \`${t.name}\` = ${t.value}`).join('\n');
-    let spacingTemplate = await readResourceFile("prompts/get_token_reference_prompt_partials/get-token-reference-spacing.md");
+    let spacingTemplate = await readPromptFile("get_token_reference_prompt_partials/get-token-reference-spacing.md");
     spacingTemplate = spacingTemplate.replace(/{{COUNT}}/g, spacing.length.toString());
     spacingTemplate = spacingTemplate.replace(/{{TOKENS}}/g, spacingTokens);
     contentSections.push(spacingTemplate);
@@ -54,7 +54,7 @@ export async function handler(args: GetTokenReferencePromptArgs) {
     const fontWeightsList = fontWeights.map(t => `- \`${t.name}\` = ${t.value}`).join('\n');
     const lineHeightsList = lineHeights.map(t => `- \`${t.name}\` = ${t.value}`).join('\n');
 
-    let typoTemplate = await readResourceFile("prompts/get_token_reference_prompt_partials/get-token-reference-typography.md");
+    let typoTemplate = await readPromptFile("get_token_reference_prompt_partials/get-token-reference-typography.md");
     typoTemplate = typoTemplate.replace(/{{COUNT}}/g, typography.length.toString());
     typoTemplate = typoTemplate.replace(/{{FONT_SIZE_COUNT}}/g, fontSizes.length.toString());
     typoTemplate = typoTemplate.replace(/{{FONT_SIZES}}/g, fontSizesList);
@@ -67,7 +67,7 @@ export async function handler(args: GetTokenReferencePromptArgs) {
 
   if (!category || category === 'border') {
     const borderTokens = border.map(t => `- \`${t.name}\` = ${t.value}`).join('\n');
-    let borderTemplate = await readResourceFile("prompts/get_token_reference_prompt_partials/get-token-reference-border.md");
+    let borderTemplate = await readPromptFile("get_token_reference_prompt_partials/get-token-reference-border.md");
     borderTemplate = borderTemplate.replace(/{{COUNT}}/g, border.length.toString());
     borderTemplate = borderTemplate.replace(/{{TOKENS}}/g, borderTokens);
     contentSections.push(borderTemplate);
@@ -75,15 +75,14 @@ export async function handler(args: GetTokenReferencePromptArgs) {
 
   if (!category || category === 'shadow') {
     const shadowTokens = shadow.map(t => `- \`${t.name}\``).join('\n');
-    let shadowTemplate = await readResourceFile("prompts/get_token_reference_prompt_partials/get-token-reference-shadow.md");
+    let shadowTemplate = await readPromptFile("get_token_reference_prompt_partials/get-token-reference-shadow.md");
     shadowTemplate = shadowTemplate.replace(/{{COUNT}}/g, shadow.length.toString());
     shadowTemplate = shadowTemplate.replace(/{{TOKENS}}/g, shadowTokens);
     contentSections.push(shadowTemplate);
   }
 
-  let mainTemplate = await readResourceFile("prompts/get-token-reference-prompt.md");
+  let mainTemplate = await readPromptFile("get-token-reference-prompt.md");
   mainTemplate = mainTemplate.replace(/{{CONTENT}}/g, contentSections.join('\n\n'));
 
   return mainTemplate;
 }
-

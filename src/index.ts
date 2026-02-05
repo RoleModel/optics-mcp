@@ -9,7 +9,7 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types.js"
+import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types"
 import { z } from 'zod';
 import {
   designTokens,
@@ -27,19 +27,19 @@ import { generateComponentScaffold, formatScaffoldOutput } from './tools/scaffol
 import { generateStickerSheet, formatStickerSheet } from './tools/sticker-sheet.js';
 
 // Resources
-import * as systemOverview from './resources/system-overview'
-import * as documentationSection from './resources/documentation/section'
-import * as allTokens from './resources/tokens/all'
-import * as categoryTokens from './resources/tokens/category'
-import * as allComponents from './resources/components/all'
+import * as systemOverview from './resources/system-overview.js';
+import * as documentationSection from './resources/documentation/section.js';
+import * as allTokens from './resources/tokens/all.js';
+import * as categoryTokens from './resources/tokens/category.js';
+import * as allComponents from './resources/components/all.js';
 
 // Prompts
-import * as createThemedComponentPrompt from './prompts/create-themed-component'
-import * as migrateToTokensPrompt from './prompts/migrate-to-tokens'
-import * as accessibleColorComboPrompt from './prompts/accessible-color-combo'
-import * as designReviewPrompt from './prompts/design-review'
-import * as explainTokenSystemPrompt from './prompts/explain-token-system'
-import * as getTokenReferencePrompt from './prompts/get-token-reference'
+import * as createThemedComponentPrompt from './prompts/create-themed-component.js';
+import * as migrateToTokensPrompt from './prompts/migrate-to-tokens.js';
+import * as accessibleColorComboPrompt from './prompts/accessible-color-combo.js';
+import * as designReviewPrompt from './prompts/design-review.js';
+import * as explainTokenSystemPrompt from './prompts/explain-token-system.js';
+import * as getTokenReferencePrompt from './prompts/get-token-reference.js';
 
 /**
  * Create and configure the MCP server
@@ -74,9 +74,58 @@ resources.forEach((resource) => {
       return {
         contents: [
           {
-            uri: resource.metadata.uri,
+            uri: uri.href,
             mimeType: resource.metadata.mimeType,
             text: await resource.handler(uri),
+          }
+        ]
+      }
+    }
+  );
+});
+
+// Dynamically register specific instances so they can be accessed
+const docSections = ['introduction', 'getting-started', 'design-tokens', 'color-system', 'spacing', 'typography', 'components', 'accessibility'];
+docSections.forEach((section) => {
+  server.registerResource(
+    `documentation-${section}`,
+    `optics://documentation/${section}`,
+    {
+      title: `Documentation: ${section}`,
+      description: `${section} documentation`,
+      mimeType: 'application/json',
+    },
+    async (uri) => {
+      return {
+        contents: [
+          {
+            uri: uri.href,
+            mimeType: 'application/json',
+            text: await documentationSection.handler(uri),
+          }
+        ]
+      }
+    }
+  );
+});
+
+const tokenCategories = ['color', 'spacing', 'typography', 'border', 'shadow'];
+tokenCategories.forEach((category) => {
+  server.registerResource(
+    `tokens-${category}`,
+    `optics://tokens/${category}`,
+    {
+      title: `${category} tokens`,
+      description: `Design tokens for ${category}`,
+      mimeType: 'application/json',
+    },
+    async (uri) => {
+      return {
+        contents: [
+          {
+            uri: uri.href,
+            mimeType: 'application/json',
+            text: await categoryTokens.handler(uri),
           }
         ]
       }
@@ -106,14 +155,8 @@ prompts.forEach((prompt) => {
       argsSchema: prompt.inputSchema,
     },
     async ({ name, arguments: args }) => {
-      // Validate arguments if schema exists
-      let parsedArgs: Record<string, unknown> = args || {}
-      if (prompt.inputSchema) {
-        parsedArgs = parseToolArgs(prompt.inputSchema, args || {})
-      }
-
-      // Get the prompt content
-      const content = await prompt.handler(parsedArgs)
+      // Get the prompt content - MCP SDK handles argument validation
+      const content = await prompt.handler(args || {} as never)
 
       return {
         messages: [
@@ -581,7 +624,6 @@ server.registerTool(
     };
   }
 );
-
 
 /**
  * Start the server

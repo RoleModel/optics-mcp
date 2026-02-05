@@ -1,4 +1,4 @@
-import { documentation } from '../../optics-data'
+import { documentation } from '../../optics-data.js'
 
 export const metadata = {
   name: 'documentation-section',

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { readResourceFile } from "../_internal/resource-path.js"
+import { readPromptFile } from "../_internal/resource-path.js"
 
 type DesignReviewPromptArgs = {
   code: string
@@ -22,7 +22,7 @@ export async function handler(args: DesignReviewPromptArgs) {
   const code = args.code || ''
   const componentType = args.componentType || 'unknown'
 
-  let promptTemplate = await readResourceFile("prompts/design-review-prompt.md")
+  let promptTemplate = await readPromptFile("design-review-prompt.md")
   promptTemplate = promptTemplate.replace(/{{COMPONENT_TYPE}}/g, componentType)
   promptTemplate = promptTemplate.replace(/{{CODE}}/g, code)
   return promptTemplate
