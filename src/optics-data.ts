@@ -1,1576 +1,1595 @@
 /**
  * Optics Design System Data
- * This file contains the core design tokens, components, and documentation
- * structure for the Optics design system.
+ * AUTO-GENERATED - Run: npm run sync-data
+ * Version: 2.3.0 | Generated: 2026-02-05T21:51:53.056Z
  */
+
+export type TokenCategory = 'animation' | 'border' | 'breakpoint' | 'color' | 'encoded-image' | 'input' | 'opacity' | 'shadow' | 'sizing' | 'spacing' | 'typography' | 'z-index';
 
 export interface DesignToken {
   name: string;
+  cssVar: string;
   value: string;
-  category: string;
-  description?: string;
+  category: TokenCategory;
+  description: string;
 }
 
-export interface Component {
+export interface CSSPattern {
   name: string;
   description: string;
+  className: string;
+  type: 'component' | 'layout' | 'utility';
+  modifiers: string[];
+  elements: string[];
+  exampleHtml: string;
+  docsUrl: string;
+}
+
+export interface Component extends CSSPattern {
   tokens: string[];
   usage: string;
-  examples?: string[];
+  examples: string[];
 }
 
 export interface Documentation {
   section: string;
   title: string;
   content: string;
-  tokens?: string[];
+  tokens: string[];
 }
 
-/**
- * Design Tokens - Core visual design elements from Optics Design System
- * Source: https://docs.optics.rolemodel.design
- */
 export const designTokens: DesignToken[] = [
-  // Base Color HSL Values (These are the foundation - all other colors are derived from these)
   {
-    name: 'op-color-primary-h',
-    value: '216',
-    category: 'color',
-    description: 'Primary color hue (HSL)'
+    "name": "color-white",
+    "cssVar": "--op-color-white",
+    "value": "hsl(0deg 100% 100%)",
+    "category": "color",
+    "description": "color token: color-white"
   },
   {
-    name: 'op-color-primary-s',
-    value: '58%',
-    category: 'color',
-    description: 'Primary color saturation (HSL)'
+    "name": "color-black",
+    "cssVar": "--op-color-black",
+    "value": "hsl(0deg 0% 0%)",
+    "category": "color",
+    "description": "color token: color-black"
   },
   {
-    name: 'op-color-primary-l',
-    value: '48%',
-    category: 'color',
-    description: 'Primary color lightness (HSL)'
+    "name": "color-primary-h",
+    "cssVar": "--op-color-primary-h",
+    "value": "216",
+    "category": "color",
+    "description": "Hue component (HSL) for color-primary"
   },
   {
-    name: 'op-color-neutral-h',
-    value: '216',
-    category: 'color',
-    description: 'Neutral color hue (HSL, inherits from primary)'
+    "name": "color-primary-s",
+    "cssVar": "--op-color-primary-s",
+    "value": "58%",
+    "category": "color",
+    "description": "Saturation component (HSL) for color-primary"
   },
   {
-    name: 'op-color-neutral-s',
-    value: '4%',
-    category: 'color',
-    description: 'Neutral color saturation (HSL)'
+    "name": "color-primary-l",
+    "cssVar": "--op-color-primary-l",
+    "value": "48%",
+    "category": "color",
+    "description": "Lightness component (HSL) for color-primary"
   },
   {
-    name: 'op-color-neutral-l',
-    value: '48%',
-    category: 'color',
-    description: 'Neutral color lightness (HSL)'
+    "name": "color-primary-original",
+    "cssVar": "--op-color-primary-original",
+    "value": "hsl(var(--op-color-primary-h) var(--op-color-primary-s) var(--op-color-primary-l))",
+    "category": "color",
+    "description": "color token: color-primary-original"
   },
-  // Alert Colors HSL
   {
-    name: 'op-color-alerts-warning-h',
-    value: '47',
-    category: 'color',
-    description: 'Warning alert hue (HSL)'
+    "name": "color-neutral-h",
+    "cssVar": "--op-color-neutral-h",
+    "value": "var(--op-color-primary-h)",
+    "category": "color",
+    "description": "Hue component (HSL) for color-neutral"
   },
   {
-    name: 'op-color-alerts-warning-s',
-    value: '100%',
-    category: 'color',
-    description: 'Warning alert saturation (HSL)'
+    "name": "color-neutral-s",
+    "cssVar": "--op-color-neutral-s",
+    "value": "4%",
+    "category": "color",
+    "description": "Saturation component (HSL) for color-neutral"
   },
   {
-    name: 'op-color-alerts-warning-l',
-    value: '61%',
-    category: 'color',
-    description: 'Warning alert lightness (HSL)'
+    "name": "color-neutral-l",
+    "cssVar": "--op-color-neutral-l",
+    "value": "var(--op-color-primary-l)",
+    "category": "color",
+    "description": "Lightness component (HSL) for color-neutral"
   },
   {
-    name: 'op-color-alerts-danger-h',
-    value: '0',
-    category: 'color',
-    description: 'Danger alert hue (HSL)'
+    "name": "color-neutral-original",
+    "cssVar": "--op-color-neutral-original",
+    "value": "hsl(var(--op-color-neutral-h) var(--op-color-neutral-s) var(--op-color-neutral-l))",
+    "category": "color",
+    "description": "color token: color-neutral-original"
   },
   {
-    name: 'op-color-alerts-danger-s',
-    value: '99%',
-    category: 'color',
-    description: 'Danger alert saturation (HSL)'
+    "name": "color-alerts-warning-h",
+    "cssVar": "--op-color-alerts-warning-h",
+    "value": "47",
+    "category": "color",
+    "description": "Hue component (HSL) for color-alerts-warning"
   },
   {
-    name: 'op-color-alerts-danger-l',
-    value: '76%',
-    category: 'color',
-    description: 'Danger alert lightness (HSL)'
+    "name": "color-alerts-warning-s",
+    "cssVar": "--op-color-alerts-warning-s",
+    "value": "100%",
+    "category": "color",
+    "description": "Saturation component (HSL) for color-alerts-warning"
   },
   {
-    name: 'op-color-alerts-info-h',
-    value: '216',
-    category: 'color',
-    description: 'Info alert hue (HSL)'
+    "name": "color-alerts-warning-l",
+    "cssVar": "--op-color-alerts-warning-l",
+    "value": "61%",
+    "category": "color",
+    "description": "Lightness component (HSL) for color-alerts-warning"
   },
   {
-    name: 'op-color-alerts-info-s',
-    value: '58%',
-    category: 'color',
-    description: 'Info alert saturation (HSL)'
+    "name": "color-alerts-warning-original",
+    "cssVar": "--op-color-alerts-warning-original",
+    "value": "hsl(var(--op-color-alerts-warning-h) var(--op-color-alerts-warning-s) var(--op-color-alerts-warning-l))",
+    "category": "color",
+    "description": "color token: color-alerts-warning-original"
   },
   {
-    name: 'op-color-alerts-info-l',
-    value: '48%',
-    category: 'color',
-    description: 'Info alert lightness (HSL)'
+    "name": "color-alerts-danger-h",
+    "cssVar": "--op-color-alerts-danger-h",
+    "value": "0",
+    "category": "color",
+    "description": "Hue component (HSL) for color-alerts-danger"
   },
   {
-    name: 'op-color-alerts-notice-h',
-    value: '130',
-    category: 'color',
-    description: 'Notice alert hue (HSL)'
+    "name": "color-alerts-danger-s",
+    "cssVar": "--op-color-alerts-danger-s",
+    "value": "99%",
+    "category": "color",
+    "description": "Saturation component (HSL) for color-alerts-danger"
   },
   {
-    name: 'op-color-alerts-notice-s',
-    value: '61%',
-    category: 'color',
-    description: 'Notice alert saturation (HSL)'
+    "name": "color-alerts-danger-l",
+    "cssVar": "--op-color-alerts-danger-l",
+    "value": "76%",
+    "category": "color",
+    "description": "Lightness component (HSL) for color-alerts-danger"
   },
   {
-    name: 'op-color-alerts-notice-l',
-    value: '64%',
-    category: 'color',
-    description: 'Notice alert lightness (HSL)'
+    "name": "color-alerts-danger-original",
+    "cssVar": "--op-color-alerts-danger-original",
+    "value": "hsl(var(--op-color-alerts-danger-h) var(--op-color-alerts-danger-s) var(--op-color-alerts-danger-l))",
+    "category": "color",
+    "description": "color token: color-alerts-danger-original"
   },
-  // Primary Color Scale - Main Scale
-  // Note: Same pattern applies to neutral, alerts-warning, alerts-danger, alerts-info, alerts-notice
   {
-    name: 'op-color-primary-plus-max',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 12%))',
-    category: 'color',
-    description: 'Primary color lightest - light mode: 100%, dark mode: 12%'
+    "name": "color-alerts-info-h",
+    "cssVar": "--op-color-alerts-info-h",
+    "value": "216",
+    "category": "color",
+    "description": "Hue component (HSL) for color-alerts-info"
   },
   {
-    name: 'op-color-primary-plus-eight',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 14%))',
-    category: 'color',
-    description: 'Primary color scale +8'
+    "name": "color-alerts-info-s",
+    "cssVar": "--op-color-alerts-info-s",
+    "value": "58%",
+    "category": "color",
+    "description": "Saturation component (HSL) for color-alerts-info"
   },
   {
-    name: 'op-color-primary-plus-seven',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 96%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 16%))',
-    category: 'color',
-    description: 'Primary color scale +7'
+    "name": "color-alerts-info-l",
+    "cssVar": "--op-color-alerts-info-l",
+    "value": "48%",
+    "category": "color",
+    "description": "Lightness component (HSL) for color-alerts-info"
   },
   {
-    name: 'op-color-primary-plus-six',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 94%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%))',
-    category: 'color',
-    description: 'Primary color scale +6'
+    "name": "color-alerts-info-original",
+    "cssVar": "--op-color-alerts-info-original",
+    "value": "hsl(var(--op-color-alerts-info-h) var(--op-color-alerts-info-s) var(--op-color-alerts-info-l))",
+    "category": "color",
+    "description": "color token: color-alerts-info-original"
   },
   {
-    name: 'op-color-primary-plus-five',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 90%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 24%))',
-    category: 'color',
-    description: 'Primary color scale +5'
+    "name": "color-alerts-notice-h",
+    "cssVar": "--op-color-alerts-notice-h",
+    "value": "130",
+    "category": "color",
+    "description": "Hue component (HSL) for color-alerts-notice"
   },
   {
-    name: 'op-color-primary-plus-four',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 84%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 26%))',
-    category: 'color',
-    description: 'Primary color scale +4'
+    "name": "color-alerts-notice-s",
+    "cssVar": "--op-color-alerts-notice-s",
+    "value": "61%",
+    "category": "color",
+    "description": "Saturation component (HSL) for color-alerts-notice"
   },
   {
-    name: 'op-color-primary-plus-three',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 70%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 29%))',
-    category: 'color',
-    description: 'Primary color scale +3'
+    "name": "color-alerts-notice-l",
+    "cssVar": "--op-color-alerts-notice-l",
+    "value": "64%",
+    "category": "color",
+    "description": "Lightness component (HSL) for color-alerts-notice"
   },
   {
-    name: 'op-color-primary-plus-two',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 64%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 32%))',
-    category: 'color',
-    description: 'Primary color scale +2'
+    "name": "color-alerts-notice-original",
+    "cssVar": "--op-color-alerts-notice-original",
+    "value": "hsl(var(--op-color-alerts-notice-h) var(--op-color-alerts-notice-s) var(--op-color-alerts-notice-l))",
+    "category": "color",
+    "description": "color token: color-alerts-notice-original"
   },
   {
-    name: 'op-color-primary-plus-one',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 45%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 35%))',
-    category: 'color',
-    description: 'Primary color scale +1'
+    "name": "color-border",
+    "cssVar": "--op-color-border",
+    "value": "var(--op-color-neutral-plus-five)",
+    "category": "color",
+    "description": "color token: color-border"
   },
   {
-    name: 'op-color-primary-base',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 40%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 38%))',
-    category: 'color',
-    description: 'Primary color base'
+    "name": "color-background",
+    "cssVar": "--op-color-background",
+    "value": "var(--op-color-neutral-plus-eight)",
+    "category": "color",
+    "description": "color token: color-background"
   },
   {
-    name: 'op-color-primary-minus-one',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 36%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 40%))',
-    category: 'color',
-    description: 'Primary color scale -1'
+    "name": "color-on-background",
+    "cssVar": "--op-color-on-background",
+    "value": "var(--op-color-neutral-on-plus-eight)",
+    "category": "color",
+    "description": "Text color for use ON background background. MUST be paired with matching background color."
   },
   {
-    name: 'op-color-primary-minus-two',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 32%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 45%))',
-    category: 'color',
-    description: 'Primary color scale -2'
+    "name": "opacity-none",
+    "cssVar": "--op-opacity-none",
+    "value": "0",
+    "category": "opacity",
+    "description": "opacity token: opacity-none"
   },
   {
-    name: 'op-color-primary-minus-three',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 28%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 48%))',
-    category: 'color',
-    description: 'Primary color scale -3'
+    "name": "opacity-overlay",
+    "cssVar": "--op-opacity-overlay",
+    "value": "0.2",
+    "category": "opacity",
+    "description": "opacity token: opacity-overlay"
   },
   {
-    name: 'op-color-primary-minus-four',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 24%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 52%))',
-    category: 'color',
-    description: 'Primary color scale -4'
+    "name": "opacity-disabled",
+    "cssVar": "--op-opacity-disabled",
+    "value": "0.4",
+    "category": "opacity",
+    "description": "opacity token: opacity-disabled"
   },
   {
-    name: 'op-color-primary-minus-five',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 64%))',
-    category: 'color',
-    description: 'Primary color scale -5'
+    "name": "opacity-half",
+    "cssVar": "--op-opacity-half",
+    "value": "0.5",
+    "category": "opacity",
+    "description": "opacity token: opacity-half"
   },
   {
-    name: 'op-color-primary-minus-six',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 16%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 72%))',
-    category: 'color',
-    description: 'Primary color scale -6'
+    "name": "opacity-full",
+    "cssVar": "--op-opacity-full",
+    "value": "1",
+    "category": "opacity",
+    "description": "opacity token: opacity-full"
   },
   {
-    name: 'op-color-primary-minus-seven',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 8%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
-    category: 'color',
-    description: 'Primary color scale -7'
+    "name": "breakpoint-x-small",
+    "cssVar": "--op-breakpoint-x-small",
+    "value": "512px",
+    "category": "breakpoint",
+    "description": "breakpoint token: breakpoint-x-small"
   },
   {
-    name: 'op-color-primary-minus-eight',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 4%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%))',
-    category: 'color',
-    description: 'Primary color scale -8'
+    "name": "breakpoint-small",
+    "cssVar": "--op-breakpoint-small",
+    "value": "768px",
+    "category": "breakpoint",
+    "description": "breakpoint token: breakpoint-small"
   },
   {
-    name: 'op-color-primary-minus-max',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 0%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%))',
-    category: 'color',
-    description: 'Primary color darkest - light mode: 0%, dark mode: 100%'
+    "name": "breakpoint-medium",
+    "cssVar": "--op-breakpoint-medium",
+    "value": "1024px",
+    "category": "breakpoint",
+    "description": "breakpoint token: breakpoint-medium"
   },
-
-  // Primary Color Scale - "On" Scale (for text/content colors that appear on the main scale colors)
-  // Note: Each has a base and "-alt" variant. Same pattern applies to neutral, alerts-warning, alerts-danger, alerts-info, alerts-notice
   {
-    name: 'op-color-primary-on-plus-max',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 0%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%))',
-    category: 'color',
-    description: 'Text color for primary-plus-max backgrounds'
+    "name": "breakpoint-large",
+    "cssVar": "--op-breakpoint-large",
+    "value": "1280px",
+    "category": "breakpoint",
+    "description": "breakpoint token: breakpoint-large"
   },
   {
-    name: 'op-color-primary-on-plus-max-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 78%))',
-    category: 'color',
-    description: 'Alt text color for primary-plus-max backgrounds'
+    "name": "breakpoint-x-large",
+    "cssVar": "--op-breakpoint-x-large",
+    "value": "1440px",
+    "category": "breakpoint",
+    "description": "breakpoint token: breakpoint-x-large"
   },
   {
-    name: 'op-color-primary-on-plus-eight',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 4%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%))',
-    category: 'color',
-    description: 'Text color for primary-plus-eight backgrounds'
+    "name": "radius-small",
+    "cssVar": "--op-radius-small",
+    "value": "2px",
+    "category": "border",
+    "description": "border token: radius-small"
   },
   {
-    name: 'op-color-primary-on-plus-eight-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 24%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 70%))',
-    category: 'color',
-    description: 'Alt text color for primary-plus-eight backgrounds'
+    "name": "radius-medium",
+    "cssVar": "--op-radius-medium",
+    "value": "4px",
+    "category": "border",
+    "description": "border token: radius-medium"
   },
   {
-    name: 'op-color-primary-on-plus-seven',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 8%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
-    category: 'color',
-    description: 'Text color for primary-plus-seven backgrounds'
+    "name": "radius-large",
+    "cssVar": "--op-radius-large",
+    "value": "8px",
+    "category": "border",
+    "description": "border token: radius-large"
   },
   {
-    name: 'op-color-primary-on-plus-seven-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 28%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 64%))',
-    category: 'color',
-    description: 'Alt text color for primary-plus-seven backgrounds'
+    "name": "radius-x-large",
+    "cssVar": "--op-radius-x-large",
+    "value": "12px",
+    "category": "border",
+    "description": "border token: radius-x-large"
   },
   {
-    name: 'op-color-primary-on-plus-six',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 16%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 72%))',
-    category: 'color',
-    description: 'Text color for primary-plus-six backgrounds'
+    "name": "radius-2x-large",
+    "cssVar": "--op-radius-2x-large",
+    "value": "16px",
+    "category": "border",
+    "description": "border token: radius-2x-large"
   },
   {
-    name: 'op-color-primary-on-plus-six-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 26%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 96%))',
-    category: 'color',
-    description: 'Alt text color for primary-plus-six backgrounds'
+    "name": "radius-circle",
+    "cssVar": "--op-radius-circle",
+    "value": "50%",
+    "category": "border",
+    "description": "border token: radius-circle"
   },
   {
-    name: 'op-color-primary-on-plus-five',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 72%))',
-    category: 'color',
-    description: 'Text color for primary-plus-five backgrounds'
+    "name": "radius-pill",
+    "cssVar": "--op-radius-pill",
+    "value": "9999px",
+    "category": "border",
+    "description": "border token: radius-pill"
   },
   {
-    name: 'op-color-primary-on-plus-five-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 40%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 86%))',
-    category: 'color',
-    description: 'Alt text color for primary-plus-five backgrounds'
+    "name": "border-width",
+    "cssVar": "--op-border-width",
+    "value": "1px",
+    "category": "border",
+    "description": "border token: border-width"
   },
   {
-    name: 'op-color-primary-on-plus-four',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 24%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
-    category: 'color',
-    description: 'Text color for primary-plus-four backgrounds'
+    "name": "border-width-large",
+    "cssVar": "--op-border-width-large",
+    "value": "2px",
+    "category": "border",
+    "description": "border token: border-width-large"
   },
   {
-    name: 'op-color-primary-on-plus-four-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 4%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 92%))',
-    category: 'color',
-    description: 'Alt text color for primary-plus-four backgrounds'
+    "name": "border-width-x-large",
+    "cssVar": "--op-border-width-x-large",
+    "value": "4px",
+    "category": "border",
+    "description": "border token: border-width-x-large"
   },
   {
-    name: 'op-color-primary-on-plus-three',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 78%))',
-    category: 'color',
-    description: 'Text color for primary-plus-three backgrounds'
+    "name": "border-none",
+    "cssVar": "--op-border-none",
+    "value": "0 0 0 0",
+    "category": "border",
+    "description": "border token: border-none"
   },
   {
-    name: 'op-color-primary-on-plus-three-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 10%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
-    category: 'color',
-    description: 'Alt text color for primary-plus-three backgrounds'
+    "name": "border-all",
+    "cssVar": "--op-border-all",
+    "value": "0 0 0 var(--op-border-width)",
+    "category": "border",
+    "description": "border token: border-all"
   },
   {
-    name: 'op-color-primary-on-plus-two',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 16%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
-    category: 'color',
-    description: 'Text color for primary-plus-two backgrounds'
+    "name": "border-top",
+    "cssVar": "--op-border-top",
+    "value": "0 calc(-1 * var(--op-border-width)) 0 0",
+    "category": "border",
+    "description": "border token: border-top"
   },
   {
-    name: 'op-color-primary-on-plus-two-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 6%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 92%))',
-    category: 'color',
-    description: 'Alt text color for primary-plus-two backgrounds'
+    "name": "border-right",
+    "cssVar": "--op-border-right",
+    "value": "var(--op-border-width) 0 0 0",
+    "category": "border",
+    "description": "border token: border-right"
   },
   {
-    name: 'op-color-primary-on-plus-one',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 80%))',
-    category: 'color',
-    description: 'Text color for primary-plus-one backgrounds'
+    "name": "border-bottom",
+    "cssVar": "--op-border-bottom",
+    "value": "0 var(--op-border-width) 0 0",
+    "category": "border",
+    "description": "border token: border-bottom"
   },
   {
-    name: 'op-color-primary-on-plus-one-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 95%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
-    category: 'color',
-    description: 'Alt text color for primary-plus-one backgrounds'
+    "name": "border-left",
+    "cssVar": "--op-border-left",
+    "value": "calc(-1 * var(--op-border-width)) 0 0 0",
+    "category": "border",
+    "description": "border token: border-left"
   },
   {
-    name: 'op-color-primary-on-base',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%))',
-    category: 'color',
-    description: 'Text color for primary-base backgrounds'
+    "name": "border-y",
+    "cssVar": "--op-border-y",
+    "value": "var(--op-border-top) var(--op-color-border), var(--op-border-bottom) var(--op-color-border)",
+    "category": "border",
+    "description": "border token: border-y"
   },
   {
-    name: 'op-color-primary-on-base-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 84%))',
-    category: 'color',
-    description: 'Alt text color for primary-base backgrounds'
+    "name": "border-x",
+    "cssVar": "--op-border-x",
+    "value": "var(--op-border-left) var(--op-color-border), var(--op-border-right) var(--op-color-border)",
+    "category": "border",
+    "description": "border token: border-x"
   },
   {
-    name: 'op-color-primary-on-minus-one',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 94%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
-    category: 'color',
-    description: 'Text color for primary-minus-one backgrounds'
+    "name": "font-scale-unit",
+    "cssVar": "--op-font-scale-unit",
+    "value": "1rem",
+    "category": "typography",
+    "description": "typography token: font-scale-unit"
   },
   {
-    name: 'op-color-primary-on-minus-one-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 82%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 90%))',
-    category: 'color',
-    description: 'Alt text color for primary-minus-one backgrounds'
+    "name": "font-2x-small",
+    "cssVar": "--op-font-2x-small",
+    "value": "calc(var(--op-font-scale-unit) * 1)",
+    "category": "typography",
+    "description": "typography token: font-2x-small"
   },
   {
-    name: 'op-color-primary-on-minus-two',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 90%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
-    category: 'color',
-    description: 'Text color for primary-minus-two backgrounds'
+    "name": "font-x-small",
+    "cssVar": "--op-font-x-small",
+    "value": "calc(var(--op-font-scale-unit) * 1.2)",
+    "category": "typography",
+    "description": "typography token: font-x-small"
   },
   {
-    name: 'op-color-primary-on-minus-two-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 78%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 92%))',
-    category: 'color',
-    description: 'Alt text color for primary-minus-two backgrounds'
+    "name": "font-small",
+    "cssVar": "--op-font-small",
+    "value": "calc(var(--op-font-scale-unit) * 1.4)",
+    "category": "typography",
+    "description": "typography token: font-small"
   },
   {
-    name: 'op-color-primary-on-minus-three',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 86%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%))',
-    category: 'color',
-    description: 'Text color for primary-minus-three backgrounds'
+    "name": "font-medium",
+    "cssVar": "--op-font-medium",
+    "value": "calc(var(--op-font-scale-unit) * 1.6)",
+    "category": "typography",
+    "description": "typography token: font-medium"
   },
   {
-    name: 'op-color-primary-on-minus-three-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 74%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 96%))',
-    category: 'color',
-    description: 'Alt text color for primary-minus-three backgrounds'
+    "name": "font-large",
+    "cssVar": "--op-font-large",
+    "value": "calc(var(--op-font-scale-unit) * 1.8)",
+    "category": "typography",
+    "description": "typography token: font-large"
   },
   {
-    name: 'op-color-primary-on-minus-four',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 84%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 2%))',
-    category: 'color',
-    description: 'Text color for primary-minus-four backgrounds'
+    "name": "font-x-large",
+    "cssVar": "--op-font-x-large",
+    "value": "calc(var(--op-font-scale-unit) * 2)",
+    "category": "typography",
+    "description": "typography token: font-x-large"
   },
   {
-    name: 'op-color-primary-on-minus-four-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 72%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 2%))',
-    category: 'color',
-    description: 'Alt text color for primary-minus-four backgrounds'
+    "name": "font-2x-large",
+    "cssVar": "--op-font-2x-large",
+    "value": "calc(var(--op-font-scale-unit) * 2.4)",
+    "category": "typography",
+    "description": "typography token: font-2x-large"
   },
   {
-    name: 'op-color-primary-on-minus-five',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 2%))',
-    category: 'color',
-    description: 'Text color for primary-minus-five backgrounds'
+    "name": "font-3x-large",
+    "cssVar": "--op-font-3x-large",
+    "value": "calc(var(--op-font-scale-unit) * 2.8)",
+    "category": "typography",
+    "description": "typography token: font-3x-large"
   },
   {
-    name: 'op-color-primary-on-minus-five-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 78%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 20%))',
-    category: 'color',
-    description: 'Alt text color for primary-minus-five backgrounds'
+    "name": "font-4x-large",
+    "cssVar": "--op-font-4x-large",
+    "value": "calc(var(--op-font-scale-unit) * 3.2)",
+    "category": "typography",
+    "description": "typography token: font-4x-large"
   },
   {
-    name: 'op-color-primary-on-minus-six',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 94%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 8%))',
-    category: 'color',
-    description: 'Text color for primary-minus-six backgrounds'
+    "name": "font-5x-large",
+    "cssVar": "--op-font-5x-large",
+    "value": "calc(var(--op-font-scale-unit) * 3.6)",
+    "category": "typography",
+    "description": "typography token: font-5x-large"
   },
   {
-    name: 'op-color-primary-on-minus-six-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 82%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 26%))',
-    category: 'color',
-    description: 'Alt text color for primary-minus-six backgrounds'
+    "name": "font-6x-large",
+    "cssVar": "--op-font-6x-large",
+    "value": "calc(var(--op-font-scale-unit) * 4.8)",
+    "category": "typography",
+    "description": "typography token: font-6x-large"
   },
   {
-    name: 'op-color-primary-on-minus-seven',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 96%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 8%))',
-    category: 'color',
-    description: 'Text color for primary-minus-seven backgrounds'
+    "name": "font-weight-thin",
+    "cssVar": "--op-font-weight-thin",
+    "value": "100",
+    "category": "typography",
+    "description": "typography token: font-weight-thin"
   },
   {
-    name: 'op-color-primary-on-minus-seven-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 84%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 34%))',
-    category: 'color',
-    description: 'Alt text color for primary-minus-seven backgrounds'
+    "name": "font-weight-extra-light",
+    "cssVar": "--op-font-weight-extra-light",
+    "value": "200",
+    "category": "typography",
+    "description": "typography token: font-weight-extra-light"
   },
   {
-    name: 'op-color-primary-on-minus-eight',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 98%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 4%))',
-    category: 'color',
-    description: 'Text color for primary-minus-eight backgrounds'
+    "name": "font-weight-light",
+    "cssVar": "--op-font-weight-light",
+    "value": "300",
+    "category": "typography",
+    "description": "typography token: font-weight-light"
   },
   {
-    name: 'op-color-primary-on-minus-eight-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 86%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 38%))',
-    category: 'color',
-    description: 'Alt text color for primary-minus-eight backgrounds'
+    "name": "font-weight-normal",
+    "cssVar": "--op-font-weight-normal",
+    "value": "400",
+    "category": "typography",
+    "description": "typography token: font-weight-normal"
   },
   {
-    name: 'op-color-primary-on-minus-max',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 100%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 0%))',
-    category: 'color',
-    description: 'Text color for primary-minus-max backgrounds'
+    "name": "font-weight-medium",
+    "cssVar": "--op-font-weight-medium",
+    "value": "500",
+    "category": "typography",
+    "description": "typography token: font-weight-medium"
   },
   {
-    name: 'op-color-primary-on-minus-max-alt',
-    value: 'light-dark(hsl(var(--op-color-primary-h) var(--op-color-primary-s) 88%), hsl(var(--op-color-primary-h) var(--op-color-primary-s) 38%))',
-    category: 'color',
-    description: 'Alt text color for primary-minus-max backgrounds'
+    "name": "font-weight-semi-bold",
+    "cssVar": "--op-font-weight-semi-bold",
+    "value": "600",
+    "category": "typography",
+    "description": "typography token: font-weight-semi-bold"
   },
-
-  // Core semantic colors (most commonly used)
   {
-    name: 'op-color-white',
-    value: 'hsl(0deg 100% 100%)',
-    category: 'color',
-    description: 'Pure white'
+    "name": "font-weight-bold",
+    "cssVar": "--op-font-weight-bold",
+    "value": "700",
+    "category": "typography",
+    "description": "typography token: font-weight-bold"
   },
   {
-    name: 'op-color-black',
-    value: 'hsl(0deg 0% 0%)',
-    category: 'color',
-    description: 'Pure black'
+    "name": "font-weight-extra-bold",
+    "cssVar": "--op-font-weight-extra-bold",
+    "value": "800",
+    "category": "typography",
+    "description": "typography token: font-weight-extra-bold"
   },
-
-  // Spacing Tokens
   {
-    name: 'op-space-scale-unit',
-    value: '1rem',
-    category: 'spacing',
-    description: 'Base unit for spacing scale (10px)'
+    "name": "font-weight-black",
+    "cssVar": "--op-font-weight-black",
+    "value": "900",
+    "category": "typography",
+    "description": "typography token: font-weight-black"
   },
   {
-    name: 'op-space-3x-small',
-    value: 'calc(var(--op-space-scale-unit) * 0.2)',
-    category: 'spacing',
-    description: '2px spacing'
+    "name": "font-family",
+    "cssVar": "--op-font-family",
+    "value": "'Noto Sans', sans-serif",
+    "category": "typography",
+    "description": "typography token: font-family"
   },
   {
-    name: 'op-space-2x-small',
-    value: 'calc(var(--op-space-scale-unit) * 0.4)',
-    category: 'spacing',
-    description: '4px spacing'
+    "name": "line-height-none",
+    "cssVar": "--op-line-height-none",
+    "value": "0",
+    "category": "sizing",
+    "description": "sizing token: line-height-none"
   },
   {
-    name: 'op-space-x-small',
-    value: 'calc(var(--op-space-scale-unit) * 0.8)',
-    category: 'spacing',
-    description: '8px spacing'
+    "name": "line-height-densest",
+    "cssVar": "--op-line-height-densest",
+    "value": "1",
+    "category": "sizing",
+    "description": "sizing token: line-height-densest"
   },
   {
-    name: 'op-space-small',
-    value: 'calc(var(--op-space-scale-unit) * 1.2)',
-    category: 'spacing',
-    description: '12px spacing'
+    "name": "line-height-denser",
+    "cssVar": "--op-line-height-denser",
+    "value": "1.15",
+    "category": "sizing",
+    "description": "sizing token: line-height-denser"
   },
   {
-    name: 'op-space-medium',
-    value: 'calc(var(--op-space-scale-unit) * 1.6)',
-    category: 'spacing',
-    description: '16px spacing'
+    "name": "line-height-dense",
+    "cssVar": "--op-line-height-dense",
+    "value": "1.3",
+    "category": "sizing",
+    "description": "sizing token: line-height-dense"
   },
   {
-    name: 'op-space-large',
-    value: 'calc(var(--op-space-scale-unit) * 2)',
-    category: 'spacing',
-    description: '20px spacing'
+    "name": "line-height-base",
+    "cssVar": "--op-line-height-base",
+    "value": "1.5",
+    "category": "sizing",
+    "description": "sizing token: line-height-base"
   },
   {
-    name: 'op-space-x-large',
-    value: 'calc(var(--op-space-scale-unit) * 2.4)',
-    category: 'spacing',
-    description: '24px spacing'
+    "name": "line-height-loose",
+    "cssVar": "--op-line-height-loose",
+    "value": "1.6",
+    "category": "sizing",
+    "description": "sizing token: line-height-loose"
   },
   {
-    name: 'op-space-2x-large',
-    value: 'calc(var(--op-space-scale-unit) * 2.8)',
-    category: 'spacing',
-    description: '28px spacing'
+    "name": "line-height-looser",
+    "cssVar": "--op-line-height-looser",
+    "value": "1.7",
+    "category": "sizing",
+    "description": "sizing token: line-height-looser"
   },
   {
-    name: 'op-space-3x-large',
-    value: 'calc(var(--op-space-scale-unit) * 4)',
-    category: 'spacing',
-    description: '40px spacing'
+    "name": "line-height-loosest",
+    "cssVar": "--op-line-height-loosest",
+    "value": "1.8",
+    "category": "sizing",
+    "description": "sizing token: line-height-loosest"
   },
   {
-    name: 'op-space-4x-large',
-    value: 'calc(var(--op-space-scale-unit) * 8)',
-    category: 'spacing',
-    description: '80px spacing'
+    "name": "letter-spacing-navigation",
+    "cssVar": "--op-letter-spacing-navigation",
+    "value": "0.01rem",
+    "category": "typography",
+    "description": "typography token: letter-spacing-navigation"
   },
-
-  // Typography Tokens - Font Family
   {
-    name: 'op-font-family',
-    value: "'Noto Sans', 'Noto Serif', sans-serif",
-    category: 'typography',
-    description: 'Font family for all text'
+    "name": "letter-spacing-label",
+    "cssVar": "--op-letter-spacing-label",
+    "value": "0.04rem",
+    "category": "typography",
+    "description": "typography token: letter-spacing-label"
   },
-
-  // Font Sizes
   {
-    name: 'op-font-scale-unit',
-    value: '1rem',
-    category: 'typography',
-    description: 'Base unit for font scale (10px)'
+    "name": "transition-accordion",
+    "cssVar": "--op-transition-accordion",
+    "value": "rotate 120ms ease-in",
+    "category": "animation",
+    "description": "animation token: transition-accordion"
   },
   {
-    name: 'op-font-2x-small',
-    value: 'calc(var(--op-font-scale-unit) * 1)',
-    category: 'typography',
-    description: '10px font size'
+    "name": "transition-input",
+    "cssVar": "--op-transition-input",
+    "value": "all 120ms ease-in",
+    "category": "animation",
+    "description": "animation token: transition-input"
   },
   {
-    name: 'op-font-x-small',
-    value: 'calc(var(--op-font-scale-unit) * 1.2)',
-    category: 'typography',
-    description: '12px font size'
+    "name": "transition-sidebar",
+    "cssVar": "--op-transition-sidebar",
+    "value": "all 200ms ease-in-out",
+    "category": "animation",
+    "description": "animation token: transition-sidebar"
   },
   {
-    name: 'op-font-small',
-    value: 'calc(var(--op-font-scale-unit) * 1.4)',
-    category: 'typography',
-    description: '14px font size'
+    "name": "transition-modal",
+    "cssVar": "--op-transition-modal",
+    "value": "all var(--op-transition-modal-time) ease-in",
+    "category": "animation",
+    "description": "animation token: transition-modal"
   },
   {
-    name: 'op-font-medium',
-    value: 'calc(var(--op-font-scale-unit) * 1.6)',
-    category: 'typography',
-    description: '16px font size'
+    "name": "transition-panel",
+    "cssVar": "--op-transition-panel",
+    "value": "right 400ms ease-in",
+    "category": "animation",
+    "description": "animation token: transition-panel"
   },
   {
-    name: 'op-font-large',
-    value: 'calc(var(--op-font-scale-unit) * 1.8)',
-    category: 'typography',
-    description: '18px font size'
+    "name": "transition-tooltip",
+    "cssVar": "--op-transition-tooltip",
+    "value": "all 300ms ease-in 300ms",
+    "category": "animation",
+    "description": "animation token: transition-tooltip"
   },
   {
-    name: 'op-font-x-large',
-    value: 'calc(var(--op-font-scale-unit) * 2)',
-    category: 'typography',
-    description: '20px font size'
+    "name": "animation-flash",
+    "cssVar": "--op-animation-flash",
+    "value": "rm-slide-in-out-flash 5s normal forwards",
+    "category": "animation",
+    "description": "animation token: animation-flash"
   },
   {
-    name: 'op-font-2x-large',
-    value: 'calc(var(--op-font-scale-unit) * 2.4)',
-    category: 'typography',
-    description: '24px font size'
+    "name": "encoded-images-dropdown-arrow",
+    "cssVar": "--op-encoded-images-dropdown-arrow",
+    "value": "url('data",
+    "category": "encoded-image",
+    "description": "encoded-image token: encoded-images-dropdown-arrow"
   },
   {
-    name: 'op-font-3x-large',
-    value: 'calc(var(--op-font-scale-unit) * 2.8)',
-    category: 'typography',
-    description: '28px font size'
+    "name": "size-unit",
+    "cssVar": "--op-size-unit",
+    "value": "0.4rem",
+    "category": "sizing",
+    "description": "sizing token: size-unit"
   },
   {
-    name: 'op-font-4x-large',
-    value: 'calc(var(--op-font-scale-unit) * 3.2)',
-    category: 'typography',
-    description: '32px font size'
+    "name": "space-scale-unit",
+    "cssVar": "--op-space-scale-unit",
+    "value": "1rem",
+    "category": "spacing",
+    "description": "spacing token: space-scale-unit"
   },
   {
-    name: 'op-font-5x-large',
-    value: 'calc(var(--op-font-scale-unit) * 3.6)',
-    category: 'typography',
-    description: '36px font size'
+    "name": "space-3x-small",
+    "cssVar": "--op-space-3x-small",
+    "value": "calc(var(--op-space-scale-unit) * 0.2)",
+    "category": "spacing",
+    "description": "spacing token: space-3x-small"
   },
   {
-    name: 'op-font-6x-large',
-    value: 'calc(var(--op-font-scale-unit) * 4.8)',
-    category: 'typography',
-    description: '48px font size'
+    "name": "space-2x-small",
+    "cssVar": "--op-space-2x-small",
+    "value": "calc(var(--op-space-scale-unit) * 0.4)",
+    "category": "spacing",
+    "description": "spacing token: space-2x-small"
   },
-
-  // Font Weights
   {
-    name: 'op-font-weight-thin',
-    value: '100',
-    category: 'typography',
-    description: 'Thin font weight'
+    "name": "space-x-small",
+    "cssVar": "--op-space-x-small",
+    "value": "calc(var(--op-space-scale-unit) * 0.8)",
+    "category": "spacing",
+    "description": "spacing token: space-x-small"
   },
   {
-    name: 'op-font-weight-extra-light',
-    value: '200',
-    category: 'typography',
-    description: 'Extra light font weight'
+    "name": "space-small",
+    "cssVar": "--op-space-small",
+    "value": "calc(var(--op-space-scale-unit) * 1.2)",
+    "category": "spacing",
+    "description": "spacing token: space-small"
   },
   {
-    name: 'op-font-weight-light',
-    value: '300',
-    category: 'typography',
-    description: 'Light font weight'
+    "name": "space-medium",
+    "cssVar": "--op-space-medium",
+    "value": "calc(var(--op-space-scale-unit) * 1.6)",
+    "category": "spacing",
+    "description": "spacing token: space-medium"
   },
   {
-    name: 'op-font-weight-normal',
-    value: '400',
-    category: 'typography',
-    description: 'Normal font weight'
+    "name": "space-large",
+    "cssVar": "--op-space-large",
+    "value": "calc(var(--op-space-scale-unit) * 2)",
+    "category": "spacing",
+    "description": "spacing token: space-large"
   },
   {
-    name: 'op-font-weight-medium',
-    value: '500',
-    category: 'typography',
-    description: 'Medium font weight'
+    "name": "space-x-large",
+    "cssVar": "--op-space-x-large",
+    "value": "calc(var(--op-space-scale-unit) * 2.4)",
+    "category": "spacing",
+    "description": "spacing token: space-x-large"
   },
   {
-    name: 'op-font-weight-semi-bold',
-    value: '600',
-    category: 'typography',
-    description: 'Semi-bold font weight'
+    "name": "space-2x-large",
+    "cssVar": "--op-space-2x-large",
+    "value": "calc(var(--op-space-scale-unit) * 2.8)",
+    "category": "spacing",
+    "description": "spacing token: space-2x-large"
   },
   {
-    name: 'op-font-weight-bold',
-    value: '700',
-    category: 'typography',
-    description: 'Bold font weight'
+    "name": "space-3x-large",
+    "cssVar": "--op-space-3x-large",
+    "value": "calc(var(--op-space-scale-unit) * 4)",
+    "category": "spacing",
+    "description": "spacing token: space-3x-large"
   },
   {
-    name: 'op-font-weight-extra-bold',
-    value: '800',
-    category: 'typography',
-    description: 'Extra bold font weight'
+    "name": "space-4x-large",
+    "cssVar": "--op-space-4x-large",
+    "value": "calc(var(--op-space-scale-unit) * 8)",
+    "category": "spacing",
+    "description": "spacing token: space-4x-large"
   },
   {
-    name: 'op-font-weight-black',
-    value: '900',
-    category: 'typography',
-    description: 'Black font weight'
+    "name": "shadow-x-small",
+    "cssVar": "--op-shadow-x-small",
+    "value": "0 1px 3px hsl(0deg 0% 0% / 15%), 0 1px 2px hsl(0deg 0% 0% / 30%)",
+    "category": "shadow",
+    "description": "shadow token: shadow-x-small"
   },
-
-  // Line Heights
   {
-    name: 'op-line-height-none',
-    value: '0',
-    category: 'typography',
-    description: 'No line height'
+    "name": "shadow-small",
+    "cssVar": "--op-shadow-small",
+    "value": "0 2px 6px hsl(0deg 0% 0% / 15%), 0 1px 2px hsl(0deg 0% 0% / 30%)",
+    "category": "shadow",
+    "description": "shadow token: shadow-small"
   },
   {
-    name: 'op-line-height-densest',
-    value: '1',
-    category: 'typography',
-    description: 'Densest line height'
+    "name": "shadow-medium",
+    "cssVar": "--op-shadow-medium",
+    "value": "0 4px 8px hsl(0deg 0% 0% / 15%), 0 1px 3px hsl(0deg 0% 0% / 30%)",
+    "category": "shadow",
+    "description": "shadow token: shadow-medium"
   },
   {
-    name: 'op-line-height-denser',
-    value: '1.15',
-    category: 'typography',
-    description: 'Denser line height'
+    "name": "shadow-large",
+    "cssVar": "--op-shadow-large",
+    "value": "0 6px 10px hsl(0deg 0% 0% / 15%), 0 2px 3px hsl(0deg 0% 0% / 30%)",
+    "category": "shadow",
+    "description": "shadow token: shadow-large"
   },
   {
-    name: 'op-line-height-dense',
-    value: '1.3',
-    category: 'typography',
-    description: 'Dense line height'
+    "name": "shadow-x-large",
+    "cssVar": "--op-shadow-x-large",
+    "value": "0 8px 12px hsl(0deg 0% 0% / 15%), 0 4px 4px hsl(0deg 0% 0% / 30%)",
+    "category": "shadow",
+    "description": "shadow token: shadow-x-large"
   },
   {
-    name: 'op-line-height-base',
-    value: '1.5',
-    category: 'typography',
-    description: 'Base line height'
+    "name": "z-index-header",
+    "cssVar": "--op-z-index-header",
+    "value": "500",
+    "category": "z-index",
+    "description": "z-index token: z-index-header"
   },
   {
-    name: 'op-line-height-loose',
-    value: '1.6',
-    category: 'typography',
-    description: 'Loose line height'
+    "name": "z-index-footer",
+    "cssVar": "--op-z-index-footer",
+    "value": "500",
+    "category": "z-index",
+    "description": "z-index token: z-index-footer"
   },
   {
-    name: 'op-line-height-looser',
-    value: '1.7',
-    category: 'typography',
-    description: 'Looser line height'
+    "name": "z-index-sidebar",
+    "cssVar": "--op-z-index-sidebar",
+    "value": "700",
+    "category": "z-index",
+    "description": "z-index token: z-index-sidebar"
   },
   {
-    name: 'op-line-height-loosest',
-    value: '1.8',
-    category: 'typography',
-    description: 'Loosest line height'
+    "name": "z-index-dialog",
+    "cssVar": "--op-z-index-dialog",
+    "value": "800",
+    "category": "z-index",
+    "description": "z-index token: z-index-dialog"
   },
-
-  // Letter Spacing
   {
-    name: 'op-letter-spacing-navigation',
-    value: '0.01rem',
-    category: 'typography',
-    description: 'Letter spacing for navigation'
+    "name": "z-index-dialog-backdrop",
+    "cssVar": "--op-z-index-dialog-backdrop",
+    "value": "801",
+    "category": "z-index",
+    "description": "z-index token: z-index-dialog-backdrop"
   },
   {
-    name: 'op-letter-spacing-label',
-    value: '0.04rem',
-    category: 'typography',
-    description: 'Letter spacing for labels'
+    "name": "z-index-dialog-content",
+    "cssVar": "--op-z-index-dialog-content",
+    "value": "802",
+    "category": "z-index",
+    "description": "z-index token: z-index-dialog-content"
   },
-
-  // Border Radius Tokens
   {
-    name: 'op-radius-small',
-    value: '2px',
-    category: 'border',
-    description: 'Small border radius'
+    "name": "z-index-dropdown",
+    "cssVar": "--op-z-index-dropdown",
+    "value": "900",
+    "category": "z-index",
+    "description": "z-index token: z-index-dropdown"
   },
   {
-    name: 'op-radius-medium',
-    value: '4px',
-    category: 'border',
-    description: 'Medium border radius'
+    "name": "z-index-alert-group",
+    "cssVar": "--op-z-index-alert-group",
+    "value": "950",
+    "category": "z-index",
+    "description": "z-index token: z-index-alert-group"
   },
   {
-    name: 'op-radius-large',
-    value: '8px',
-    category: 'border',
-    description: 'Large border radius'
+    "name": "z-index-tooltip",
+    "cssVar": "--op-z-index-tooltip",
+    "value": "1000",
+    "category": "z-index",
+    "description": "z-index token: z-index-tooltip"
   },
   {
-    name: 'op-radius-x-large',
-    value: '12px',
-    category: 'border',
-    description: 'Extra large border radius'
+    "name": "input-height-small",
+    "cssVar": "--op-input-height-small",
+    "value": "2.8rem",
+    "category": "input",
+    "description": "input token: input-height-small"
   },
   {
-    name: 'op-radius-2x-large',
-    value: '16px',
-    category: 'border',
-    description: '2X large border radius'
+    "name": "input-height-medium",
+    "cssVar": "--op-input-height-medium",
+    "value": "3.6rem",
+    "category": "input",
+    "description": "input token: input-height-medium"
   },
   {
-    name: 'op-radius-circle',
-    value: '50%',
-    category: 'border',
-    description: 'Circular border radius'
+    "name": "input-height-large",
+    "cssVar": "--op-input-height-large",
+    "value": "4rem",
+    "category": "input",
+    "description": "input token: input-height-large"
   },
   {
-    name: 'op-radius-pill',
-    value: '9999px',
-    category: 'border',
-    description: 'Pill-shaped border radius'
+    "name": "input-height-x-large",
+    "cssVar": "--op-input-height-x-large",
+    "value": "8.4rem",
+    "category": "input",
+    "description": "input token: input-height-x-large"
   },
-
-  // Border Width Tokens
   {
-    name: 'op-border-width',
-    value: '1px',
-    category: 'border',
-    description: 'Standard border width'
+    "name": "input-inner-focus",
+    "cssVar": "--op-input-inner-focus",
+    "value": "inset 0 0 0 var(--op-border-width-large)",
+    "category": "input",
+    "description": "input token: input-inner-focus"
   },
   {
-    name: 'op-border-width-large',
-    value: '2px',
-    category: 'border',
-    description: 'Large border width'
-  },
-  {
-    name: 'op-border-width-x-large',
-    value: '4px',
-    category: 'border',
-    description: 'Extra large border width'
-  },
-
-  // Shadow Tokens
-  {
-    name: 'op-shadow-x-small',
-    value: '0 1px 2px hsl(0deg 0% 0% / 3%), 0 1px 3px hsl(0deg 0% 0% / 15%)',
-    category: 'shadow',
-    description: 'Extra small shadow'
-  },
-  {
-    name: 'op-shadow-small',
-    value: '0 1px 2px hsl(0deg 0% 0% / 3%), 0 2px 6px hsl(0deg 0% 0% / 15%)',
-    category: 'shadow',
-    description: 'Small shadow'
-  },
-  {
-    name: 'op-shadow-medium',
-    value: '0 4px 8px hsl(0deg 0% 0% / 15%), 0 1px 3px hsl(0deg 0% 0% / 3%)',
-    category: 'shadow',
-    description: 'Medium shadow'
-  },
-  {
-    name: 'op-shadow-large',
-    value: '0 6px 10px hsl(0deg 0% 0% / 15%), 0 2px 3px hsl(0deg 0% 0% / 3%)',
-    category: 'shadow',
-    description: 'Large shadow'
-  },
-  {
-    name: 'op-shadow-x-large',
-    value: '0 8px 12px hsl(0deg 0% 0% / 15%), 0 4px 4px hsl(0deg 0% 0% / 3%)',
-    category: 'shadow',
-    description: 'Extra large shadow'
-  },
-
-  // Opacity Tokens
-  {
-    name: 'op-opacity-none',
-    value: '0',
-    category: 'color',
-    description: 'No opacity'
-  },
-  {
-    name: 'op-opacity-overlay',
-    value: '0.2',
-    category: 'color',
-    description: 'Overlay opacity'
-  },
-  {
-    name: 'op-opacity-disabled',
-    value: '0.4',
-    category: 'color',
-    description: 'Disabled opacity'
-  },
-  {
-    name: 'op-opacity-half',
-    value: '0.5',
-    category: 'color',
-    description: 'Half opacity'
-  },
-  {
-    name: 'op-opacity-full',
-    value: '1',
-    category: 'color',
-    description: 'Full opacity'
+    "name": "input-outer-focus",
+    "cssVar": "--op-input-outer-focus",
+    "value": "0 0 0 var(--op-border-width-x-large)",
+    "category": "input",
+    "description": "input token: input-outer-focus"
   }
 ];
 
-/**
- * Components - Reusable UI components with their design token usage
- * Real components from the Optics Design System
- */
-export const components: Component[] = [
+export const cssPatterns: CSSPattern[] = [
   {
-    name: 'Accordion',
-    description: 'Collapsible content panel with expand/collapse animation',
-    tokens: [
-      '--op-color-neutral-on-plus-max',
-      '--op-font-weight-semi-bold',
-      '--op-font-x-large',
-      '--op-font-x-small',
-      '--op-mso-optical-sizing',
-      '--op-size-unit',
-      '--op-space-2x-small',
-      '--op-transition-accordion'
+    "name": "Accordion",
+    "description": "Accordion classes are built on the `details` and `summary` html elements. They provide consistent and composable styling for disclosure widgets.",
+    "className": "accordion",
+    "type": "component",
+    "modifiers": [
+      "accordion--disable-animation"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "accordion__label",
+      "accordion__marker"
+    ],
+    "exampleHtml": "<div class=\"accordion\">\n  <div class=\"accordion__label\">...</div>\n  <div class=\"accordion__marker\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-accordion--docs"
   },
   {
-    name: 'Alert',
-    description: 'Notification component for displaying important messages (warning, danger, info, notice)',
-    tokens: [
-      '--op-animation-flash',
-      '--op-border-all',
-      '--op-color-alerts-danger-base',
-      '--op-color-alerts-danger-on-base',
-      '--op-color-alerts-danger-on-base-alt',
-      '--op-color-alerts-danger-on-plus-eight',
-      '--op-color-alerts-danger-on-plus-eight-alt',
-      '--op-color-alerts-danger-on-plus-five',
-      '--op-color-alerts-danger-on-plus-five-alt',
-      '--op-color-alerts-danger-plus-eight',
-      '--op-color-alerts-danger-plus-five',
-      '--op-color-alerts-info-base',
-      '--op-color-alerts-info-on-base',
-      '--op-color-alerts-info-on-base-alt',
-      '--op-color-alerts-info-on-plus-eight',
-      '--op-color-alerts-info-on-plus-eight-alt',
-      '--op-color-alerts-info-on-plus-five',
-      '--op-color-alerts-info-on-plus-five-alt',
-      '--op-color-alerts-info-plus-eight',
-      '--op-color-alerts-info-plus-five',
-      '--op-color-alerts-notice-base',
-      '--op-color-alerts-notice-on-base',
-      '--op-color-alerts-notice-on-base-alt',
-      '--op-color-alerts-notice-on-plus-eight',
-      '--op-color-alerts-notice-on-plus-eight-alt',
-      '--op-color-alerts-notice-on-plus-five',
-      '--op-color-alerts-notice-on-plus-five-alt',
-      '--op-color-alerts-notice-plus-eight',
-      '--op-color-alerts-notice-plus-five',
-      '--op-color-alerts-warning-base',
-      '--op-color-alerts-warning-on-base',
-      '--op-color-alerts-warning-on-base-alt',
-      '--op-color-alerts-warning-on-plus-eight',
-      '--op-color-alerts-warning-on-plus-eight-alt',
-      '--op-color-alerts-warning-on-plus-five',
-      '--op-color-alerts-warning-on-plus-five-alt',
-      '--op-color-alerts-warning-plus-eight',
-      '--op-color-alerts-warning-plus-five',
-      '--op-font-medium',
-      '--op-font-small',
-      '--op-font-weight-medium',
-      '--op-line-height-dense',
-      '--op-radius-medium',
-      '--op-space-2x-small',
-      '--op-space-large',
-      '--op-space-medium',
-      '--op-space-small',
-      '--op-space-x-small',
-      '--op-z-index-alert-group'
+    "name": "Alert",
+    "description": "Alert classes can be used to create a highlighted message or callout in your application.",
+    "className": "alert",
+    "type": "component",
+    "modifiers": [
+      "alert--alert",
+      "alert--danger",
+      "alert--filled",
+      "alert--flash",
+      "alert--info",
+      "alert--muted",
+      "alert--notice",
+      "alert--warning"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "alert__description",
+      "alert__icon",
+      "alert__messages",
+      "alert__title"
+    ],
+    "exampleHtml": "<div class=\"alert\">\n  <div class=\"alert__description\">...</div>\n  <div class=\"alert__icon\">...</div>\n  <div class=\"alert__messages\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-alert--docs"
   },
   {
-    name: 'Avatar',
-    description: 'User profile picture component with multiple sizes and states',
-    tokens: [
-      '--op-border-width',
-      '--op-border-width-large',
-      '--op-color-neutral-base',
-      '--op-color-neutral-minus-max',
-      '--op-color-primary-base',
-      '--op-color-primary-plus-one',
-      '--op-opacity-disabled',
-      '--op-opacity-overlay',
-      '--op-radius-circle',
-      '--op-size-unit'
+    "name": "Avatar",
+    "description": "Avatar classes can be used on `a` or `div` html elements with an `img` within it. They provide consistent and composable styling for application avatars or profile pictures.",
+    "className": "avatar",
+    "type": "component",
+    "modifiers": [
+      "avatar--disabled",
+      "avatar--large",
+      "avatar--medium",
+      "avatar--small"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [],
+    "exampleHtml": "<div class=\"avatar\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-avatar--docs"
   },
   {
-    name: 'Badge',
-    description: 'Small status indicator or label with multiple color variants',
-    tokens: [
-      '--op-border-width-large',
-      '--op-color-alerts-danger-base',
-      '--op-color-alerts-danger-on-base',
-      '--op-color-alerts-info-base',
-      '--op-color-alerts-info-on-base',
-      '--op-color-alerts-notice-base',
-      '--op-color-alerts-notice-on-base',
-      '--op-color-alerts-warning-base',
-      '--op-color-alerts-warning-on-base',
-      '--op-color-neutral-base',
-      '--op-color-neutral-on-base',
-      '--op-color-neutral-plus-max',
-      '--op-color-primary-base',
-      '--op-color-primary-on-base',
-      '--op-font-small',
-      '--op-font-weight-bold',
-      '--op-font-x-small',
-      '--op-letter-spacing-label',
-      '--op-line-height-dense',
-      '--op-radius-medium',
-      '--op-radius-pill',
-      '--op-space-2x-small',
-      '--op-space-x-small'
+    "name": "Badge",
+    "description": "The Badge component is similar to the Tag component, however it has a different semantic purpose. Badge is intended to be used for notification and information where Tag is intended to be used for interaction and input. See [Tag](?path=/docs/components-tag--docs) for details on its usage.",
+    "className": "badge",
+    "type": "component",
+    "modifiers": [
+      "badge--danger",
+      "badge--info",
+      "badge--notice",
+      "badge--notification-left",
+      "badge--notification-right",
+      "badge--pill",
+      "badge--primary",
+      "badge--warning",
+      "btn--with-badge"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [],
+    "exampleHtml": "<div class=\"badge\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-badge--docs"
   },
   {
-    name: 'Breadcrumbs',
-    description: 'Navigation component showing the current page location in the site hierarchy',
-    tokens: [
-      '--op-font-small',
-      '--op-font-weight-bold',
-      '--op-font-x-small',
-      '--op-space-x-small'
+    "name": "Breadcrumbs",
+    "description": "The breadcrumbs component is used to show the user's current location in a hierarchy of pages.",
+    "className": "breadcrumbs",
+    "type": "component",
+    "modifiers": [
+      "breadcrumbs--large",
+      "breadcrumbs--small"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "breadcrumbs__link",
+      "breadcrumbs__separator",
+      "breadcrumbs__text"
+    ],
+    "exampleHtml": "<div class=\"breadcrumbs\">\n  <div class=\"breadcrumbs__link\">...</div>\n  <div class=\"breadcrumbs__text\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-breadcrumbs--docs"
   },
   {
-    name: 'Button',
-    description: 'Interactive button component with multiple variants (primary, secondary, etc.) and states',
-    tokens: [
-      '--op-border-all',
-      '--op-color-alerts-danger-base',
-      '--op-color-alerts-danger-minus-two',
-      '--op-color-alerts-danger-on-base',
-      '--op-color-alerts-danger-on-minus-two',
-      '--op-color-alerts-danger-on-plus-five',
-      '--op-color-alerts-danger-plus-five',
-      '--op-color-alerts-danger-plus-three',
-      '--op-color-alerts-warning-base',
-      '--op-color-alerts-warning-minus-two',
-      '--op-color-alerts-warning-on-base',
-      '--op-color-alerts-warning-on-minus-two',
-      '--op-color-alerts-warning-on-plus-five',
-      '--op-color-alerts-warning-plus-five',
-      '--op-color-alerts-warning-plus-three',
-      '--op-color-neutral-on-plus-eight',
-      '--op-color-neutral-plus-eight',
-      '--op-color-neutral-plus-four',
-      '--op-color-primary-base',
-      '--op-color-primary-minus-five',
-      '--op-color-primary-on-base',
-      '--op-color-primary-on-minus-five',
-      '--op-color-primary-on-plus-eight',
-      '--op-color-primary-on-plus-five',
-      '--op-color-primary-on-plus-max',
-      '--op-color-primary-on-plus-one',
-      '--op-color-primary-plus-eight',
-      '--op-color-primary-plus-five',
-      '--op-color-primary-plus-one',
-      '--op-color-primary-plus-three',
-      '--op-color-primary-plus-two',
-      '--op-font-small',
-      '--op-font-weight-normal',
-      '--op-font-x-small',
-      '--op-input-focus-danger',
-      '--op-input-focus-primary',
-      '--op-input-focus-warning',
-      '--op-input-height-large',
-      '--op-input-height-medium',
-      '--op-input-height-small',
-      '--op-opacity-disabled',
-      '--op-radius-medium',
-      '--op-radius-pill',
-      '--op-space-3x-small',
-      '--op-space-small',
-      '--op-space-x-small',
-      '--op-transition-input'
+    "name": "Button",
+    "description": "Button classes can be used on `button` or `a` html elements. They provide consistent and composable styling that should address most applications basic needs.",
+    "className": "btn",
+    "type": "component",
+    "modifiers": [
+      "btn--active",
+      "btn--delete",
+      "btn--destructive",
+      "btn--disabled",
+      "btn--icon",
+      "btn--icon-with-label",
+      "btn--large",
+      "btn--medium",
+      "btn--no-border",
+      "btn--pill",
+      "btn--primary",
+      "btn--small",
+      "btn--warning",
+      "btn--with-badge"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [],
+    "exampleHtml": "<button class=\"btn btn--primary\">Button</button>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-button--docs"
   },
   {
-    name: 'ButtonGroup',
-    description: 'Container for grouping related buttons together',
-    tokens: [
-      '--op-btn-group-active-z-index',
-      '--op-btn-group-focus-z-index',
-      '--op-btn-group-hover-z-index'
+    "name": "ButtonGroup",
+    "description": "ButtonGroup component",
+    "className": "btn-group",
+    "type": "component",
+    "modifiers": [],
+    "elements": [
+      "btn-group-toolbar"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "exampleHtml": "<div class=\"btn-group\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-buttongroup--docs"
   },
   {
-    name: 'Card',
-    description: 'Container component for grouping related content with optional header, body, and footer',
-    tokens: [
-      '--op-border-all',
-      '--op-color-background',
-      '--op-color-border',
-      '--op-color-on-background',
-      '--op-font-medium',
-      '--op-line-height-base',
-      '--op-radius-medium',
-      '--op-shadow-large',
-      '--op-shadow-medium',
-      '--op-shadow-small',
-      '--op-shadow-x-large',
-      '--op-shadow-x-small',
-      '--op-space-medium',
-      '--op-space-scale-unit'
+    "name": "Card",
+    "description": "Card classes can be used to denote bordered sections of an application. They provide simple styles to create sections or \"cards\" for your interface. They can also be used as a starting point for \"row\" or list styles.",
+    "className": "card",
+    "type": "component",
+    "modifiers": [
+      "card--condensed",
+      "card--padded",
+      "card--shadow-large",
+      "card--shadow-medium",
+      "card--shadow-small",
+      "card--shadow-x-large",
+      "card--shadow-x-small"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "card__body",
+      "card__footer",
+      "card__header"
+    ],
+    "exampleHtml": "<div class=\"card\">\n  <div class=\"card__header\">...</div>\n  <div class=\"card__body\">...</div>\n  <div class=\"card__footer\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-card--docs"
   },
   {
-    name: 'ConfirmDialog',
-    description: 'Modal dialog for confirming user actions',
-    tokens: [
-      '--op-border-all',
-      '--op-color-background',
-      '--op-color-black',
-      '--op-color-border',
-      '--op-color-on-background',
-      '--op-font-large',
-      '--op-font-medium',
-      '--op-font-weight-semi-bold',
-      '--op-line-height-base',
-      '--op-opacity-full',
-      '--op-opacity-half',
-      '--op-opacity-none',
-      '--op-radius-medium',
-      '--op-size-unit',
-      '--op-space-medium',
-      '--op-transition-modal',
-      '--op-z-index-dialog',
-      '--op-z-index-dialog-backdrop',
-      '--op-z-index-dialog-content'
+    "name": "ConfirmDialog",
+    "description": "ConfirmDialog component",
+    "className": "confirm-dialog-wrapper",
+    "type": "component",
+    "modifiers": [
+      "confirm-dialog-wrapper--active"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "confirm-dialog",
+      "confirm-dialog-wrapper__backdrop",
+      "confirm-dialog__body",
+      "confirm-dialog__footer",
+      "confirm-dialog__header"
+    ],
+    "exampleHtml": "<div class=\"confirm-dialog-wrapper\">\n  <div class=\"confirm-dialog-wrapper__backdrop\">...</div>\n  <div class=\"confirm-dialog__header\">...</div>\n  <div class=\"confirm-dialog__body\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-confirmdialog--docs"
   },
   {
-    name: 'Border',
-    description: 'Visual separator between content sections',
-    tokens: [
-      '--op-border-width',
-      '--op-border-width-large',
-      '--op-border-width-x-large',
-      '--op-color-border',
-      '--op-space-2x-small',
-      '--op-space-large',
-      '--op-space-medium',
-      '--op-space-x-small'
+    "name": "ContentHeader",
+    "description": "ContentHeader component",
+    "className": "content-header",
+    "type": "component",
+    "modifiers": [],
+    "elements": [
+      "content-header__aside",
+      "content-header__context",
+      "content-header__details",
+      "content-header__subline",
+      "content-header__title",
+      "context-header__aside",
+      "context-header__context",
+      "context-header__details",
+      "context-header__subline"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "exampleHtml": "<div class=\"content-header\">\n  <div class=\"content-header__details\">...</div>\n  <div class=\"content-header__context\">...</div>\n  <div class=\"content-header__title\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-contentheader--docs"
   },
   {
-    name: 'Form',
-    description: 'Form input components including text inputs, textareas, selects, and labels',
-    tokens: [
-      '--op-border-all',
-      '--op-border-bottom',
-      '--op-color-alerts-danger-base',
-      '--op-color-alerts-danger-minus-three',
-      '--op-color-alerts-danger-minus-two',
-      '--op-color-alerts-danger-on-plus-eight',
-      '--op-color-alerts-danger-on-plus-seven',
-      '--op-color-alerts-danger-plus-eight',
-      '--op-color-alerts-danger-plus-seven',
-      '--op-color-neutral-on-plus-eight',
-      '--op-color-neutral-plus-eight',
-      '--op-color-neutral-plus-four',
-      '--op-color-on-background',
-      '--op-color-primary-base',
-      '--op-color-primary-on-plus-eight',
-      '--op-color-primary-on-plus-max',
-      '--op-color-primary-on-plus-seven',
-      '--op-color-primary-plus-eight',
-      '--op-color-primary-plus-seven',
-      '--op-color-primary-plus-three',
-      '--op-color-primary-plus-two',
-      '--op-encoded-images-dropdown-arrow',
-      '--op-encoded-images-dropdown-arrow-width',
-      '--op-font-medium',
-      '--op-font-small',
-      '--op-font-weight-bold',
-      '--op-font-weight-normal',
-      '--op-font-x-small',
-      '--op-input-focus-danger',
-      '--op-input-focus-primary',
-      '--op-input-height-large',
-      '--op-input-height-medium',
-      '--op-input-height-small',
-      '--op-letter-spacing-label',
-      '--op-line-height-base',
-      '--op-opacity-disabled',
-      '--op-radius-large',
-      '--op-radius-medium',
-      '--op-space-2x-small',
-      '--op-space-3x-large',
-      '--op-space-large',
-      '--op-space-medium',
-      '--op-space-small',
-      '--op-space-x-large',
-      '--op-space-x-small',
-      '--op-transition-input'
+    "name": "Divider",
+    "description": "Divider classes can be used to create horizontal or vertical visual divides between content.",
+    "className": "divider",
+    "type": "component",
+    "modifiers": [
+      "divider--large",
+      "divider--medium",
+      "divider--small",
+      "divider--spacing-large",
+      "divider--spacing-medium",
+      "divider--spacing-small",
+      "divider--vertical"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [],
+    "exampleHtml": "<div class=\"divider\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-divider--docs"
   },
   {
-    name: 'Icon',
-    description: 'Material Symbols icon component',
-    tokens: [
-      '--op-font-2x-large',
-      '--op-font-3x-large',
-      '--op-font-large',
-      '--op-font-medium',
-      '--op-font-small',
-      '--op-font-weight-bold',
-      '--op-font-weight-light',
-      '--op-font-weight-normal',
-      '--op-font-weight-semi-bold',
-      '--op-line-height-densest',
-      '--op-mso-fill',
-      '--op-mso-grade',
-      '--op-mso-optical-sizing',
-      '--op-mso-weight'
+    "name": "Form",
+    "description": "Form classes can be used on a variety of `inputs` or `select` HTML elements.",
+    "className": "form-label",
+    "type": "component",
+    "modifiers": [
+      "form-control--large",
+      "form-control--medium",
+      "form-control--no-border",
+      "form-control--small",
+      "form-group--error",
+      "form-group--inline"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "form-control",
+      "form-error",
+      "form-error-summary",
+      "form-group",
+      "form-hint"
+    ],
+    "exampleHtml": "<div class=\"form-label\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-form--docs"
   },
   {
-    name: 'Modal',
-    description: 'Dialog component for focused interactions and content overlays',
-    tokens: [
-      '--op-border-all',
-      '--op-color-background',
-      '--op-color-black',
-      '--op-color-border',
-      '--op-color-on-background',
-      '--op-font-large',
-      '--op-font-medium',
-      '--op-font-weight-semi-bold',
-      '--op-line-height-base',
-      '--op-opacity-full',
-      '--op-opacity-half',
-      '--op-opacity-none',
-      '--op-radius-medium',
-      '--op-size-unit',
-      '--op-space-medium',
-      '--op-space-small',
-      '--op-transition-modal',
-      '--op-z-index-dialog',
-      '--op-z-index-dialog-backdrop',
-      '--op-z-index-dialog-content'
+    "name": "Icon",
+    "description": "Icon classes are built on top of [Google's Material Symbols Icon Font](https://fonts.google.com/icons). They provide a way to integrate iconography into your application in a flexible and customizable way.",
+    "className": "ph",
+    "type": "component",
+    "modifiers": [
+      "icon--filled",
+      "icon--high-emphasis",
+      "icon--large",
+      "icon--low-emphasis",
+      "icon--medium",
+      "icon--normal-emphasis",
+      "icon--outlined",
+      "icon--small",
+      "icon--weight-bold",
+      "icon--weight-light",
+      "icon--weight-normal",
+      "icon--weight-semi-bold",
+      "icon--weight-thin",
+      "icon--x-large"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "fi",
+      "icon",
+      "li",
+      "ph-duotone",
+      "ti"
+    ],
+    "exampleHtml": "<div class=\"ph\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-icon--docs"
   },
   {
-    name: 'Navbar',
-    description: 'Top navigation bar component',
-    tokens: [
-      '--op-border-bottom',
-      '--op-color-neutral-on-plus-eight',
-      '--op-color-neutral-plus-eight',
-      '--op-color-neutral-plus-four',
-      '--op-color-primary-on-plus-six',
-      '--op-color-primary-plus-four',
-      '--op-color-primary-plus-six',
-      '--op-size-unit',
-      '--op-space-2x-small',
-      '--op-space-small',
-      '--op-space-x-large',
-      '--op-space-x-small'
+    "name": "Modal",
+    "description": "The Modal classes can be used for styling a custom modal. This can be used alongside the Rails configuration and Javascript implemented by [RoleModel Rails Modal](https://github.com/RoleModel/rolemodel_rails/tree/master/lib/generators/rolemodel/modals)",
+    "className": "modal-wrapper",
+    "type": "component",
+    "modifiers": [
+      "modal-wrapper--active"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "modal",
+      "modal-wrapper__backdrop",
+      "modal__body",
+      "modal__footer",
+      "modal__header"
+    ],
+    "exampleHtml": "<div class=\"modal-wrapper\">\n  <div class=\"modal-wrapper__backdrop\">...</div>\n  <div class=\"modal__header\">...</div>\n  <div class=\"modal__body\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-modal--docs"
   },
   {
-    name: 'Pagination',
-    description: 'Navigation component for paginated content',
-    tokens: [
-      '--op-space-x-small'
+    "name": "Navbar",
+    "description": "Navbar classes provide simple styling for a navigation header.",
+    "className": "navbar",
+    "type": "component",
+    "modifiers": [
+      "navbar--primary",
+      "navbar__content--justify-center",
+      "navbar__content--justify-end",
+      "navbar__content--justify-start"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "navbar__brand",
+      "navbar__content",
+      "navbar__content--justify-center",
+      "navbar__content--justify-end",
+      "navbar__content--justify-start"
+    ],
+    "exampleHtml": "<div class=\"navbar\">\n  <div class=\"navbar__brand\">...</div>\n  <div class=\"navbar__content\">...</div>\n  <div class=\"navbar__content--justify-start\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-navbar--docs"
   },
   {
-    name: 'SidePanel',
-    description: 'Sliding panel from the side of the screen',
-    tokens: [
-      '--op-border-left',
-      '--op-border-right',
-      '--op-border-x',
-      '--op-color-background',
-      '--op-color-border',
-      '--op-color-on-background',
-      '--op-size-unit',
-      '--op-space-medium'
+    "name": "Pagination",
+    "description": "Pagination is used to navigate through a series of pages, typically when dealing with tabular data.",
+    "className": "pagination",
+    "type": "component",
+    "modifiers": [],
+    "elements": [
+      "pagination__divider"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "exampleHtml": "<div class=\"pagination\">\n  <div class=\"pagination__divider\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-pagination--docs"
   },
   {
-    name: 'Sidebar',
-    description: 'Side navigation panel component',
-    tokens: [
-      '--op-border-right',
-      '--op-color-neutral-on-plus-eight',
-      '--op-color-neutral-plus-eight',
-      '--op-color-neutral-plus-four',
-      '--op-color-primary-on-plus-six',
-      '--op-color-primary-plus-four',
-      '--op-color-primary-plus-six',
-      '--op-size-unit',
-      '--op-space-2x-large',
-      '--op-space-2x-small',
-      '--op-space-3x-small',
-      '--op-space-medium',
-      '--op-space-small',
-      '--op-space-x-small',
-      '--op-transition-sidebar'
+    "name": "SegmentedControl",
+    "description": "Styles are built on css variables scoped to the segmented control.",
+    "className": "segmented-control",
+    "type": "component",
+    "modifiers": [
+      "segmented-control--full-width",
+      "segmented-control--large",
+      "segmented-control--medium",
+      "segmented-control--small"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "segmented-control__input",
+      "segmented-control__label"
+    ],
+    "exampleHtml": "<div class=\"segmented-control\">\n  <div class=\"segmented-control__input\">...</div>\n  <div class=\"segmented-control__label\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-segmentedcontrol--docs"
   },
   {
-    name: 'Spinner',
-    description: 'Loading indicator component',
-    tokens: [
-      '--op-border-width',
-      '--op-border-width-large',
-      '--op-border-width-x-large',
-      '--op-color-neutral-plus-four',
-      '--op-color-primary-base',
-      '--op-size-unit'
+    "name": "SidePanel",
+    "description": "Side Panel classes provide simple styling for a panel of sections with a scrollable body.",
+    "className": "side-panel",
+    "type": "component",
+    "modifiers": [
+      "side-panel--border-left",
+      "side-panel--border-right",
+      "side-panel__footer--padded",
+      "side-panel__footer--padded-x",
+      "side-panel__footer--padded-y",
+      "side-panel__section--padded",
+      "side-panel__section--padded-x",
+      "side-panel__section--padded-y"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "side-panel__body",
+      "side-panel__body--padded",
+      "side-panel__body--padded-x",
+      "side-panel__body--padded-y",
+      "side-panel__footer",
+      "side-panel__footer--padded",
+      "side-panel__footer--padded-x",
+      "side-panel__footer--padded-y",
+      "side-panel__header",
+      "side-panel__header--padded",
+      "side-panel__header--padded-x",
+      "side-panel__header--padded-y",
+      "side-panel__section",
+      "side-panel__section--padded",
+      "side-panel__section--padded-x",
+      "side-panel__section--padded-y"
+    ],
+    "exampleHtml": "<div class=\"side-panel\">\n  <div class=\"side-panel__header\">...</div>\n  <div class=\"side-panel__header--padded\">...</div>\n  <div class=\"side-panel__header--padded-x\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-sidepanel--docs"
   },
   {
-    name: 'Switch',
-    description: 'Toggle switch component',
-    tokens: [
-      '--op-border-all',
-      '--op-border-width-large',
-      '--op-color-neutral-base',
-      '--op-color-neutral-plus-eight',
-      '--op-color-neutral-plus-five',
-      '--op-color-neutral-plus-three',
-      '--op-color-primary-base',
-      '--op-color-primary-minus-three',
-      '--op-color-primary-minus-two',
-      '--op-color-primary-plus-five',
-      '--op-color-primary-plus-six',
-      '--op-opacity-disabled',
-      '--op-radius-circle',
-      '--op-radius-pill',
-      '--op-size-unit',
-      '--op-space-2x-small',
-      '--op-space-x-small',
-      '--op-transition-input'
+    "name": "Sidebar",
+    "description": "Sidebar classes provide simple styling for a navigation sidebar drawer, compact, or rail.",
+    "className": "sidebar",
+    "type": "component",
+    "modifiers": [
+      "sidebar--compact",
+      "sidebar--drawer",
+      "sidebar--padded",
+      "sidebar--primary",
+      "sidebar--rail",
+      "sidebar__content--center",
+      "sidebar__content--end",
+      "sidebar__content--start"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "icon-with-label",
+      "sidebar__brand",
+      "sidebar__content",
+      "sidebar__content--center",
+      "sidebar__content--end",
+      "sidebar__content--start"
+    ],
+    "exampleHtml": "<div class=\"sidebar\">\n  <div class=\"sidebar__brand\">...</div>\n  <div class=\"sidebar__content\">...</div>\n  <div class=\"sidebar__content--start\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-sidebar--docs"
   },
   {
-    name: 'Tab',
-    description: 'Tabbed interface component',
-    tokens: [
-      '--op-border-width-large',
-      '--op-border-width-x-large',
-      '--op-color-background',
-      '--op-color-on-background',
-      '--op-color-primary-base',
-      '--op-color-primary-on-plus-seven',
-      '--op-color-primary-plus-one',
-      '--op-color-primary-plus-seven',
-      '--op-font-small',
-      '--op-font-x-small',
-      '--op-input-focus-primary',
-      '--op-opacity-disabled',
-      '--op-space-2x-small',
-      '--op-space-3x-small',
-      '--op-space-medium',
-      '--op-space-small',
-      '--op-space-x-small'
+    "name": "Spinner",
+    "description": "Spinners are CSS loading indicators that should be shown when retrieving data or performing slow computations.",
+    "className": "spinner",
+    "type": "component",
+    "modifiers": [
+      "spinner--large",
+      "spinner--medium",
+      "spinner--small",
+      "spinner--x-small"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [],
+    "exampleHtml": "<div class=\"spinner\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-spinner--docs"
   },
   {
-    name: 'Table',
-    description: 'Data table component for displaying structured information',
-    tokens: [
-      '--op-border-all',
-      '--op-border-top',
-      '--op-color-alerts-danger-on-plus-seven',
-      '--op-color-alerts-danger-plus-seven',
-      '--op-color-border',
-      '--op-color-neutral-on-plus-eight',
-      '--op-color-neutral-on-plus-max',
-      '--op-color-neutral-on-plus-seven',
-      '--op-color-neutral-plus-eight',
-      '--op-color-neutral-plus-max',
-      '--op-color-neutral-plus-seven',
-      '--op-color-primary-on-plus-seven',
-      '--op-color-primary-plus-seven',
-      '--op-font-small',
-      '--op-font-weight-semi-bold',
-      '--op-radius-medium',
-      '--op-size-unit',
-      '--op-space-2x-small',
-      '--op-space-small'
+    "name": "Switch",
+    "description": "Switch classes can be used to create a stylized checkbox or boolean input.",
+    "className": "switch",
+    "type": "component",
+    "modifiers": [
+      "switch--large",
+      "switch--small"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [],
+    "exampleHtml": "<div class=\"switch\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-switch--docs"
   },
   {
-    name: 'Tag',
-    description: 'Small label component for categorizing or tagging content',
-    tokens: [
-      '--op-color-alerts-danger-base',
-      '--op-color-alerts-danger-minus-three',
-      '--op-color-alerts-danger-on-base',
-      '--op-color-alerts-danger-on-minus-three',
-      '--op-color-alerts-info-base',
-      '--op-color-alerts-info-minus-three',
-      '--op-color-alerts-info-on-base',
-      '--op-color-alerts-info-on-minus-three',
-      '--op-color-alerts-notice-base',
-      '--op-color-alerts-notice-minus-three',
-      '--op-color-alerts-notice-on-base',
-      '--op-color-alerts-notice-on-minus-three',
-      '--op-color-alerts-warning-base',
-      '--op-color-alerts-warning-minus-three',
-      '--op-color-alerts-warning-on-base',
-      '--op-color-alerts-warning-on-minus-three',
-      '--op-color-neutral-base',
-      '--op-color-neutral-minus-three',
-      '--op-color-neutral-on-base',
-      '--op-color-neutral-on-minus-three',
-      '--op-color-neutral-on-plus-four',
-      '--op-color-neutral-plus-four',
-      '--op-color-primary-base',
-      '--op-color-primary-minus-three',
-      '--op-color-primary-on-base',
-      '--op-color-primary-on-minus-three',
-      '--op-font-medium',
-      '--op-font-weight-bold',
-      '--op-font-x-small',
-      '--op-input-focus-danger',
-      '--op-input-focus-info',
-      '--op-input-focus-neutral',
-      '--op-input-focus-notice',
-      '--op-input-focus-primary',
-      '--op-input-focus-warning',
-      '--op-letter-spacing-label',
-      '--op-line-height-dense',
-      '--op-radius-pill',
-      '--op-space-2x-small'
+    "name": "Tab",
+    "description": "Tab classes provide simple styling for a tab group navigation.",
+    "className": "tab-group",
+    "type": "component",
+    "modifiers": [
+      "tab--active",
+      "tab--disabled",
+      "tab--large",
+      "tab--small"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "tab"
+    ],
+    "exampleHtml": "<div class=\"tab-group\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-tab--docs"
   },
   {
-    name: 'TextPair',
-    description: 'Component for displaying label-value pairs',
-    tokens: [
-      '--op-font-large',
-      '--op-font-medium',
-      '--op-font-small',
-      '--op-font-weight-normal',
-      '--op-font-weight-semi-bold',
-      '--op-line-height-dense',
-      '--op-space-x-small'
+    "name": "Table",
+    "description": "Table classes provide simple styling for tables and their content.",
+    "className": "table",
+    "type": "component",
+    "modifiers": [
+      "table--auto-layout",
+      "table--comfortable-density",
+      "table--compact-density",
+      "table--container",
+      "table--danger",
+      "table--default-density",
+      "table--even-striped",
+      "table--fixed-layout",
+      "table--odd-striped",
+      "table--primary",
+      "table--sticky-footer",
+      "table--sticky-header"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "table-container"
+    ],
+    "exampleHtml": "<div class=\"table\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-table--docs"
   },
   {
-    name: 'Tooltip',
-    description: 'Contextual information component that appears on hover or focus',
-    tokens: [
-      '--op-color-neutral-minus-max',
-      '--op-color-neutral-on-minus-max',
-      '--op-font-family',
-      '--op-font-small',
-      '--op-opacity-full',
-      '--op-opacity-none',
-      '--op-radius-medium',
-      '--op-size-unit',
-      '--op-space-medium',
-      '--op-space-small',
-      '--op-space-x-small',
-      '--op-transition-tooltip',
-      '--op-z-index-tooltip'
+    "name": "Tag",
+    "description": "The tag component can be applied to an element with a button within it. The Tag component is similar to the Badge component, however it has a different semantic purpose. Tag is intended to be used for interaction and input where Badge is intended to be used for Notification and Information. See [Badge](?path=/docs/components-badge--docs) for details on its usage.",
+    "className": "tag",
+    "type": "component",
+    "modifiers": [
+      "tag--danger",
+      "tag--info",
+      "tag--notice",
+      "tag--primary",
+      "tag--read-only",
+      "tag--warning"
     ],
-    usage: 'See https://docs.optics.rolemodel.design for component usage and examples',
-    examples: []
+    "elements": [
+      "tag__label"
+    ],
+    "exampleHtml": "<div class=\"tag\">\n  <div class=\"tag__label\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-tag--docs"
+  },
+  {
+    "name": "TextPair",
+    "description": "TextPair component",
+    "className": "text-pair",
+    "type": "component",
+    "modifiers": [
+      "text-pair--inline",
+      "text-pair__subtitle--large",
+      "text-pair__subtitle--medium",
+      "text-pair__subtitle--small",
+      "text-pair__title--large",
+      "text-pair__title--medium",
+      "text-pair__title--small"
+    ],
+    "elements": [
+      "text-pair__subtitle",
+      "text-pair__subtitle--large",
+      "text-pair__subtitle--medium",
+      "text-pair__subtitle--small",
+      "text-pair__title",
+      "text-pair__title--large",
+      "text-pair__title--medium",
+      "text-pair__title--small"
+    ],
+    "exampleHtml": "<div class=\"text-pair\">\n  <div class=\"text-pair__title\">...</div>\n  <div class=\"text-pair__title--small\">...</div>\n  <div class=\"text-pair__title--medium\">...</div>\n</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-textpair--docs"
+  },
+  {
+    "name": "Stack",
+    "description": "Layout utility: op-stack",
+    "className": "op-stack",
+    "type": "layout",
+    "modifiers": [],
+    "elements": [],
+    "exampleHtml": "<div class=\"op-stack\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/layout-stack--docs"
+  },
+  {
+    "name": "Cluster",
+    "description": "Layout utility: op-cluster",
+    "className": "op-cluster",
+    "type": "layout",
+    "modifiers": [],
+    "elements": [],
+    "exampleHtml": "<div class=\"op-cluster\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/layout-cluster--docs"
+  },
+  {
+    "name": "Split",
+    "description": "Layout utility: op-split",
+    "className": "op-split",
+    "type": "layout",
+    "modifiers": [],
+    "elements": [],
+    "exampleHtml": "<div class=\"op-split\">...</div>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/layout-split--docs"
+  },
+  {
+    "name": "Tooltip",
+    "description": "CSS-only tooltip using data attributes",
+    "className": "[data-tooltip-text]",
+    "type": "component",
+    "modifiers": [
+      "[data-tooltip-position=\"top\"]",
+      "[data-tooltip-position=\"bottom\"]",
+      "[data-tooltip-position=\"left\"]",
+      "[data-tooltip-position=\"right\"]"
+    ],
+    "elements": [],
+    "exampleHtml": "<button data-tooltip-text=\"Tooltip text\" data-tooltip-position=\"top\">Hover me</button>",
+    "docsUrl": "https://docs.optics.rolemodel.design/?path=/docs/components-tooltip--docs"
   }
 ];
 
-/**
- * Documentation - Organized documentation sections
- */
+// Backwards compatibility: components alias with extended interface
+export const components: Component[] = cssPatterns.map(p => ({
+  ...p,
+  tokens: p.modifiers,
+  usage: p.description,
+  examples: p.exampleHtml ? [p.exampleHtml] : [],
+}));
+
 export const documentation: Documentation[] = [
   {
-    section: 'introduction',
-    title: 'Introduction to Optics',
-    content: 'Optics is a comprehensive design system that provides a consistent visual language and component library for building user interfaces. It includes design tokens, components, patterns, and guidelines to ensure consistency across all RoleModel products.',
-    tokens: []
+    "section": "overview",
+    "title": "Optics Overview",
+    "content": "Optics is a CSS-only design system. It provides CSS custom properties (tokens) and utility classes - NOT JavaScript components. Use the provided CSS classes and tokens; do not write custom CSS for patterns that already exist.",
+    "tokens": []
   },
   {
-    section: 'getting-started',
-    title: 'Getting Started',
-    content: 'To get started with Optics, install the design system package and import the tokens and components you need. The system is built with modularity in mind, allowing you to use only what you need.',
-    tokens: []
+    "section": "color-pairing",
+    "title": "Color Pairing Rule",
+    "content": "CRITICAL: Background and text colors must ALWAYS be paired. Never use --op-color-{family}-{scale} without also setting color to --op-color-{family}-on-{scale}. The \"on\" tokens are calculated for proper contrast against their matching background.",
+    "tokens": [
+      "color-white",
+      "color-black",
+      "color-primary-h",
+      "color-primary-s",
+      "color-primary-l",
+      "color-primary-original",
+      "color-neutral-h",
+      "color-neutral-s",
+      "color-neutral-l",
+      "color-neutral-original",
+      "color-alerts-warning-h",
+      "color-alerts-warning-s",
+      "color-alerts-warning-l",
+      "color-alerts-warning-original",
+      "color-alerts-danger-h",
+      "color-alerts-danger-s",
+      "color-alerts-danger-l",
+      "color-alerts-danger-original",
+      "color-alerts-info-h",
+      "color-alerts-info-s",
+      "color-alerts-info-l",
+      "color-alerts-info-original",
+      "color-alerts-notice-h",
+      "color-alerts-notice-s",
+      "color-alerts-notice-l",
+      "color-alerts-notice-original",
+      "color-border",
+      "color-background",
+      "color-on-background"
+    ]
   },
   {
-    section: 'design-tokens',
-    title: 'Design Tokens',
-    content: 'Design tokens are the visual design atoms of the design system — specifically, they are named entities that store visual design attributes. They are used in place of hard-coded values to ensure consistency and enable theming.',
-    tokens: designTokens.map(t => t.name)
+    "section": "color-system",
+    "title": "HSL Color System",
+    "content": "Optics uses HSL-based colors defined by -h (hue), -s (saturation), -l (lightness) tokens. A full scale is generated from plus-max (lightest) to minus-max (darkest). Each scale step has a matching \"on-\" token for text.",
+    "tokens": [
+      "color-white",
+      "color-black",
+      "color-primary-h",
+      "color-primary-s",
+      "color-primary-l",
+      "color-primary-original",
+      "color-neutral-h",
+      "color-neutral-s",
+      "color-neutral-l",
+      "color-neutral-original",
+      "color-alerts-warning-h",
+      "color-alerts-warning-s",
+      "color-alerts-warning-l",
+      "color-alerts-warning-original",
+      "color-alerts-danger-h",
+      "color-alerts-danger-s",
+      "color-alerts-danger-l",
+      "color-alerts-danger-original",
+      "color-alerts-info-h",
+      "color-alerts-info-s",
+      "color-alerts-info-l",
+      "color-alerts-info-original",
+      "color-alerts-notice-h",
+      "color-alerts-notice-s",
+      "color-alerts-notice-l",
+      "color-alerts-notice-original",
+      "color-border",
+      "color-background",
+      "color-on-background"
+    ]
   },
   {
-    section: 'color-system',
-    title: 'Color System',
-    content: 'The Optics color system provides a comprehensive palette designed for accessibility and visual harmony. Use semantic color tokens (primary, secondary, success, danger, warning, info) rather than specific color values.',
-    tokens: designTokens.filter(t => t.category === 'color').map(t => t.name)
-  },
-  {
-    section: 'spacing',
-    title: 'Spacing System',
-    content: 'Consistent spacing creates visual rhythm and helps users understand relationships between elements. Optics uses a base-8 spacing system with tokens ranging from xs (4px) to 2xl (48px).',
-    tokens: designTokens.filter(t => t.category === 'spacing').map(t => t.name)
-  },
-  {
-    section: 'typography',
-    title: 'Typography',
-    content: 'Typography is crucial for creating clear information hierarchy and readability. Optics provides font family, size, weight, and line height tokens to ensure consistent text styling.',
-    tokens: designTokens.filter(t => t.category === 'typography').map(t => t.name)
-  },
-  {
-    section: 'components',
-    title: 'Components',
-    content: 'Optics components are reusable UI elements built with design tokens. Each component follows accessibility best practices and includes comprehensive documentation on usage and token application.',
-    tokens: []
-  },
-  {
-    section: 'accessibility',
-    title: 'Accessibility Guidelines',
-    content: 'Accessibility is a core principle of Optics. All components meet WCAG 2.1 AA standards. Ensure proper color contrast, keyboard navigation, and screen reader support when using Optics components.',
-    tokens: []
+    "section": "use-existing",
+    "title": "Use Existing Classes",
+    "content": "Don't write custom CSS for components that already exist. Use .btn for buttons, .card for cards, .op-stack/.op-cluster/.op-split for layouts. Only write custom CSS when truly extending the system.",
+    "tokens": []
   }
 ];
