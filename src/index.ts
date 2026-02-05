@@ -44,6 +44,7 @@ import * as getTokenReferencePrompt from './prompts/get-token-reference.js';
 import GetTokenTool from './tools/get-token-tool.js';
 import GetTokenUsageStatsTool from './tools/get-token-usage-stats-tool.js';
 import SearchTokensTool from './tools/search-tokens-tool.js';
+import ListComponentsTool from './tools/list-components-tool.js'
 
 /**
  * Create and configure the MCP server
@@ -184,7 +185,7 @@ prompts.forEach((prompt) => {
 // get_token ✅
 // get_token_usage_stats ✅
 // search_tokens ✅
-// list_components
+// list_components ✅
 // get_component_info
 // get_component_tokens
 // search_documentation
@@ -193,6 +194,7 @@ const tools = [
   new GetTokenTool(),
   new GetTokenUsageStatsTool(),
   new SearchTokensTool(),
+  new ListComponentsTool(),
 ]
 
 tools.forEach((tool) => {
@@ -253,34 +255,6 @@ server.registerTool(
         {
           type: 'text',
           text: JSON.stringify(component, null, 2),
-        },
-      ],
-    };
-  }
-);
-
-/**
- * Tool: List Components
- */
-server.registerTool(
-  'list_components',
-  {
-    title: 'List Components',
-    description: 'List all available components in the design system',
-    inputSchema: {},
-  },
-  async () => {
-    const componentList = components.map((c) => ({
-      name: c.name,
-      description: c.description,
-      tokenCount: c.tokens.length,
-    }));
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(componentList, null, 2),
         },
       ],
     };
