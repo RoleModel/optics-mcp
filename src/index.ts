@@ -13,7 +13,6 @@ import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcon
 import { z } from 'zod';
 import {
   designTokens,
-  components,
   documentation,
   getComponentTokenDependencies,
 } from './optics-data.js';
