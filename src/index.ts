@@ -11,11 +11,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types"
 import { z } from 'zod';
-import {
-  designTokens,
-  documentation,
-  getComponentTokenDependencies,
-} from './optics-data.js';
+import { designTokens, documentation } from './optics-data.js';
 import { generateTheme } from './tools/theme-generator.js';
 import { validateTokenUsage, formatValidationReport } from './tools/validate.js';
 import { replaceHardCodedValues, formatReplacementSuggestions } from './tools/replace.js';
@@ -48,6 +44,7 @@ import GetTokenUsageStatsTool from './tools/get-token-usage-stats-tool.js';
 import SearchTokensTool from './tools/search-tokens-tool.js';
 import ListComponentsTool from './tools/list-components-tool.js'
 import GetComponentInfoTool from './tools/get-component-info-tool.js';
+import GetComponentTokensTool from './tools/get-component-tokens-tool.js';
 
 /**
  * Create and configure the MCP server
@@ -198,7 +195,7 @@ prompts.forEach((prompt) => {
 // search_tokens ✅
 // list_components ✅
 // get_component_info ✅
-// get_component_tokens
+// get_component_tokens ✅
 // search_documentation
 
 const tools = [
@@ -207,6 +204,7 @@ const tools = [
   new SearchTokensTool(),
   new ListComponentsTool(),
   new GetComponentInfoTool(),
+  new GetComponentTokensTool(),
 ]
 
 tools.forEach((tool) => {
@@ -231,43 +229,6 @@ tools.forEach((tool) => {
     },
   )
 })
-
-/**
- * Tool: Get Component Tokens
- */
-server.registerTool(
-  'get_component_tokens',
-  {
-    title: 'Get Component Tokens',
-    description: 'Get all design tokens used by a specific component',
-    inputSchema: {
-      componentName: z.string().describe('The name of the component'),
-    },
-  },
-  async ({ componentName }) => {
-    const deps = getComponentTokenDependencies(componentName);
-
-    if (!deps) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: `Component not found: ${componentName}`,
-          },
-        ],
-      };
-    }
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(deps, null, 2),
-        },
-      ],
-    };
-  }
-);
 
 /**
  * Tool: Search Documentation
