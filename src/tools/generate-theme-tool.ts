@@ -99,6 +99,7 @@ class GenerateThemeTool extends Tool {
 
       tokens.push({
         name: `op-color-${family}-h`,
+        cssVar: `--op-color-${family}-h`,
         value: String(hsl.h),
         category: 'color',
         description: `${family} color hue (HSL) - drives all ${family} scale tokens`
@@ -106,6 +107,7 @@ class GenerateThemeTool extends Tool {
 
       tokens.push({
         name: `op-color-${family}-s`,
+        cssVar: `--op-color-${family}-s`,
         value: `${hsl.s}%`,
         category: 'color',
         description: `${family} color saturation (HSL)`
@@ -113,6 +115,7 @@ class GenerateThemeTool extends Tool {
 
       tokens.push({
         name: `op-color-${family}-l`,
+        cssVar: `--op-color-${family}-l`,
         value: `${hsl.l}%`,
         category: 'color',
         description: `${family} color lightness (HSL)`

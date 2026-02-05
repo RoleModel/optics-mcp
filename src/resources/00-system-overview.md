@@ -269,6 +269,132 @@ When you call `get_component_info` for "Button", you'll see tokens like:
 }
 ```
 
+## ⚠️ CRITICAL: Color Pairing Rule
+
+**This is the #1 rule AI gets wrong. Read carefully.**
+
+In Optics, background colors and text colors are ALWAYS paired. You cannot use one without the other.
+
+### The Rule
+
+| When you set... | You MUST also set... |
+|-----------------|----------------------|
+| `background-color: var(--op-color-primary-base)` | `color: var(--op-color-primary-on-base)` |
+| `background-color: var(--op-color-danger-minus-1)` | `color: var(--op-color-danger-on-minus-1)` |
+| `color: var(--op-color-neutral-on-plus-eight)` | `background-color: var(--op-color-neutral-plus-eight)` |
+
+### Why?
+
+The `-on-` tokens are calculated for proper contrast against their matching background. Using them separately:
+- Breaks accessibility
+- Creates unreadable text
+- Defeats the purpose of the system
+
+### ❌ WRONG - Unpaired Colors
+
+```css
+/* Missing the text color! */
+.card {
+  background-color: var(--op-color-primary-base);
+}
+
+/* Missing the background! */
+.label {
+  color: var(--op-color-danger-on-base);
+}
+
+/* Using mismatched tokens! */
+.badge {
+  background-color: var(--op-color-primary-base);
+  color: var(--op-color-danger-on-base);  /* WRONG - mismatched family */
+}
+```
+
+### ✅ CORRECT - Paired Colors
+
+```css
+.card {
+  background-color: var(--op-color-primary-base);
+  color: var(--op-color-primary-on-base);
+}
+
+.label {
+  background-color: var(--op-color-danger-base);
+  color: var(--op-color-danger-on-base);
+}
+
+.badge-light {
+  background-color: var(--op-color-primary-plus-five);
+  color: var(--op-color-primary-on-plus-five);
+}
+```
+
+### The Pattern
+
+For ANY color usage:
+1. Pick your background: `--op-color-{family}-{scale}`
+2. Add matching text: `--op-color-{family}-on-{scale}`
+3. For secondary text, use: `--op-color-{family}-on-{scale}-alt`
+
+**Never use background colors alone. Never use text colors alone. They are a pair.**
+
+---
+
+## ⚠️ CRITICAL: Use Existing Components
+
+**Don't write CSS for things that already exist.**
+
+Optics has pre-built components with established class names. AI should use these, not create new ones.
+
+### ❌ WRONG - Writing New CSS
+
+```css
+/* DON'T DO THIS - buttons already exist */
+.my-button {
+  padding: var(--op-space-small) var(--op-space-medium);
+  background-color: var(--op-color-primary-base);
+  color: var(--op-color-primary-on-base);
+  border-radius: var(--op-radius-medium);
+}
+
+/* DON'T DO THIS - cards already exist */
+.custom-card {
+  padding: var(--op-space-large);
+  background: var(--op-color-neutral-plus-eight);
+  border-radius: var(--op-radius-large);
+  box-shadow: var(--op-shadow-medium);
+}
+```
+
+### ✅ CORRECT - Use Existing Classes
+
+```html
+<!-- Use Optics button classes -->
+<button class="btn btn--primary">Click me</button>
+
+<!-- Use Optics card classes -->
+<div class="card">
+  <div class="card__content">...</div>
+</div>
+```
+
+### When to Write Custom CSS
+
+Only write custom CSS when:
+1. **Extending** an existing component with a modifier (following BEM conventions)
+2. Creating something that **truly doesn't exist** in Optics
+3. Overriding specific tokens for **theming purposes**
+
+### Before Writing CSS, Ask:
+
+1. Does this component exist in Optics? → Check https://docs.optics.rolemodel.design
+2. Can I use existing utility classes? → `.stack`, `.cluster`, `.split`, etc.
+3. Am I just recreating something that exists? → Use the existing class
+
+**The whole point of a design system is to NOT write custom CSS for common patterns.**
+
+---
+
 ## 🚨 Common Mistakes
 
 ### Mistake 1: Looking for Simple Color Names
