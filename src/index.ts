@@ -180,14 +180,6 @@ prompts.forEach((prompt) => {
  * Tools
  */
 
-// get_token ✅
-// get_token_usage_stats ✅
-// search_tokens ✅
-// list_components ✅
-// get_component_info ✅
-// get_component_tokens ✅
-// search_documentation ✅
-
 const tools = [
   new GetTokenTool(),
   new GetTokenUsageStatsTool(),
