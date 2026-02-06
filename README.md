@@ -35,7 +35,7 @@ graph TB
 
     subgraph "Optics MCP Server"
         SERVER[MCP Server<br/>stdio transport]
-        
+
         subgraph "Resources (13)"
             SYSTEM[optics://system-overview]
             DOC_INTRO[optics://documentation/introduction]
@@ -52,7 +52,7 @@ graph TB
             TOK_TYPO[optics://tokens/typography]
             COMP_ALL[optics://components/all]
         end
-        
+
         subgraph "Core Tools (7)"
             T1[get_token]
             T2[search_tokens]
@@ -62,7 +62,7 @@ graph TB
             T6[get_component_tokens]
             T7[search_documentation]
         end
-        
+
         subgraph "Advanced Tools (7)"
             T8[generate_theme]
             T9[validate_token_usage]
@@ -72,7 +72,7 @@ graph TB
             T13[generate_component_scaffold]
             T14[generate_sticker_sheet]
         end
-        
+
         subgraph "Prompts (5)"
             P1[start-here]
             P2[get-token-reference]
@@ -80,14 +80,14 @@ graph TB
             P4[theme-customization]
             P5[migration-guide]
         end
-        
+
         subgraph "Data Layer"
             TOKENS[83 Design Tokens<br/>HSL colors, spacing,<br/>typography, borders, shadows]
             COMPONENTS[24 Components<br/>with token dependencies]
             DOCS[Documentation<br/>Guidelines & best practices]
         end
     end
-    
+
     CLIENT -->|JSON-RPC| SERVER
     SERVER --> SYSTEM
     SERVER --> DOC_INTRO
@@ -152,16 +152,20 @@ graph TB
 
 1. Command Palette → **MCP: Open User Configuration**
 2. Add this configuration:
-   ```json
-   {
-     "servers": {
-       "optics": {
-         "command": "npx",
-         "args": ["-y", "optics-mcp"]
-       }
-     }
-   }
-   ```
+
+```json
+{
+  "servers": {
+    "optics": {
+      "command": "npx",
+      "args": [
+        "@rolemodel/optics-mcp@latest"
+      ]
+    }
+  }
+}
+```
+
 3. Open GitHub Copilot in **Agent Mode**
 4. Click the tools icon to see Optics tools available
 
@@ -180,16 +184,20 @@ cursor://anysphere.cursor-deeplink/mcp/install?name=optics&config=eyJvcHRpY3MiOn
 
 1. Open Cursor Settings → **MCP**
 2. Add this configuration:
-   ```json
-   {
-     "servers": {
-       "optics": {
-         "command": "npx",
-         "args": ["-y", "optics-mcp"]
-       }
-     }
-   }
-   ```
+
+```json
+{
+  "servers": {
+    "optics": {
+      "command": "npx",
+      "args": [
+        "@rolemodel/optics-mcp@latest"
+      ]
+    }
+  }
+}
+```
+
 3. Chat with Cursor AI to access Optics tools
 
 ### Quick Start (Zero-Install) ⚡
@@ -205,7 +213,9 @@ Add to your MCP configuration:
   "mcpServers": {
     "optics": {
       "command": "npx",
-      "args": ["-y", "optics-mcp"]
+      "args": [
+        "@rolemodel/optics-mcp@latest"
+      ]
     }
   }
 }
