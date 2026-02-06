@@ -56,10 +56,8 @@
     "dist",
     "README.md",
     "LICENSE",
-    "docs/SYSTEM_OVERVIEW.md",
-    "docs/AI_IMPROVEMENTS.md",
-    "docs/WARP.md",
-    "docs/TOOLS.md",
-    "docs/EXAMPLES.md"
+    "docs",
+    "editor-configs",
+    ".claude/commands"
   ]
 }

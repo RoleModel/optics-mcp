@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "optics": {
+      "command": "npx",
+      "args": ["-y", "@rolemodel/optics-mcp"],
+      "env": {}
+    }
+  }
+}
