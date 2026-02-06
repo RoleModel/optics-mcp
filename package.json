@@ -1,12 +1,12 @@
 {
-  "name": "optics-mcp",
-  "version": "0.2.6",
-  "mcpName": "io.github.RoleModel/optics-mcp",
+  "name": "@rolemodel/optics-mcp",
+  "version": "0.2.7",
   "description": "MCP Server for Optics Design System documentation and token usage with AI-optimized comprehension guide",
+  "mcpName": "io.github.rolemodel/optics-mcp",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
-    "optics-mcp": "dist/index.js"
+    "@rolemodel/optics-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "npx tsc && npm run copy:md",

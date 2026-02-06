@@ -1,9 +1,8 @@
-name: Publish to GitHub Packages
+name: Publish to NPM
 
 on:
   release:
-    types: [created]
-  workflow_dispatch:
+    types: [published]
 
 jobs:
   publish:
@@ -12,20 +11,15 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
 
       - run: npm ci
-
-      - run: npm test
-
-      - name: Configure npm for GitHub Packages
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" > ~/.npmrc
-          echo "@dallasbpeters:registry=https://npm.pkg.github.com" >> ~/.npmrc
-
+      - run: npm run build
       - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
