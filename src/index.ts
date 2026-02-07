@@ -34,23 +34,25 @@ import * as explainTokenSystemPrompt from './prompts/explain-token-system.js';
 import * as getTokenReferencePrompt from './prompts/get-token-reference.js';
 
 // Tools
-import GetTokenTool from './tools/get-token-tool.js';
-import GetTokenUsageStatsTool from './tools/get-token-usage-stats-tool.js';
-import SearchTokensTool from './tools/search-tokens-tool.js';
-import ListComponentsTool from './tools/list-components-tool.js'
-import GetComponentInfoTool from './tools/get-component-info-tool.js';
-import GetComponentTokensTool from './tools/get-component-tokens-tool.js';
-import SearchDocumentationTool from './tools/search-documentation-tool.js';
-import GenerateThemeTool from './tools/generate-theme-tool.js';
-import ValidateTokenUsageTool from './tools/validate-token-usage-tool.js';
-import ReplaceHardCodedValuesTool from './tools/replace-hard-coded-values-tool.js';
-import CheckContrastTool from './tools/check-contrast-tool.js';
-import SuggestTokenMigrationTool from './tools/suggest-token-migration-tool.js';
-import GenerateComponentScaffoldTool from './tools/generate-component-scaffold-tool.js';
-import GenerateStickerSheetTool from './tools/generate-sticker-sheet-tool.js';
+import {
+  GetTokenTool,
+  GetTokenUsageStatsTool,
+  SearchTokensTool,
+  ListComponentsTool,
+  GetComponentInfoTool,
+  GetComponentTokensTool,
+  SearchDocumentationTool,
+  GenerateThemeTool,
+  ValidateTokenUsageTool,
+  ReplaceHardCodedValuesTool,
+  CheckContrastTool,
+  SuggestTokenMigrationTool,
+  GenerateComponentScaffoldTool,
+  GenerateStickerSheetTool
+} from './tools/index.js';
 
 // Fully validated, tested, and working tools.
-import ValidateColorPairTool from './tools/validate-color-pair-tool.js';
+import { ValidateColorPairTool } from './tools/index.js';
 
 /**
  * Create and configure the MCP server
