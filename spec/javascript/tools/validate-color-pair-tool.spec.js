@@ -25,6 +25,14 @@ describe('ValidateColorPairTool', () => {
         'op-color-alerts-neutral-on-plus-one-alt',
       ])
     })
+
+    it('returns an empty array when no valid foreground tokens exist for the given argument', () => {
+      const tool = new ValidateColorPairTool()
+
+      const response = tool.getValidForegroundTokens('op-color-nonexistent')
+
+      expect(response).toEqual([])
+    })
   })
 
   describe('getResponse', () => {
@@ -53,6 +61,17 @@ describe('ValidateColorPairTool', () => {
           'op-color-primary-on-plus-three',
           'op-color-primary-on-plus-three-alt',
         ]
+      })
+    })
+
+    it('returns an invalid response with an error when no tokens exist for the given background token', () => {
+      const tool = new ValidateColorPairTool()
+
+      const response = tool.getResponse('op-color-nonexistent', 'op-color-primary-on-plus-three')
+
+      expect(response).toEqual({
+        valid: false,
+        errorMessage: 'The given background token is not valid.'
       })
     })
   })

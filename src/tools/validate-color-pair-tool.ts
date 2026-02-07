@@ -11,6 +11,11 @@ interface ToolResponse {
   validForegroundTokens: string[]
 }
 
+interface ToolErrorResponse {
+  valid: boolean
+  errorMessage: string
+}
+
 class ValidateColorPairTool extends Tool {
   name = 'validate_color_pair'
   title = 'Validate Color Pair'
@@ -29,9 +34,16 @@ class ValidateColorPairTool extends Tool {
     return JSON.stringify(response, null, 2)
   }
 
-  getResponse(backgroundToken: string, foregroundToken: string): ToolResponse {
+  getResponse(backgroundToken: string, foregroundToken: string): ToolResponse | ToolErrorResponse {
     const validForegroundTokens = this.getValidForegroundTokens(backgroundToken)
     const valid = validForegroundTokens.includes(foregroundToken)
+
+    if (validForegroundTokens.length === 0) {
+      return {
+        valid: false,
+        errorMessage: 'The given background token is not valid.'
+      }
+    }
 
     return { valid, validForegroundTokens }
   }
