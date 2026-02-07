@@ -44,6 +44,9 @@ import SuggestTokenMigrationTool from './tools/suggest-token-migration-tool.js';
 import GenerateComponentScaffoldTool from './tools/generate-component-scaffold-tool.js';
 import GenerateStickerSheetTool from './tools/generate-sticker-sheet-tool.js';
 
+// WIP: Fully validated, working, and tested tools.
+import ValidateColorPairTool from './tools/validate-color-pair-tool.js';
+
 /**
  * Create and configure the MCP server
  */
@@ -194,7 +197,8 @@ const tools = [
   new CheckContrastTool(),
   new SuggestTokenMigrationTool(),
   new GenerateComponentScaffoldTool(),
-  new GenerateStickerSheetTool()
+  new GenerateStickerSheetTool(),
+  new ValidateColorPairTool(),
 ]
 
 tools.forEach((tool) => {

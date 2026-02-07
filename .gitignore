@@ -40,3 +40,6 @@ logs/
 .kiro/steering/byterover-rules.md
 .qoder/rules/byterover-rules.md
 .augment/rules/byterover-rules.md
+
+# Vitest
+spec/**/__screenshots__/*
