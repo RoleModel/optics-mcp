@@ -1,6 +1,6 @@
 /**
- * Check Contrast Tool
- * Validates WCAG contrast ratios for token combinations
+ * Validate Color Pair Tool
+ * Validates if a given background and foreground color token pair is valid based on the design system's naming conventions.
  */
 
 import { z } from 'zod'

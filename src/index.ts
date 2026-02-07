@@ -7,10 +7,15 @@
  * Provides tools and resources for understanding the Optics Design System
  */
 
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
+
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types"
 import { z } from 'zod';
+
 import { designTokens } from './optics-data.js';
 
 // Resources
@@ -44,15 +49,20 @@ import SuggestTokenMigrationTool from './tools/suggest-token-migration-tool.js';
 import GenerateComponentScaffoldTool from './tools/generate-component-scaffold-tool.js';
 import GenerateStickerSheetTool from './tools/generate-sticker-sheet-tool.js';
 
-// WIP: Fully validated, working, and tested tools.
+// Fully validated, tested, and working tools.
 import ValidateColorPairTool from './tools/validate-color-pair-tool.js';
 
 /**
  * Create and configure the MCP server
  */
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const { version } = JSON.parse(
+  readFileSync(resolve(__dirname, '../package.json'), 'utf8')
+);
+
 const server = new McpServer({
   name: 'optics-mcp',
-  version: '0.1.0',
+  version,
 });
 
 /**
