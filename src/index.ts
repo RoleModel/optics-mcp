@@ -7,10 +7,15 @@
  * Provides tools and resources for understanding the Optics Design System
  */
 
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
+
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types"
 import { z } from 'zod';
+
 import { designTokens } from './optics-data.js';
 
 // Resources
@@ -29,27 +34,37 @@ import * as explainTokenSystemPrompt from './prompts/explain-token-system.js';
 import * as getTokenReferencePrompt from './prompts/get-token-reference.js';
 
 // Tools
-import GetTokenTool from './tools/get-token-tool.js';
-import GetTokenUsageStatsTool from './tools/get-token-usage-stats-tool.js';
-import SearchTokensTool from './tools/search-tokens-tool.js';
-import ListComponentsTool from './tools/list-components-tool.js'
-import GetComponentInfoTool from './tools/get-component-info-tool.js';
-import GetComponentTokensTool from './tools/get-component-tokens-tool.js';
-import SearchDocumentationTool from './tools/search-documentation-tool.js';
-import GenerateThemeTool from './tools/generate-theme-tool.js';
-import ValidateTokenUsageTool from './tools/validate-token-usage-tool.js';
-import ReplaceHardCodedValuesTool from './tools/replace-hard-coded-values-tool.js';
-import CheckContrastTool from './tools/check-contrast-tool.js';
-import SuggestTokenMigrationTool from './tools/suggest-token-migration-tool.js';
-import GenerateComponentScaffoldTool from './tools/generate-component-scaffold-tool.js';
-import GenerateStickerSheetTool from './tools/generate-sticker-sheet-tool.js';
+import {
+  GetTokenTool,
+  GetTokenUsageStatsTool,
+  SearchTokensTool,
+  ListComponentsTool,
+  GetComponentInfoTool,
+  GetComponentTokensTool,
+  SearchDocumentationTool,
+  GenerateThemeTool,
+  ValidateTokenUsageTool,
+  ReplaceHardCodedValuesTool,
+  CheckContrastTool,
+  SuggestTokenMigrationTool,
+  GenerateComponentScaffoldTool,
+  GenerateStickerSheetTool
+} from './tools/index.js';
+
+// Fully validated, tested, and working tools.
+import { ValidateColorPairTool } from './tools/index.js';
 
 /**
  * Create and configure the MCP server
  */
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const { version } = JSON.parse(
+  readFileSync(resolve(__dirname, '../package.json'), 'utf8')
+);
+
 const server = new McpServer({
   name: 'optics-mcp',
-  version: '0.1.0',
+  version,
 });
 
 /**
@@ -194,7 +209,8 @@ const tools = [
   new CheckContrastTool(),
   new SuggestTokenMigrationTool(),
   new GenerateComponentScaffoldTool(),
-  new GenerateStickerSheetTool()
+  new GenerateStickerSheetTool(),
+  new ValidateColorPairTool(),
 ]
 
 tools.forEach((tool) => {
