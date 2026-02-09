@@ -12,17 +12,6 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types"
 import { z } from 'zod';
 import { designTokens } from './optics-data.js';
-<<<<<<< HEAD
-=======
-import { generateTheme } from './tools/theme-generator.js';
-import { validateTokenUsage, formatValidationReport } from './tools/validate.js';
-
-import { checkTokenContrast, formatContrastResult } from './tools/accessibility.js';
-import { suggestTokenMigration, formatMigrationSuggestions } from './tools/migration.js';
-import { generateComponentScaffold, formatScaffoldOutput } from './tools/scaffold.js';
-import { generateStickerSheet, formatStickerSheet } from './tools/sticker-sheet.js';
-
->>>>>>> a8fdcbb (Extract the replace hard coded values tool (#26))
 // Resources
 import * as systemOverview from './resources/system-overview.js';
 import * as documentationSection from './resources/documentation/section.js';
@@ -53,7 +42,6 @@ import ListComponentsTool from './tools/list-components-tool.js';
 import GetComponentInfoTool from './tools/get-component-info-tool.js';
 import GetComponentTokensTool from './tools/get-component-tokens-tool.js';
 import SearchDocumentationTool from './tools/search-documentation-tool.js';
-<<<<<<< HEAD
 import GenerateThemeTool from './tools/generate-theme-tool.js';
 import ValidateTokenUsageTool from './tools/validate-token-usage-tool.js';
 import ReplaceHardCodedValuesTool from './tools/replace-hard-coded-values-tool.js';
@@ -72,9 +60,8 @@ import CalculateContrastTool from './tools/calculation/calculate-contrast-tool.j
 import CalculateHslTokensTool from './tools/calculation/calculate-hsl-tokens-tool.js';
 
 // Tools
-=======
 import ReplaceHardCodedValuesTool from './tools/replace-hard-coded-values-tool.js';
->>>>>>> a8fdcbb (Extract the replace hard coded values tool (#26))
+
 
 /**
  * Create and configure the MCP server
@@ -234,7 +221,6 @@ const tools = [
   new GetComponentInfoTool(),
   new GetComponentTokensTool(),
   new SearchDocumentationTool(),
-<<<<<<< HEAD
   new GenerateThemeTool(),
   new ValidateTokenUsageTool(),
   new ReplaceHardCodedValuesTool(),
@@ -250,9 +236,6 @@ const tools = [
   new GetColorScaleTool(),
   new CalculateContrastTool(),
   new CalculateHslTokensTool(),
-=======
-  new ReplaceHardCodedValuesTool()
->>>>>>> a8fdcbb (Extract the replace hard coded values tool (#26))
 ]
 
 tools.forEach((tool) => {
@@ -279,7 +262,6 @@ tools.forEach((tool) => {
 })
 
 /**
-<<<<<<< HEAD
 =======
  * Tool: Generate Theme
  */
@@ -469,7 +451,6 @@ server.registerTool(
 );
 
 /**
->>>>>>> a8fdcbb (Extract the replace hard coded values tool (#26))
  * Start the server
  */
 async function main() {
