@@ -59,6 +59,8 @@ import GetColorScaleTool from './tools/data-retrieval/get-color-scale-tool.js';
 import CalculateContrastTool from './tools/calculation/calculate-contrast-tool.js';
 import CalculateHslTokensTool from './tools/calculation/calculate-hsl-tokens-tool.js';
 
+// Tools
+
 /**
  * Create and configure the MCP server
  */
