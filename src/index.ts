@@ -7,11 +7,17 @@
  * Provides tools and resources for understanding the Optics Design System
  */
 
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
+
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import type { ListPromptsRequestSchema, GetPromptRequestSchema } from "@modelcontextprotocol/sdk/types"
 import { z } from 'zod';
+
 import { designTokens } from './optics-data.js';
+
 // Resources
 import * as systemOverview from './resources/system-overview.js';
 import * as documentationSection from './resources/documentation/section.js';
@@ -63,9 +69,35 @@ import CalculateHslTokensTool from './tools/calculation/calculate-hsl-tokens-too
 import ReplaceHardCodedValuesTool from './tools/replace-hard-coded-values-tool.js';
 
 
+// Tools
+import {
+  GetTokenTool,
+  GetTokenUsageStatsTool,
+  SearchTokensTool,
+  ListComponentsTool,
+  GetComponentInfoTool,
+  GetComponentTokensTool,
+  SearchDocumentationTool,
+  GenerateThemeTool,
+  ValidateTokenUsageTool,
+  ReplaceHardCodedValuesTool,
+  CheckContrastTool,
+  SuggestTokenMigrationTool,
+  GenerateComponentScaffoldTool,
+  GenerateStickerSheetTool
+} from './tools/index.js';
+
+// Fully validated, tested, and working tools.
+import { ValidateColorPairTool } from './tools/index.js';
+
 /**
  * Create and configure the MCP server
  */
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const { version } = JSON.parse(
+  readFileSync(resolve(__dirname, '../package.json'), 'utf8')
+);
+
 const server = new McpServer({
   name: 'optics-mcp',
   version: '0.1.0',
@@ -213,7 +245,9 @@ prompts.forEach((prompt) => {
  */
 
 const tools = [
+
   // Original tools
+
   new GetTokenTool(),
   new GetTokenUsageStatsTool(),
   new SearchTokensTool(),
@@ -228,7 +262,6 @@ const tools = [
   new SuggestTokenMigrationTool(),
   new GenerateComponentScaffoldTool(),
   new GenerateStickerSheetTool(),
-  // New tools (Phase 1)
   new ValidateColorPairingTool(),
   new DetectRedundantCssTool(),
   new GetComponentHtmlTool(),
@@ -261,8 +294,6 @@ tools.forEach((tool) => {
   )
 })
 
-/**
-=======
  * Tool: Generate Theme
  */
 server.registerTool(
@@ -428,27 +459,8 @@ server.registerTool(
       includeTypography: z.boolean().optional().describe('Include typography specimens (default: true)'),
       includeComponents: z.boolean().optional().describe('Include component examples (default: true)'),
     },
-  },
-  async ({ framework, includeColors, includeTypography, includeComponents }) => {
-    const options = {
-      framework: framework ?? 'react',
-      includeColors: includeColors ?? true,
-      includeTypography: includeTypography ?? true,
-      includeComponents: includeComponents ?? true,
-    };
-    const sheet = generateStickerSheet(designTokens, components, options);
-    const formatted = formatStickerSheet(sheet);
-
-    return {
-      content: [
-        {
-          type: 'text',
-          text: formatted,
-        },
-      ],
-    };
-  }
-);
+  )
+})
 
 /**
  * Start the server
