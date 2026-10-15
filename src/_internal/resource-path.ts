@@ -11,14 +11,14 @@ const readResourceFile = async (filename: string): Promise<string> => {
 
 const readPromptFile = async (filename: string): Promise<string> => {
   const currentDir = dirname(fileURLToPath(import.meta.url))
-  const filePath = join(currentDir, '..', 'prompts', filename)
+  const filePath = join(currentDir, '..', 'prompts', '_templates', filename)
 
   return readFileSync(filePath, 'utf-8')
 }
 
 const readToolFile = async (filename: string): Promise<string> => {
   const currentDir = dirname(fileURLToPath(import.meta.url))
-  const filePath = join(currentDir, '..', 'tools', filename)
+  const filePath = join(currentDir, '..', 'tools', '_templates', filename)
 
   return readFileSync(filePath, 'utf-8')
 }
