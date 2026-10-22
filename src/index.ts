@@ -25,13 +25,30 @@ import * as allTokens from './resources/tokens/all.js';
 import * as categoryTokens from './resources/tokens/category.js';
 import * as allComponents from './resources/components/all.js';
 
-// Prompts
+// Prompts - Original
 import * as createThemedComponentPrompt from './prompts/create-themed-component.js';
 import * as migrateToTokensPrompt from './prompts/migrate-to-tokens.js';
 import * as accessibleColorComboPrompt from './prompts/accessible-color-combo.js';
 import * as designReviewPrompt from './prompts/design-review.js';
 import * as explainTokenSystemPrompt from './prompts/explain-token-system.js';
 import * as getTokenReferencePrompt from './prompts/get-token-reference.js';
+import * as configureIconsPrompt from './prompts/configure-icons.js';
+import * as useRecipePrompt from './prompts/use-recipe.js';
+
+// Prompts - New (Phase 1)
+import * as buildComponentPrompt from './prompts/building/build-component.js';
+import * as createBrandThemePrompt from './prompts/theming/create-brand-theme.js';
+import * as reviewCodePrompt from './prompts/review/review-code.js';
+
+// Tools - New (Phase 1)
+import ValidateColorPairingTool from './tools/validation/validate-color-pairing-tool.js';
+import DetectRedundantCssTool from './tools/validation/detect-redundant-css-tool.js';
+import GetComponentHtmlTool from './tools/data-retrieval/get-component-html-tool.js';
+import GetLayoutUtilityTool from './tools/data-retrieval/get-layout-utility-tool.js';
+import GetColorScaleTool from './tools/data-retrieval/get-color-scale-tool.js';
+import CalculateContrastTool from './tools/calculation/calculate-contrast-tool.js';
+import CalculateHslTokensTool from './tools/calculation/calculate-hsl-tokens-tool.js';
+
 
 // Tools
 import {
@@ -64,7 +81,13 @@ const { version } = JSON.parse(
 
 const server = new McpServer({
   name: 'optics-mcp',
-  version,
+  version: '0.1.0',
+}, {
+  capabilities: {
+    tools: {},
+    prompts: {},
+    resources: {},
+  }
 });
 
 /**
@@ -156,12 +179,19 @@ tokenCategories.forEach((category) => {
  */
 
 const prompts = [
+  // Original prompts
   createThemedComponentPrompt,
   migrateToTokensPrompt,
   accessibleColorComboPrompt,
   designReviewPrompt,
   explainTokenSystemPrompt,
-  getTokenReferencePrompt
+  getTokenReferencePrompt,
+  configureIconsPrompt,
+  useRecipePrompt,
+  // New prompts (Phase 1)
+  buildComponentPrompt,
+  createBrandThemePrompt,
+  reviewCodePrompt,
 ]
 
 prompts.forEach((prompt) => {
@@ -196,6 +226,9 @@ prompts.forEach((prompt) => {
  */
 
 const tools = [
+
+  // Original tools
+
   new GetTokenTool(),
   new GetTokenUsageStatsTool(),
   new SearchTokensTool(),
@@ -211,6 +244,13 @@ const tools = [
   new GenerateComponentScaffoldTool(),
   new GenerateStickerSheetTool(),
   new ValidateColorPairTool(),
+  new ValidateColorPairingTool(),
+  new DetectRedundantCssTool(),
+  new GetComponentHtmlTool(),
+  new GetLayoutUtilityTool(),
+  new GetColorScaleTool(),
+  new CalculateContrastTool(),
+  new CalculateHslTokensTool(),
 ]
 
 tools.forEach((tool) => {
@@ -235,6 +275,7 @@ tools.forEach((tool) => {
     },
   )
 })
+
 
 /**
  * Start the server
